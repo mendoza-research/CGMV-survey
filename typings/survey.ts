@@ -10,10 +10,12 @@ export enum FinancialInformationMode {
   B = "B",
 }
 
-export interface IParticipantState extends State {
+export interface ISurveyState extends State {
   participantId: string;
   gamificationMode: GamificationMode;
   setGamificationMode: (mode: GamificationMode) => void;
   financialInformationMode: FinancialInformationMode;
   setFinancialInformationMode: (mode: FinancialInformationMode) => void;
+  currentPathname: string;
+  setCurrentPathname: (newPathname: string) => void;
 }

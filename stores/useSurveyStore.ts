@@ -4,10 +4,10 @@ import randomstring from "randomstring";
 import {
   GamificationMode,
   FinancialInformationMode,
-  IParticipantState,
-} from "typings/participant";
+  ISurveyState,
+} from "typings/survey";
 
-const useParticipantStore = create<IParticipantState>((set, get) => ({
+const useSurveyStore = create<ISurveyState>((set, get) => ({
   participantId: randomstring.generate({
     length: 6,
     charset: "alphanumeric",
@@ -31,6 +31,11 @@ const useParticipantStore = create<IParticipantState>((set, get) => ({
     set((state) => ({
       financialInformationMode: mode,
     })),
+  currentPathname: "/",
+  setCurrentPathname: (newPathname: string) =>
+    set((state) => ({
+      currentPathname: newPathname,
+    })),
 }));
 
-export default useParticipantStore;
+export default useSurveyStore;
