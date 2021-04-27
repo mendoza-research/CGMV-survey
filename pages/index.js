@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import Layout from "components/Layout";
 
 export default function Home() {

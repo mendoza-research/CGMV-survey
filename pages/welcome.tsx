@@ -2,7 +2,7 @@ import Layout from "components/Layout";
 import Link from "next/link";
 import usePageNavigation from "hooks/usePageNavigation";
 
-export default function BackgroundPage() {
+export default function WelcomePage() {
   usePageNavigation();
 
   return (
