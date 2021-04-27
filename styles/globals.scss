@@ -2,15 +2,48 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 body {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  line-height: 1.6;
   font-family: "EB Garamond", serif;
 }
 
-.main {
-  padding: 5rem 0;
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+main {
+  padding: 4rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+button,
+a.button {
+  font-size: 1em;
+  display: inline-block;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  padding: 1rem 2rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e8e8e8;
+    border-color: #ddd;
+  }
+}
+
+p {
+  margin-top: 2rem;
+}
+
+ol,
+ul {
+  margin-top: 2rem;
 }
