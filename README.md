@@ -4,8 +4,6 @@
 https://cgmv-survey.netlify.app/
 
 ## Running a local server
-
-## Running a local server
 To run the site in local environment, below programs are required. 
 - Node.js (with NPM) - https://nodejs.org/en/
 - (Optional) yarn - https://yarnpkg.com/lang/en/
