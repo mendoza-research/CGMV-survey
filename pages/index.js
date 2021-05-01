@@ -6,12 +6,14 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/background");
-  }, []);
+    if (router.isReady) {
+      router.push("/background");
+    }
+  }, [router]);
 
   return (
     <>
-      <Layout>Hello World</Layout>
+      <Layout>Checking Device...</Layout>
     </>
   );
 }

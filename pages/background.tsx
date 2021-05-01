@@ -1,9 +1,17 @@
+import { useEffect, useState } from "react";
 import Layout from "components/Layout";
-import Link from "next/link";
 import usePageNavigation from "hooks/usePageNavigation";
+import { useRouter } from "next/router";
 
 export default function BackgroundPage() {
+  const router = useRouter();
+  const [canNavigate, setCanNavigate] = useState(true);
+
   usePageNavigation();
+
+  const next = () => {
+    router.push("/welcome");
+  };
 
   return (
     <Layout>
@@ -44,9 +52,9 @@ export default function BackgroundPage() {
               justifyContent: "center",
             }}
           >
-            <Link href="/">
-              <button>Enter Investment Platform</button>
-            </Link>
+            <button disabled={!canNavigate} onClick={next}>
+              Begin
+            </button>
           </div>
         </div>
       </main>

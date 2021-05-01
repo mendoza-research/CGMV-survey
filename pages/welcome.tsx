@@ -1,53 +1,43 @@
 import Layout from "components/Layout";
 import Link from "next/link";
 import usePageNavigation from "hooks/usePageNavigation";
+import styles from "styles/investment.module.scss";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function WelcomePage() {
+  const router = useRouter();
+  const [canNavigate, setCanNavigate] = useState(true);
+
   usePageNavigation();
+
+  const next = () => {
+    router.push("/welcome");
+  };
 
   return (
     <Layout>
-      <main>
+      <main className={styles.investmentBox}>
         <div>
           <h2>Background</h2>
           <p>
-            For this study, assume you have just received a $10,000 cash
-            inheritance from a distant relative, and you have decided to use
-            this inheritance to invest in the electronics industry. You turn to
-            a new investment platform to research opportunities in the industry
-            and to make investments. In the next ten minutes, you will:
+            Welcome – thank you for funding your account and for your interest
+            in Sound Waves Inc. and Virtuoso Corp.! Before you can access more
+            information about these companies and make investment decisions,
+            please complete your investor profile.
           </p>
 
-          <ol>
-            <li>Complete an investor profile for the platform.</li>
-            <li>
-              Review financial information about Sound Waves Inc. and Virtuoso
-              Corp., the two companies in the electronics industry you have
-              decided you are most interested in investing in.
-            </li>
-            <li>
-              Allocate your $10,000 inheritance between the two companies’
-              stocks.
-            </li>
-            <li>Answer a number of follow-up questions.</li>
-          </ol>
-
-          <p>
-            Click the button below to begin the study by entering the investment
-            platform.
-          </p>
-
-          <div
+          {/* <div
             style={{
               marginTop: "2rem",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "end",
             }}
           >
-            <Link href="/">
-              <button>Enter Investment Platform</button>
-            </Link>
-          </div>
+            <button disabled={!canNavigate} onClick={next}>
+              Begin
+            </button>
+          </div> */}
         </div>
       </main>
     </Layout>
