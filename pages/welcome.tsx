@@ -1,23 +1,13 @@
 import Layout from "components/Layout";
-import Link from "next/link";
 import usePageNavigation from "hooks/usePageNavigation";
 import styles from "styles/investment.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 export default function WelcomePage() {
-  const router = useRouter();
-  const [canNavigate, setCanNavigate] = useState(true);
+  const [canNavigate, setCanNavigate] = useState(false);
 
-  usePageNavigation();
-
-  useEffect(() => {
-    router.push("/welcome");
-  }, []);
-
-  const next = () => {
-    // router.push("/welcome");
-  };
+  const { toNext } = usePageNavigation("/welcome");
 
   return (
     <Layout>
@@ -31,17 +21,15 @@ export default function WelcomePage() {
             please complete your investor profile.
           </p>
 
-          {/* <div
+          <div
             style={{
               marginTop: "2rem",
               display: "flex",
               justifyContent: "end",
             }}
           >
-            <button disabled={!canNavigate} onClick={next}>
-              Begin
-            </button>
-          </div> */}
+            <button disabled={!canNavigate}>Begin</button>
+          </div>
         </div>
       </main>
     </Layout>

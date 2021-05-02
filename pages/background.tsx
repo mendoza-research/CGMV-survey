@@ -7,7 +7,7 @@ export default function BackgroundPage() {
   const router = useRouter();
   const [canNavigate, setCanNavigate] = useState(true);
 
-  usePageNavigation();
+  const { toNext } = usePageNavigation("/welcome");
 
   const next = () => {
     router.push("/welcome");
@@ -52,7 +52,7 @@ export default function BackgroundPage() {
               justifyContent: "center",
             }}
           >
-            <button disabled={!canNavigate} onClick={next}>
+            <button disabled={!canNavigate} onClick={toNext}>
               Begin
             </button>
           </div>

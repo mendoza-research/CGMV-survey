@@ -59,7 +59,7 @@ export default function Home() {
 
     setSessionId(sessionId);
 
-    console.log(sessionId);
+    router.push("/background");
   };
 
   useEffect(() => {

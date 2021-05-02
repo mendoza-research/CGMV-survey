@@ -1,6 +1,5 @@
 import create from "zustand";
 import { devtools } from "zustand/middleware";
-
 import {
   GamificationMode,
   FinancialInformationMode,
@@ -33,11 +32,15 @@ const useSurveyStore = create<ISurveyState>(
       set(() => ({
         financialInformationMode: mode,
       })),
+
+    // States used to prevent back navigation
     currentPathname: "/",
     setCurrentPathname: (newPathname: string) =>
-      set(() => ({
+      set((state) => ({
+        visitedPathnames: [...state.visitedPathnames, newPathname],
         currentPathname: newPathname,
       })),
+    visitedPathnames: [],
   }))
 );
 

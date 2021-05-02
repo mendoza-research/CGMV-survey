@@ -1,41 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import useSurveyStore from "stores/useSurveyStore";
 
-export default function usePageNavigation() {
+export default function usePageNavigation(nextPathname: string) {
   const router = useRouter();
+  const currentPathname = useSurveyStore((state) => state.currentPathname);
+  const setCurrentPathname = useSurveyStore(
+    (state) => state.setCurrentPathname
+  );
+  const visitedPathnames = useSurveyStore((state) => state.visitedPathnames);
 
   useEffect(() => {
+    if (router.isReady && router.pathname !== currentPathname) {
+      // If the participant has already visited the page
+      if (visitedPathnames.includes(router.pathname)) {
+        // Send the participant back to originating page
+        router.push(currentPathname);
+        return;
+      }
+
+      setCurrentPathname(router.pathname);
+      console.log(`Enter page ${router.pathname}`);
+      console.log(new Date());
+    }
+
     const handleRouteChange = (url, { shallow }) => {
       console.log(
         `App is changing to ${url} ${
           shallow ? "with" : "without"
         } shallow routing`
       );
-
-      if (url == "/background") {
-      }
     };
 
-    // router.beforePopState(({ url, as, options }) => {
-    //   console.log(`url=${url}, as=${as}`);
-    //   console.log(as);
-
-    //   if (as == "/background") {
-    //     router.push("/welcome", "/welcome", {
-    //       shallow: true,
-    //     });
-    //     return false;
-    //   }
-
-    //   return true;
-    // });
-
     router.events.on("routeChangeStart", handleRouteChange);
-
-    if (router.isReady) {
-      console.log(`Enter page ${router.pathname}`);
-      console.log(new Date());
-    }
 
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
@@ -44,4 +41,16 @@ export default function usePageNavigation() {
       console.log(new Date());
     };
   }, [router]);
+
+  const toNext = () => {
+    // Set next pathname to current
+    setCurrentPathname(nextPathname);
+
+    // Navigate to next pathname
+    router.push(nextPathname);
+  };
+
+  return {
+    toNext,
+  };
 }

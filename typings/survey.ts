@@ -19,4 +19,5 @@ export interface ISurveyState extends State {
   setFinancialInformationMode: (mode: FinancialInformationMode) => void;
   currentPathname: string;
   setCurrentPathname: (newPathname: string) => void;
+  visitedPathnames: string[];
 }

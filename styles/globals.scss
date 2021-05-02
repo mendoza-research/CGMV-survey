@@ -43,6 +43,10 @@ a.button {
     background-color: #e8e8e8;
     border-color: #ddd;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 p {
