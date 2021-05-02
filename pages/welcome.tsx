@@ -2,7 +2,7 @@ import Layout from "components/Layout";
 import Link from "next/link";
 import usePageNavigation from "hooks/usePageNavigation";
 import styles from "styles/investment.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function WelcomePage() {
@@ -11,8 +11,12 @@ export default function WelcomePage() {
 
   usePageNavigation();
 
-  const next = () => {
+  useEffect(() => {
     router.push("/welcome");
+  }, []);
+
+  const next = () => {
+    // router.push("/welcome");
   };
 
   return (

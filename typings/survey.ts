@@ -11,7 +11,8 @@ export enum FinancialInformationMode {
 }
 
 export interface ISurveyState extends State {
-  participantId: string;
+  sessionId: string;
+  setSessionId: (sessionId: string) => void;
   gamificationMode: GamificationMode;
   setGamificationMode: (mode: GamificationMode) => void;
   financialInformationMode: FinancialInformationMode;

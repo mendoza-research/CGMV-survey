@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import Layout from "components/Layout";
 import {
   browserName,
@@ -8,6 +8,7 @@ import {
   osName,
   deviceType,
 } from "react-device-detect";
+import useSurveyStore from "stores/useSurveyStore";
 
 const CREATE_CGMV_SESSION = gql`
   mutation CreateSession(
@@ -37,12 +38,13 @@ const CREATE_CGMV_SESSION = gql`
 export default function Home() {
   const router = useRouter();
   const [createSession] = useMutation(CREATE_CGMV_SESSION);
+  const setSessionId = useSurveyStore((state) => state.setSessionId);
 
   const recordUserInformation = async () => {
     const res = await fetch("http://ip-api.com/json");
     const ipData = await res.json();
 
-    createSession({
+    const result = await createSession({
       variables: {
         browser_name: browserName,
         browser_version: fullBrowserVersion,
@@ -51,6 +53,13 @@ export default function Home() {
         ip_addr: ipData.query,
       },
     });
+
+    const sessionId =
+      result["data"]["insert_cgmv_sessions"]["returning"][0]["session_id"];
+
+    setSessionId(sessionId);
+
+    console.log(sessionId);
   };
 
   useEffect(() => {
