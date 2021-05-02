@@ -2,20 +2,30 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Layout from "components/Layout";
-import { browserName } from "react-device-detect";
-
-const CGMV_SESSIONS = gql`
-  query MyQuery {
-    cmgv_session {
-      session_id
-      browser_type
-    }
-  }
-`;
+import {
+  browserName,
+  fullBrowserVersion,
+  osName,
+  deviceType,
+} from "react-device-detect";
 
 const CREATE_CGMV_SESSION = gql`
-  mutation CreateSession($browser_type: String!) {
-    insert_cmgv_session(objects: { browser_type: $browser_type }) {
+  mutation CreateSession(
+    $os: String!
+    $device_type: String!
+    $browser_name: String!
+    $browser_version: String!
+    $ip_addr: inet!
+  ) {
+    insert_cgmv_sessions(
+      objects: {
+        browser_name: $browser_name
+        browser_version: $browser_version
+        device_type: $device_type
+        os: $os
+        ip_addr: $ip_addr
+      }
+    ) {
       affected_rows
       returning {
         session_id
@@ -26,30 +36,32 @@ const CREATE_CGMV_SESSION = gql`
 
 export default function Home() {
   const router = useRouter();
-
-  const { loading, error, data } = useQuery(CGMV_SESSIONS);
   const [createSession] = useMutation(CREATE_CGMV_SESSION);
 
-  useEffect(() => {
-    // if (router.isReady) {
-    //   router.push("/background");
-    // }
+  const recordUserInformation = async () => {
+    const res = await fetch("http://ip-api.com/json");
+    const ipData = await res.json();
+
     createSession({
       variables: {
-        browser_type: browserName,
+        browser_name: browserName,
+        browser_version: fullBrowserVersion,
+        device_type: deviceType,
+        os: osName,
+        ip_addr: ipData.query,
       },
     });
-  }, [router]);
+  };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
+  useEffect(() => {
+    if (router.isReady) {
+      recordUserInformation();
+    }
+  }, [router]);
 
   return (
     <>
-      <Layout>
-        Checking Device...
-        <p>{JSON.stringify(data)}</p>
-      </Layout>
+      <Layout>Creating a session...</Layout>
     </>
   );
 }
