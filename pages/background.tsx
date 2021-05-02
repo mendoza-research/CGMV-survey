@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
-import { useRouter } from "next/router";
 
 export default function BackgroundPage() {
-  const router = useRouter();
-  const [canNavigate, setCanNavigate] = useState(true);
-
-  const { toNext } = usePageNavigation("/welcome");
-
-  const next = () => {
-    router.push("/welcome");
-  };
+  const { toNext } = usePageNavigation({
+    nextPathname: "/welcome",
+  });
 
   return (
     <Layout>
@@ -52,9 +46,7 @@ export default function BackgroundPage() {
               justifyContent: "center",
             }}
           >
-            <button disabled={!canNavigate} onClick={toNext}>
-              Begin
-            </button>
+            <button onClick={toNext}>Begin</button>
           </div>
         </div>
       </main>

@@ -2,18 +2,18 @@ import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
 import styles from "styles/investment.module.scss";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 export default function WelcomePage() {
   const [canNavigate, setCanNavigate] = useState(false);
 
-  const { toNext } = usePageNavigation("/welcome");
+  const { toNext } = usePageNavigation({
+    nextPathname: "/welcome",
+  });
 
   return (
     <Layout>
-      <main className={styles.investmentBox}>
+      <main className={styles.investentBox}>
         <div>
-          <h2>Background</h2>
           <p>
             Welcome – thank you for funding your account and for your interest
             in Sound Waves Inc. and Virtuoso Corp.! Before you can access more
@@ -25,7 +25,7 @@ export default function WelcomePage() {
             style={{
               marginTop: "2rem",
               display: "flex",
-              justifyContent: "end",
+              justifyContent: "flex-end",
             }}
           >
             <button disabled={!canNavigate}>Begin</button>

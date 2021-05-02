@@ -34,7 +34,7 @@ const useSurveyStore = create<ISurveyState>(
       })),
 
     // States used to prevent back navigation
-    currentPathname: "/",
+    currentPathname: null,
     setCurrentPathname: (newPathname: string) =>
       set((state) => ({
         visitedPathnames: [...state.visitedPathnames, newPathname],

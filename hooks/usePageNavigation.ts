@@ -2,7 +2,13 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSurveyStore from "stores/useSurveyStore";
 
-export default function usePageNavigation(nextPathname: string) {
+interface IPageNavigationOptions {
+  nextPathname: string;
+}
+
+export default function usePageNavigation({
+  nextPathname,
+}: IPageNavigationOptions) {
   const router = useRouter();
   const currentPathname = useSurveyStore((state) => state.currentPathname);
   const setCurrentPathname = useSurveyStore(
@@ -20,26 +26,10 @@ export default function usePageNavigation(nextPathname: string) {
       }
 
       setCurrentPathname(router.pathname);
+
       console.log(`Enter page ${router.pathname}`);
       console.log(new Date());
     }
-
-    const handleRouteChange = (url, { shallow }) => {
-      console.log(
-        `App is changing to ${url} ${
-          shallow ? "with" : "without"
-        } shallow routing`
-      );
-    };
-
-    router.events.on("routeChangeStart", handleRouteChange);
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-
-      console.log(`Exit page ${router.pathname}`);
-      console.log(new Date());
-    };
   }, [router]);
 
   const toNext = () => {
@@ -51,6 +41,7 @@ export default function usePageNavigation(nextPathname: string) {
   };
 
   return {
+    isFirstVisit: !visitedPathnames.includes(router.pathname),
     toNext,
   };
 }

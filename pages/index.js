@@ -8,6 +8,7 @@ import {
   osName,
   deviceType,
 } from "react-device-detect";
+import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 
 const CREATE_CGMV_SESSION = gql`
@@ -36,15 +37,14 @@ const CREATE_CGMV_SESSION = gql`
 `;
 
 export default function Home() {
-  const router = useRouter();
-  const [createSession] = useMutation(CREATE_CGMV_SESSION);
+  const [createSessionInDb] = useMutation(CREATE_CGMV_SESSION);
   const setSessionId = useSurveyStore((state) => state.setSessionId);
 
-  const recordUserInformation = async () => {
+  const initializeSurveySession = async () => {
     const res = await fetch("http://ip-api.com/json");
     const ipData = await res.json();
 
-    const result = await createSession({
+    const result = await createSessionInDb({
       variables: {
         browser_name: browserName,
         browser_version: fullBrowserVersion,
@@ -58,15 +58,22 @@ export default function Home() {
       result["data"]["insert_cgmv_sessions"]["returning"][0]["session_id"];
 
     setSessionId(sessionId);
+  };
 
-    router.push("/background");
+  const { isFirstVisit, toNext } = usePageNavigation({
+    nextPathname: "/background",
+  });
+
+  const onFirstVisit = async () => {
+    await initializeSurveySession();
+    toNext();
   };
 
   useEffect(() => {
-    if (router.isReady) {
-      recordUserInformation();
+    if (isFirstVisit) {
+      onFirstVisit();
     }
-  }, [router]);
+  });
 
   return (
     <>
