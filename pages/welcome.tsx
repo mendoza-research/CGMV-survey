@@ -1,11 +1,16 @@
 import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
+import useSurveyStore from "stores/useSurveyStore";
+import { Gamification } from "typings/survey";
 import styles from "styles/investment.module.scss";
-import { useState } from "react";
 
 export default function WelcomePage() {
+  const gamification = useSurveyStore((state) => state.gamification);
+  const nextPathname =
+    gamification === Gamification.GAMIFICATION ? "/q1" : "/q1";
+
   const { toNext } = usePageNavigation({
-    nextPathname: "/welcome",
+    nextPathname,
   });
 
   return (
@@ -26,7 +31,7 @@ export default function WelcomePage() {
               justifyContent: "flex-end",
             }}
           >
-            <button>Begin</button>
+            <button onClick={toNext}>Next</button>
           </div>
         </div>
       </main>

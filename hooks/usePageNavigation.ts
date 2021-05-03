@@ -45,7 +45,6 @@ export default function usePageNavigation({
 
   const recordPageEnter = async () => {
     try {
-      console.log(`try recordPageEnter`);
       await recordPageEnterInDb({
         variables: {
           session_id: sessionId,
@@ -74,10 +73,6 @@ export default function usePageNavigation({
   };
 
   useEffect(() => {
-    console.log(
-      `usePageNavigation.useEffect(), sessionId=${sessionId}, router.pathname=${router.pathname}, currentPathname=${currentPathname}, visitedPathnames=${visitedPathnames}`
-    );
-
     // If a participant tries to enter a page through a direct URL without initializing a session, redirect the participant to entry page
     if (!sessionId && router.pathname !== "/") {
       window.location.href = "/";
@@ -97,12 +92,7 @@ export default function usePageNavigation({
       recordPageEnter();
     }
 
-    console.log(`Enter page ${router.pathname}, sessionId=${sessionId}`);
-    console.log(new Date());
-
     return () => {
-      console.log(`Exit page ${router.pathname}`);
-      console.log(new Date());
       if (sessionId) {
         recordPageExit();
       }
