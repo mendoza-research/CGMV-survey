@@ -17,6 +17,8 @@ const CREATE_CGMV_SESSION = gql`
     $browser_name: String!
     $browser_version: String!
     $ip_addr: inet!
+    $gamification: String!
+    $financial_information: String!
   ) {
     insert_cgmv_sessions(
       objects: {
@@ -25,6 +27,8 @@ const CREATE_CGMV_SESSION = gql`
         device_type: $device_type
         os: $os
         ip_addr: $ip_addr
+        gamification: $gamification
+        financial_information: $financial_information
       }
     ) {
       affected_rows
@@ -39,6 +43,10 @@ export default function Home() {
   const [createSessionInDb] = useMutation(CREATE_CGMV_SESSION);
   const sessionId = useSurveyStore((state) => state.sessionId);
   const setSessionId = useSurveyStore((state) => state.setSessionId);
+  const financialInformation = useSurveyStore(
+    (state) => state.financialInformation
+  );
+  const gamification = useSurveyStore((state) => state.gamification);
 
   const initializeSurveySession = async () => {
     const res = await fetch("http://ip-api.com/json");
@@ -51,6 +59,8 @@ export default function Home() {
         device_type: deviceType,
         os: osName,
         ip_addr: ipData.query,
+        gamification,
+        financial_information: financialInformation,
       },
     });
 

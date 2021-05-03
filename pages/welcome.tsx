@@ -4,8 +4,6 @@ import styles from "styles/investment.module.scss";
 import { useState } from "react";
 
 export default function WelcomePage() {
-  const [canNavigate, setCanNavigate] = useState(false);
-
   const { toNext } = usePageNavigation({
     nextPathname: "/welcome",
   });
@@ -28,7 +26,7 @@ export default function WelcomePage() {
               justifyContent: "flex-end",
             }}
           >
-            <button disabled={!canNavigate}>Begin</button>
+            <button>Begin</button>
           </div>
         </div>
       </main>
