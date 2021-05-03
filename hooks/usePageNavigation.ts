@@ -75,6 +75,7 @@ export default function usePageNavigation({
   useEffect(() => {
     // If a participant tries to enter a page through a direct URL without initializing a session, redirect the participant to entry page
     if (!sessionId && router.pathname !== "/") {
+      // Force page reload
       window.location.href = "/";
     }
 

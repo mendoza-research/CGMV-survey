@@ -1,63 +1,82 @@
 import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
-import { Gamification } from "typings/survey";
 import { useForm } from "react-hook-form";
+import { gql, useMutation } from "@apollo/client";
 import styles from "styles/investment.module.scss";
 
 type FormValues = {
-  Response: string;
+  response: string;
 };
 
-export default function Q1Page() {
-  const gamification = useSurveyStore((state) => state.gamification);
+const RECORD_SINGLE_RESPONSE = gql`
+  mutation RecordQ2Response($session_id: uuid!, $response: String) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: { q2: $response }
+    ) {
+      session_id
+    }
+  }
+`;
 
+export default function Q2Page() {
   const { toNext } = usePageNavigation({
-    nextPathname: "/q2",
+    nextPathname: "/q3",
   });
 
-  const { register, watch } = useForm();
-  const userResponse = watch().Response;
+  const sessionId = useSurveyStore((state) => state.sessionId);
 
-  console.log(`userResponse=${userResponse}`);
+  const { register, watch } = useForm<FormValues>();
+  const userResponse = watch().response;
+  const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
+
+  const handleNextButtonClick = async () => {
+    const result = await recordSingleResponseToDb({
+      variables: {
+        session_id: sessionId,
+        response: userResponse,
+      },
+    });
+
+    toNext();
+  };
 
   return (
     <Layout>
       <main className={styles.investmentBox}>
         <div>
           <p>
-            What is the time frame in which you hope to achieve your primary
-            financial goal?
+            Of the options below, which best describes your primary financial
+            goal?
           </p>
 
           <div className={styles.singleQuestionForm}>
             <label className={styles.radioLabel}>
               <input
-                {...register("Response", { required: true })}
+                {...register("response", { required: true })}
                 type="radio"
-                value="Most concerned about my investment losing value."
+                value="Wealth Preservation"
               />
-              <span>Most concerned about my investment losing value.</span>
+              <span>Wealth Preservation</span>
             </label>
 
             <label className={styles.radioLabel}>
               <input
-                {...register("Response", { required: true })}
+                {...register("response", { required: true })}
                 type="radio"
-                value="Equally concerned about my investment losing or gaining value."
+                value="Retirement Planning"
               />
-              <span>
-                Equally concerned about my investment losing or gaining value.
-              </span>
+              <span>Retirement Planning</span>
             </label>
 
             <label className={styles.radioLabel}>
               <input
-                {...register("Response", { required: true })}
+                {...register("response", { required: true })}
                 type="radio"
-                value="Most concerned about my investment gaining value."
+                value="Wealth Accumulation"
               />
-              <span>Most concerned about my investment gaining value.</span>
+              <span>Wealth Accumulation</span>
             </label>
           </div>
 
@@ -68,7 +87,10 @@ export default function Q1Page() {
               justifyContent: "flex-end",
             }}
           >
-            <button disabled={userResponse !== null} onClick={toNext}>
+            <button
+              disabled={userResponse === null}
+              onClick={handleNextButtonClick}
+            >
               Next
             </button>
           </div>
