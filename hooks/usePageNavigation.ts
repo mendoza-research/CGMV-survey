@@ -1,6 +1,34 @@
+import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSurveyStore from "stores/useSurveyStore";
+
+const RECORD_PAGE_ENTER = gql`
+  mutation RecordPageEnter($session_id: uuid, $pathname: String) {
+    insert_cgmv_navigations(
+      objects: { session_id: $session_id, pathname: $pathname }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+const RECORD_PAGE_EXIT = gql`
+  mutation RecordPageExit(
+    $session_id: uuid
+    $pathname: String
+    $exit_time: timestamptz
+  ) {
+    update_cgmv_navigations(
+      where: {
+        _and: { session_id: { _eq: $session_id }, pathname: { _eq: $pathname } }
+      }
+      _set: { exit_time: $exit_time }
+    ) {
+      affected_rows
+    }
+  }
+`;
 
 interface IPageNavigationOptions {
   nextPathname: string;
@@ -10,27 +38,81 @@ export default function usePageNavigation({
   nextPathname,
 }: IPageNavigationOptions) {
   const router = useRouter();
+  const sessionId = useSurveyStore((state) => state.sessionId);
+  const [recordPageEnterInDb] = useMutation(RECORD_PAGE_ENTER);
+  const [recordPageExitInDb] = useMutation(RECORD_PAGE_EXIT);
   const currentPathname = useSurveyStore((state) => state.currentPathname);
   const setCurrentPathname = useSurveyStore(
     (state) => state.setCurrentPathname
   );
   const visitedPathnames = useSurveyStore((state) => state.visitedPathnames);
 
+  const recordPageEnter = async () => {
+    try {
+      console.log(`try recordPageEnter`);
+      await recordPageEnterInDb({
+        variables: {
+          session_id: sessionId,
+          pathname: router.pathname,
+        },
+      });
+    } catch (err) {
+      // Common error case is when a participant presses the back button in the browser and navigates to a previous page
+      // These backwards navigations should send back a participant to the originating page and NOT record a new page enter timestamp for a previous page
+      // This is implemented by enforcing a unique constraint on (session_id, pathname) in the cgmv_navigations table
+      console.error(err);
+    }
+  };
+
+  const recordPageExit = async () => {
+    try {
+      await recordPageExitInDb({
+        variables: {
+          session_id: sessionId,
+          pathname: router.pathname,
+          exit_time: "now",
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    if (router.isReady && router.pathname !== currentPathname) {
+    console.log(
+      `usePageNavigation.useEffect(), sessionId=${sessionId}, router.pathname=${router.pathname}, currentPathname=${currentPathname}, visitedPathnames=${visitedPathnames}`
+    );
+
+    // If a participant tries to enter a page through a direct URL without initializing a session, redirect the participant to entry page
+    if (!sessionId && router.pathname !== "/") {
+      window.location.href = "/";
+    }
+
+    if (router.pathname !== currentPathname) {
       // If the participant has already visited the page
       if (visitedPathnames.includes(router.pathname)) {
         // Send the participant back to originating page
         router.push(currentPathname);
         return;
       }
-
-      setCurrentPathname(router.pathname);
-
-      console.log(`Enter page ${router.pathname}`);
-      console.log(new Date());
     }
-  }, [router]);
+
+    // Record page enter timestamp if session has been intialized
+    if (sessionId) {
+      recordPageEnter();
+    }
+
+    console.log(`Enter page ${router.pathname}, sessionId=${sessionId}`);
+    console.log(new Date());
+
+    return () => {
+      console.log(`Exit page ${router.pathname}`);
+      console.log(new Date());
+      if (sessionId) {
+        recordPageExit();
+      }
+    };
+  }, []);
 
   const toNext = () => {
     // Set next pathname to current

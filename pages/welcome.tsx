@@ -12,7 +12,7 @@ export default function WelcomePage() {
 
   return (
     <Layout>
-      <main className={styles.investentBox}>
+      <main className={styles.investmentBox}>
         <div>
           <p>
             Welcome – thank you for funding your account and for your interest

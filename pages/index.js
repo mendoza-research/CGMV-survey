@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
 import Layout from "components/Layout";
@@ -38,6 +37,7 @@ const CREATE_CGMV_SESSION = gql`
 
 export default function Home() {
   const [createSessionInDb] = useMutation(CREATE_CGMV_SESSION);
+  const sessionId = useSurveyStore((state) => state.sessionId);
   const setSessionId = useSurveyStore((state) => state.setSessionId);
 
   const initializeSurveySession = async () => {
@@ -64,16 +64,17 @@ export default function Home() {
     nextPathname: "/background",
   });
 
-  const onFirstVisit = async () => {
-    await initializeSurveySession();
-    toNext();
-  };
-
   useEffect(() => {
     if (isFirstVisit) {
-      onFirstVisit();
+      initializeSurveySession();
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    if (sessionId) {
+      toNext();
+    }
+  }, [sessionId]);
 
   return (
     <>
