@@ -9,6 +9,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
 import Confetti from "react-confetti";
+import { IoIosArrowForward } from "react-icons/io";
 
 type FormValues = {
   response: string;
@@ -58,7 +59,7 @@ export default function Q1Page() {
   const { register, watch, formState } = useForm<FormValues>({
     mode: "onChange",
   });
-  const [showAnimation, setShowAnimation] = useState(true);
+  const [showAnimation, setShowAnimation] = useState(false);
   const userResponse = watch("response");
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
 
@@ -97,7 +98,12 @@ export default function Q1Page() {
 
           <div className={styles.singleQuestionForm}>
             {question.options.map((o) => (
-              <label key={o} className={styles.radioLabel}>
+              <label
+                key={o}
+                className={clsx(styles.radioLabel, {
+                  [styles.selected]: o === userResponse,
+                })}
+              >
                 <input
                   {...register("response", { required: true })}
                   type="radio"
@@ -116,6 +122,18 @@ export default function Q1Page() {
               Next
             </button>
           </div>
+        </div>
+
+        <div className={styles.rightNavigation}>
+          <span
+            className={styles.navButton}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowAnimation(true);
+            }}
+          >
+            <IoIosArrowForward className={styles.reactIcon} />
+          </span>
         </div>
       </main>
     </Layout>
