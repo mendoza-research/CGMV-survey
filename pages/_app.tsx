@@ -1,10 +1,11 @@
+import type { AppProps } from "next/app";
 import "styles/globals.scss";
 import { ApolloProvider } from "@apollo/client/react";
 import createApolloClient from "lib/apollo-client";
 
 const client = createApolloClient();
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <Component {...pageProps} />
@@ -12,4 +13,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default App;
