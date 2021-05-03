@@ -84,15 +84,15 @@ export default function Q1Page() {
             gamification === Gamification.NO_GAMIFICATION,
         })}
       >
+        {showAnimation && (
+          <div className={styles.animationWrapper} ref={animationWrapperRef}>
+            <Confetti
+              width={animationWrapperWidth}
+              height={animationWrapperHeight}
+            />
+          </div>
+        )}
         <div className={styles.card}>
-          {showAnimation && (
-            <div className={styles.animationWrapper} ref={animationWrapperRef}>
-              <Confetti
-                width={animationWrapperWidth}
-                height={animationWrapperHeight}
-              />
-            </div>
-          )}
           <p>{question.text}</p>
 
           <div className={styles.singleQuestionForm}>
