@@ -14,16 +14,12 @@ const RECORD_PAGE_ENTER = gql`
 `;
 
 const RECORD_PAGE_EXIT = gql`
-  mutation RecordPageExit(
-    $session_id: uuid
-    $pathname: String
-    $exit_time: timestamptz
-  ) {
+  mutation RecordPageExit($session_id: uuid, $pathname: String) {
     update_cgmv_navigations(
       where: {
         _and: { session_id: { _eq: $session_id }, pathname: { _eq: $pathname } }
       }
-      _set: { exit_time: $exit_time }
+      _set: { exit_time: "now" }
     ) {
       affected_rows
     }
@@ -70,7 +66,6 @@ export default function usePageNavigation({
         variables: {
           session_id: sessionId,
           pathname: router.pathname,
-          exit_time: "now",
         },
       });
     } catch (err) {
