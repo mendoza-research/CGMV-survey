@@ -4,6 +4,11 @@ import useSurveyStore from "stores/useSurveyStore";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import styles from "styles/investment.module.scss";
+import { Gamification } from "typings/survey";
+import clsx from "clsx";
+import { useState } from "react";
+import { useResizeDetector } from "react-resize-detector";
+import Confetti from "react-confetti";
 
 type FormValues = {
   response: string;
@@ -23,7 +28,7 @@ const RECORD_SINGLE_RESPONSE = gql`
 const question = {
   text: (
     <>
-      Of the options below, which best describes your primary financial goal?
+      Select the option that best completes the following sentence.
       <br />
       <br />
       When considering investments, I am _______
@@ -37,17 +42,27 @@ const question = {
 };
 
 export default function Q1Page() {
-  const { toNext } = usePageNavigation({
-    nextPathname: "/q2",
-  });
+  const toNext = () => {};
 
   const sessionId = useSurveyStore((state) => state.sessionId);
+  const gamification =
+    Math.random() >= 0
+      ? Gamification.GAMIFICATION
+      : Gamification.NO_GAMIFICATION;
+  const {
+    width: animationWrapperWidth,
+    height: animationWrapperHeight,
+    ref: animationWrapperRef,
+  } = useResizeDetector();
 
   const { register, watch, formState } = useForm<FormValues>({
     mode: "onChange",
   });
+  const [showAnimation, setShowAnimation] = useState(true);
   const userResponse = watch("response");
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
+
+  console.log(`gamification=${gamification}`);
 
   const handleNextButtonClick = async () => {
     await recordSingleResponseToDb({
@@ -62,8 +77,22 @@ export default function Q1Page() {
 
   return (
     <Layout>
-      <main className={styles.investmentBox}>
-        <div>
+      <main
+        className={clsx(styles.investmentBox, {
+          [styles.gamification]: gamification === Gamification.GAMIFICATION,
+          [styles.noGamification]:
+            gamification === Gamification.NO_GAMIFICATION,
+        })}
+      >
+        <div className={styles.card}>
+          {showAnimation && (
+            <div className={styles.animationWrapper} ref={animationWrapperRef}>
+              <Confetti
+                width={animationWrapperWidth}
+                height={animationWrapperHeight}
+              />
+            </div>
+          )}
           <p>{question.text}</p>
 
           <div className={styles.singleQuestionForm}>
@@ -79,13 +108,7 @@ export default function Q1Page() {
             ))}
           </div>
 
-          <div
-            style={{
-              marginTop: "2rem",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
+          <div className={styles.bottomNavigation}>
             <button
               disabled={!formState.isValid}
               onClick={handleNextButtonClick}

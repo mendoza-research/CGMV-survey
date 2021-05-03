@@ -20,6 +20,16 @@ const RECORD_SINGLE_RESPONSE = gql`
   }
 `;
 
+const question = {
+  text:
+    "Of the options below, which best describes your primary financial goal?",
+  options: [
+    "Wealth Preservation",
+    "Retirement Planning",
+    "Wealth Accumulation",
+  ],
+};
+
 export default function Q2Page() {
   const { toNext } = usePageNavigation({
     nextPathname: "/q3",
@@ -27,12 +37,14 @@ export default function Q2Page() {
 
   const sessionId = useSurveyStore((state) => state.sessionId);
 
-  const { register, watch } = useForm<FormValues>();
-  const userResponse = watch().response;
+  const { register, watch, formState } = useForm<FormValues>({
+    mode: "onChange",
+  });
+  const userResponse = watch("response");
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
 
   const handleNextButtonClick = async () => {
-    const result = await recordSingleResponseToDb({
+    await recordSingleResponseToDb({
       variables: {
         session_id: sessionId,
         response: userResponse,
@@ -46,38 +58,19 @@ export default function Q2Page() {
     <Layout>
       <main className={styles.investmentBox}>
         <div>
-          <p>
-            Of the options below, which best describes your primary financial
-            goal?
-          </p>
+          <p>{question.text}</p>
 
           <div className={styles.singleQuestionForm}>
-            <label className={styles.radioLabel}>
-              <input
-                {...register("response", { required: true })}
-                type="radio"
-                value="Wealth Preservation"
-              />
-              <span>Wealth Preservation</span>
-            </label>
-
-            <label className={styles.radioLabel}>
-              <input
-                {...register("response", { required: true })}
-                type="radio"
-                value="Retirement Planning"
-              />
-              <span>Retirement Planning</span>
-            </label>
-
-            <label className={styles.radioLabel}>
-              <input
-                {...register("response", { required: true })}
-                type="radio"
-                value="Wealth Accumulation"
-              />
-              <span>Wealth Accumulation</span>
-            </label>
+            {question.options.map((o) => (
+              <label key={o} className={styles.radioLabel}>
+                <input
+                  {...register("response", { required: true })}
+                  type="radio"
+                  value={o}
+                />
+                <span>{o}</span>
+              </label>
+            ))}
           </div>
 
           <div
@@ -88,7 +81,7 @@ export default function Q2Page() {
             }}
           >
             <button
-              disabled={userResponse === null}
+              disabled={!formState.isValid}
               onClick={handleNextButtonClick}
             >
               Next
