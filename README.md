@@ -3,10 +3,39 @@
 ## Site preview
 https://cgmv-survey.netlify.app/
 
+## High-level Architecture
+![App Architecture](https://user-images.githubusercontent.com/1064036/116986338-47d14880-ac93-11eb-98df-e6493e35e530.png)
+
+- This app is built with [Next.js](https://nextjs.org/). 
+- Anything that the users see are deployed to Netlify.
+- All data are recorded into a PostgreSQL database.
+- [Hasura GraphQL engine](https://hasura.io/) is used to communicate between the app and the database.
+
+## Continuous Deployment using Netlify
+
+All commits pushed to the `main` branch are automatically deployed to Netlify.
+
+### Netlify-related Requirements
+
+- Use `netlify-plugin-nextjs` plugin to deploy Next.js serverless functions.
+- The tutorial for one-click install can be found [here](https://www.netlify.com/blog/2020/12/07/announcing-one-click-install-next.js-build-plugin-on-netlify/).
+- Add a `netlify.toml` file to support `netlify-plugin-nextjs`.
+
+## PostgreSQL + Hasura
+
+This web app requires a [Hasura](https://hasura.io/) GraphQL server. 
+
+- Deploy a Hasura docker container to [Heroku](http://heroku.com/) or [DigitalOcean](https://www.digitalocean.com/).
+  - Smallest instances under $10 per month are sufficient for this web app unless there are 10,000+ concurrent connections.
+- Netlify does not support requests to non-SSL domains. Configure a custom domain and enable https.
+  - [Guide here](https://hasura.io/docs/latest/graphql/core/deployment/deployment-guides/digital-ocean-one-click.html#adding-a-domain-enabling-https)
+- Add the custom domain to `lib/apollo-client.ts`.
+
+
 ## Running a local server
-To run the site in local environment, below programs are required. 
+To run the site in local environment, install the two programs below.
 - Node.js (with NPM) - https://nodejs.org/en/
-- (Optional) yarn - https://yarnpkg.com/lang/en/
+- (Optional if using only NPM) yarn - https://yarnpkg.com/lang/en/
 
 ### Install packages
 ```bash
@@ -24,7 +53,3 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser.
-
-## Continuous Deployment
-
-All commits pushed to the `main` branch are automatically deployed to Netlify.
