@@ -1,4 +1,5 @@
 module.exports = {
+  target: "serverless", // required to deploy serverless functions to Netlify
   future: {
     webpack5: true,
   },
