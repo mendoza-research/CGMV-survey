@@ -1,7 +1,10 @@
 <a href="https://app.netlify.com/sites/cgmv-survey/deploys"><img src="https://api.netlify.com/api/v1/badges/38a74394-b90e-40b7-8397-45c547f04d07/deploy-status" alt="Netlify Status" /></a> <a href="https://deepscan.io/dashboard#view=project&tid=10181&pid=17023&bid=374429"><img src="https://deepscan.io/api/teams/10181/projects/17023/branches/374429/badge/grade.svg" alt="DeepScan grade"></a>
 
-## Site preview
+## App Link
 https://cgmv-survey.netlify.app/
+
+## Hasura Console
+View and modify data at [https://cgmv-hasura.roundpool.com/](https://cgmv-hasura.roundpool.com/).
 
 ## High-level Architecture
 ![App Architecture](https://user-images.githubusercontent.com/1064036/116986338-47d14880-ac93-11eb-98df-e6493e35e530.png)
