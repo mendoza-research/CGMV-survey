@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import styles from "./layout.module.scss";
 import { isMobileOnly } from "react-device-detect";
+import useSurveyStore from "stores/useSurveyStore";
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,11 @@ interface ILayoutProps {
 
 export default function Layout({ children }: ILayoutProps) {
   const router = useRouter();
+
+  const gamification = useSurveyStore((state) => state.gamification);
+  const financialInformation = useSurveyStore(
+    (state) => state.financialInformation
+  );
 
   useEffect(() => {
     // Check if the user is using a mobile device (only desktops and tablets are supported)
@@ -23,6 +29,12 @@ export default function Layout({ children }: ILayoutProps) {
       <Head>
         <title>Survey</title>
       </Head>
+
+      {process.env.NODE_ENV === "development" && (
+        <div className={styles.devBox}>
+          {gamification} / {financialInformation}
+        </div>
+      )}
 
       <div className={styles.container}>{children}</div>
     </>

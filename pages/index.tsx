@@ -49,7 +49,7 @@ export default function Home() {
   const gamification = useSurveyStore((state) => state.gamification);
 
   const initializeSurveySession = async () => {
-    const res = await fetch("http://ip-api.com/json");
+    const res = await fetch("/api/get-ip");
     const ipData = await res.json();
 
     const result = await createSessionInDb({

@@ -134,6 +134,11 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
+"@supercharge/request-ip@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@supercharge/request-ip/-/request-ip-1.1.2.tgz#be9083aa50d3c6fc200f3ed5919e0b9c13fc8842"
+  integrity sha512-mtryG/uiSIVT0ga8A/F9hNEuBSbDxW7/m9PEtxIHqdkE/vr766m17mtLPhrXA4q4T+Qw44+33mg3Rtkl7o+OvQ==
+
 "@types/js-cookie@^2.2.6":
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-2.2.6.tgz#f1a1cb35aff47bc5cfb05cb0c441ca91e914c26f"
