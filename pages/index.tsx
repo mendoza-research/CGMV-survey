@@ -9,6 +9,7 @@ import {
 } from "react-device-detect";
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
+import getIPAddress from "./api/get-ip";
 
 const CREATE_CGMV_SESSION = gql`
   mutation CreateSession(
@@ -51,6 +52,7 @@ export default function Home() {
   const initializeSurveySession = async () => {
     const res = await fetch("/api/get-ip");
     const ipData = await res.json();
+    const ipAddress = ipData.status === "success" ? ipData.ip : "0.0.0.0";
 
     const result = await createSessionInDb({
       variables: {
@@ -58,7 +60,7 @@ export default function Home() {
         browser_version: fullBrowserVersion,
         device_type: deviceType,
         os: osName,
-        ip_addr: ipData.query,
+        ip_addr: ipAddress,
         gamification,
         financial_information: financialInformation,
       },
