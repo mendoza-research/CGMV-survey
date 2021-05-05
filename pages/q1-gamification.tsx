@@ -4,7 +4,7 @@ import useSurveyStore from "stores/useSurveyStore";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import styles from "styles/investment.module.scss";
-import { Gamification } from "typings/survey";
+import { GamificationEnum } from "typings/survey";
 import clsx from "clsx";
 import { useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
@@ -48,8 +48,8 @@ export default function Q1Page() {
   const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification =
     Math.random() >= 0
-      ? Gamification.GAMIFICATION
-      : Gamification.NO_GAMIFICATION;
+      ? GamificationEnum.GAMIFICATION
+      : GamificationEnum.NO_GAMIFICATION;
   const {
     width: animationWrapperWidth,
     height: animationWrapperHeight,
@@ -80,9 +80,9 @@ export default function Q1Page() {
     <Layout>
       <main
         className={clsx(styles.investmentBox, {
-          [styles.gamification]: gamification === Gamification.GAMIFICATION,
+          [styles.gamification]: gamification === GamificationEnum.GAMIFICATION,
           [styles.noGamification]:
-            gamification === Gamification.NO_GAMIFICATION,
+            gamification === GamificationEnum.NO_GAMIFICATION,
         })}
       >
         {showAnimation && (

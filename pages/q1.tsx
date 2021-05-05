@@ -1,7 +1,7 @@
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { useMutation } from "@apollo/client";
-import { Gamification, ISingleQuestion } from "typings/survey";
+import { GamificationEnum, ISingleQuestion } from "typings/survey";
 import { getSingleQuestionUpdateQuery } from "utils/gql-queries";
 import SingleQuestionBox from "components/Investment/SingleQuestionBox";
 
@@ -29,7 +29,7 @@ export default function Q1Page() {
   const gamification = useSurveyStore((state) => state.gamification);
   const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery("q1");
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
-  const isGamification = gamification === Gamification.GAMIFICATION;
+  const isGamification = gamification === GamificationEnum.GAMIFICATION;
 
   const handleNextButtonClick = async (
     userResponseString,

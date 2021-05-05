@@ -1,8 +1,8 @@
 import create from "zustand";
 import { devtools } from "zustand/middleware";
 import {
-  Gamification,
-  FinancialInformation,
+  GamificationEnum,
+  FinancialInformationEnum,
   ISurveyState,
 } from "typings/survey";
 
@@ -17,16 +17,18 @@ const useSurveyStore = create<ISurveyState>(
     // Randomly assign Gamification Mode (Gamification or NoGamification)
     gamification:
       Math.random() < 0.5
-        ? Gamification.GAMIFICATION
-        : Gamification.NO_GAMIFICATION,
-    setGamification: (mode: Gamification) =>
+        ? GamificationEnum.GAMIFICATION
+        : GamificationEnum.NO_GAMIFICATION,
+    setGamification: (mode: GamificationEnum) =>
       set(() => ({
         gamification: mode,
       })),
     // Randomly assign Financial Information Mode (A or B)
     financialInformation:
-      Math.random() < 0.5 ? FinancialInformation.A : FinancialInformation.B,
-    setFinancialInformation: (mode: FinancialInformation) =>
+      Math.random() < 0.5
+        ? FinancialInformationEnum.A
+        : FinancialInformationEnum.B,
+    setFinancialInformation: (mode: FinancialInformationEnum) =>
       set(() => ({
         financialInformation: mode,
       })),
