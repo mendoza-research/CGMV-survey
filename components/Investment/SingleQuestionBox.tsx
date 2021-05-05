@@ -1,9 +1,17 @@
 import Layout from "components/Layout";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ISingleQuestion } from "typings/survey";
+import { useResizeDetector } from "react-resize-detector";
+import useSurveyStore from "stores/useSurveyStore";
+import { useMutation } from "@apollo/client";
+import {
+  AnimationEnum,
+  GamificationEnum,
+  ISingleQuestion,
+} from "typings/survey";
+import { getSingleQuestionUpdateQuery } from "utils/gql-queries";
 import styles from "./investment.module.scss";
 import clsx from "clsx";
-import { useResizeDetector } from "react-resize-detector";
 import Confetti from "react-confetti";
 import { IoIosArrowForward } from "react-icons/io";
 
@@ -12,21 +20,22 @@ type FormValues = {
 };
 
 export interface ISingleQuestionBoxProps {
-  isGamification: boolean;
-  showAnimation: boolean;
   question: ISingleQuestion;
-  handleNextButtonClick: (
-    userResponseString: string,
-    userResponseNumber: number
-  ) => void;
+  toNext: () => void;
+  animation?: AnimationEnum;
 }
 
 export default function SingleQuestionBox({
-  isGamification,
-  showAnimation,
   question,
-  handleNextButtonClick,
+  toNext,
+  animation,
 }: ISingleQuestionBoxProps) {
+  const [showAnimation, setShowAnimation] = useState(false);
+  const sessionId = useSurveyStore((state) => state.sessionId);
+  const gamification = useSurveyStore((state) => state.gamification);
+  const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery("q1");
+  const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
+
   const {
     width: animationWrapperWidth,
     height: animationWrapperHeight,
@@ -44,12 +53,25 @@ export default function SingleQuestionBox({
   const userResponseNumber =
     question["options"].indexOf(userResponseString) + 1;
 
+  const handleNextButtonClick = async () => {
+    await recordSingleResponseToDb({
+      variables: {
+        session_id: sessionId,
+        response_num: userResponseNumber,
+        response_text: userResponseString,
+      },
+    });
+
+    toNext();
+  };
+
   return (
     <Layout>
       <main
         className={clsx(styles.investmentBox, {
-          [styles.gamification]: isGamification,
-          [styles.noGamification]: !isGamification,
+          [styles.gamification]: gamification === GamificationEnum.GAMIFICATION,
+          [styles.noGamification]:
+            gamification === GamificationEnum.NO_GAMIFICATION,
         })}
       >
         {showAnimation && (
@@ -86,7 +108,7 @@ export default function SingleQuestionBox({
               disabled={!formState.isValid}
               onClick={(e) => {
                 e.preventDefault();
-                handleNextButtonClick(userResponseString, userResponseNumber);
+                handleNextButtonClick();
               }}
             >
               Next
