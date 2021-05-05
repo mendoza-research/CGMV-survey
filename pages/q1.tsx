@@ -1,26 +1,11 @@
-import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
-import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
-import styles from "styles/investment.module.scss";
+import { useMutation } from "@apollo/client";
+import { Gamification, ISingleQuestion } from "typings/survey";
+import { getSingleQuestionUpdateQuery } from "utils/gql-queries";
+import SingleQuestionBox from "components/Investment/SingleQuestionBox";
 
-type FormValues = {
-  response: string;
-};
-
-const RECORD_SINGLE_RESPONSE = gql`
-  mutation RecordQ1Response($session_id: uuid!, $response: String) {
-    update_cgmv_sessions_by_pk(
-      pk_columns: { session_id: $session_id }
-      _set: { q1: $response }
-    ) {
-      session_id
-    }
-  }
-`;
-
-const question = {
+const question: ISingleQuestion = {
   text: (
     <>
       Of the options below, which best describes your primary financial goal?
@@ -40,20 +25,21 @@ export default function Q1Page() {
   const { toNext } = usePageNavigation({
     nextPathname: "/q2",
   });
-
   const sessionId = useSurveyStore((state) => state.sessionId);
-
-  const { register, watch, formState } = useForm<FormValues>({
-    mode: "onChange",
-  });
-  const userResponse = watch("response");
+  const gamification = useSurveyStore((state) => state.gamification);
+  const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery("q1");
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
+  const isGamification = gamification === Gamification.GAMIFICATION;
 
-  const handleNextButtonClick = async () => {
+  const handleNextButtonClick = async (
+    userResponseString,
+    userResponseNumber
+  ) => {
     await recordSingleResponseToDb({
       variables: {
         session_id: sessionId,
-        response: userResponse,
+        response_num: userResponseNumber,
+        response_text: userResponseString,
       },
     });
 
@@ -61,40 +47,11 @@ export default function Q1Page() {
   };
 
   return (
-    <Layout>
-      <main className={styles.investmentBox}>
-        <div>
-          <p>{question.text}</p>
-
-          <div className={styles.singleQuestionForm}>
-            {question.options.map((o) => (
-              <label key={o} className={styles.radioLabel}>
-                <input
-                  {...register("response", { required: true })}
-                  type="radio"
-                  value={o}
-                />
-                <span>{o}</span>
-              </label>
-            ))}
-          </div>
-
-          <div
-            style={{
-              marginTop: "2rem",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <button
-              disabled={!formState.isValid}
-              onClick={handleNextButtonClick}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </main>
-    </Layout>
+    <SingleQuestionBox
+      isGamification={isGamification}
+      showAnimation={false}
+      question={question}
+      handleNextButtonClick={handleNextButtonClick}
+    />
   );
 }

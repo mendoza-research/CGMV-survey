@@ -21,3 +21,8 @@ export interface ISurveyState extends State {
   setCurrentPathname: (newPathname: string) => void;
   visitedPathnames: string[];
 }
+
+export interface ISingleQuestion {
+  text: React.ReactNode;
+  options: string[];
+}
