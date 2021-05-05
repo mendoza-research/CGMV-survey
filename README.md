@@ -1,4 +1,4 @@
-<a href="https://app.netlify.com/sites/cgmv-survey/deploys"><img src="https://api.netlify.com/api/v1/badges/38a74394-b90e-40b7-8397-45c547f04d07/deploy-status" alt="Netlify Status" /></a> <a href="https://deepscan.io/dashboard#view=project&tid=10181&pid=17023&bid=374429"><img src="https://deepscan.io/api/teams/10181/projects/17023/branches/374429/badge/grade.svg" alt="DeepScan grade"></a>
+<a href="https://app.netlify.com/sites/cgmv-survey/deploys"><img src="https://api.netlify.com/api/v1/badges/38a74394-b90e-40b7-8397-45c547f04d07/deploy-status" alt="Netlify Status" /></a> <a href="https://www.codacy.com/gh/mendoza-research/cgmv-survey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mendoza-research/cgmv-survey&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/e2bc6db565634c1d85d5be4968ef6879"/></a> <a href="https://deepscan.io/dashboard#view=project&tid=10181&pid=17023&bid=374429"><img src="https://deepscan.io/api/teams/10181/projects/17023/branches/374429/badge/grade.svg" alt="DeepScan grade"></a>
 
 ## App Link
 https://cgmv-survey.netlify.app/
