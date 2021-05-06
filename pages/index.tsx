@@ -9,7 +9,6 @@ import {
 } from "react-device-detect";
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
-import getIPAddress from "./api/get-ip";
 
 const CREATE_CGMV_SESSION = gql`
   mutation CreateSession(

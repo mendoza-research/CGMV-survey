@@ -1,5 +1,4 @@
 import Layout from "components/Layout";
-import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
@@ -62,8 +61,6 @@ export default function Q1Page() {
   const [showAnimation, setShowAnimation] = useState(false);
   const userResponse = watch("response");
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
-
-  console.log(`gamification=${gamification}`);
 
   const handleNextButtonClick = async () => {
     await recordSingleResponseToDb({

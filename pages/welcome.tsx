@@ -1,15 +1,9 @@
 import usePageNavigation from "hooks/usePageNavigation";
-import useSurveyStore from "stores/useSurveyStore";
-import { GamificationEnum } from "typings/survey";
 import TextBox from "components/Investment/TextBox";
 
 export default function WelcomePage() {
-  const gamification = useSurveyStore((state) => state.gamification);
-  const nextPathname =
-    gamification === GamificationEnum.GAMIFICATION ? "/q1" : "/q1";
-
   const { toNext } = usePageNavigation({
-    nextPathname,
+    nextPathname: "/q1",
   });
 
   return (

@@ -35,8 +35,8 @@ main.investmentBox {
         background-color: #f9f9f9;
       }
 
-      &.selected:hover,
-      &.selected {
+      &.selected,
+      &.selected:hover {
         background-color: yellowgreen;
       }
     }
