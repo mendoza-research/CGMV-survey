@@ -16,7 +16,7 @@ const useSurveyStore = create<ISurveyState>(
       })),
     // Randomly assign Gamification Mode (Gamification or NoGamification)
     gamification:
-      Math.random() < 0.5
+      Math.random() < 0.9999
         ? GamificationEnum.GAMIFICATION
         : GamificationEnum.NO_GAMIFICATION,
     setGamification: (mode: GamificationEnum) =>

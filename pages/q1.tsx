@@ -5,10 +5,13 @@ import SingleQuestionBox from "components/Investment/SingleQuestionBox";
 const question: ISingleQuestion = {
   text: (
     <>
-      Of the options below, which best describes your primary financial goal?
-      <br />
-      <br />
-      When considering investments, I am _______
+      <p>
+        <strong>
+          Of the options below, which best describes your primary financial
+          goal?
+        </strong>
+      </p>
+      <p>When considering investments, I am _______</p>
     </>
   ),
   options: [

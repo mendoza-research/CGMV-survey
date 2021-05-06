@@ -53,7 +53,9 @@ export default function SingleQuestionBox({
   const userResponseNumber =
     question["options"].indexOf(userResponseString) + 1;
 
-  const handleNextButtonClick = async () => {
+  const handleNextButtonClick = async (e) => {
+    e.preventDefault();
+
     await recordSingleResponseToDb({
       variables: {
         session_id: sessionId,
@@ -61,6 +63,12 @@ export default function SingleQuestionBox({
         response_text: userResponseString,
       },
     });
+
+    if (gamification === GamificationEnum.GAMIFICATION) {
+      setShowAnimation(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
 
     toNext();
   };
@@ -79,6 +87,10 @@ export default function SingleQuestionBox({
             <Confetti
               width={animationWrapperWidth}
               height={animationWrapperHeight}
+              initialVelocityX={8}
+              initialVelocityY={20}
+              numberOfPieces={100}
+              gravity={0.4}
             />
           </div>
         )}
@@ -106,10 +118,7 @@ export default function SingleQuestionBox({
           <div className={styles.bottomNavigation}>
             <button
               disabled={!formState.isValid}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNextButtonClick();
-              }}
+              onClick={handleNextButtonClick}
             >
               Next
             </button>
@@ -117,13 +126,7 @@ export default function SingleQuestionBox({
         </div>
 
         <div className={styles.rightNavigation}>
-          <span
-            className={styles.navButton}
-            onClick={(e) => {
-              e.preventDefault();
-              handleNextButtonClick(userResponseString, userResponseNumber);
-            }}
-          >
+          <span className={styles.navButton} onClick={handleNextButtonClick}>
             <IoIosArrowForward className={styles.reactIcon} />
           </span>
         </div>
