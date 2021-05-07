@@ -1,6 +1,6 @@
 import usePageNavigation from "hooks/usePageNavigation";
 import { AnimationEnum, ISingleQuestion } from "typings/survey";
-import SingleQuestionBox from "components/Investment/SingleQuestionBox";
+import SingleQuestionBox from "components/investment_/SingleQuestionBox";
 
 const question: ISingleQuestion = {
   text: (

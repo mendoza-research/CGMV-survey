@@ -60,6 +60,12 @@ main.investmentBox {
         font-size: 5rem;
       }
 
+      &.disabled,
+      &.disabled:hover {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+
       &:hover {
         color: #444;
       }

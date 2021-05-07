@@ -26,7 +26,3 @@ export interface ISingleQuestion {
   text: React.ReactNode;
   options: string[];
 }
-
-export enum AnimationEnum {
-  CONFETTI,
-}
