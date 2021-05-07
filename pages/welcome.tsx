@@ -1,5 +1,5 @@
 import usePageNavigation from "hooks/usePageNavigation";
-import TextBox from "components/investment_/TextBox";
+import TextBox from "components/investment/TextBox";
 
 export default function WelcomePage() {
   const { toNext } = usePageNavigation({
