@@ -14,6 +14,7 @@ import styles from "./investment.module.scss";
 import clsx from "clsx";
 import Confetti from "react-confetti";
 import { IoIosArrowForward } from "react-icons/io";
+import { AnimatePresence, motion } from "framer-motion";
 
 type FormValues = {
   response: string;
@@ -56,13 +57,18 @@ export default function SingleQuestionBox({
   const handleNextButtonClick = async (e) => {
     e.preventDefault();
 
-    await recordSingleResponseToDb({
-      variables: {
-        session_id: sessionId,
-        response_num: userResponseNumber,
-        response_text: userResponseString,
-      },
-    });
+    // Only proceed if form state is valid (e.g., all required inputs are filled out)
+    if (!formState.isValid) return;
+
+    if (sessionId) {
+      await recordSingleResponseToDb({
+        variables: {
+          session_id: sessionId,
+          response_num: userResponseNumber,
+          response_text: userResponseString,
+        },
+      });
+    }
 
     if (gamification === GamificationEnum.GAMIFICATION) {
       setShowAnimation(true);
@@ -94,39 +100,59 @@ export default function SingleQuestionBox({
             />
           </div>
         )}
-        <div className={styles.card}>
-          <p>{question.text}</p>
-
-          <div className={styles.singleQuestionForm}>
-            {question.options.map((o) => (
-              <label
-                key={o}
-                className={clsx(styles.radioLabel, {
-                  [styles.selected]: o === userResponseString,
-                })}
-              >
-                <input
-                  {...register("response", { required: true })}
-                  type="radio"
-                  value={o}
-                />
-                <span>{o}</span>
-              </label>
-            ))}
-          </div>
-
-          <div className={styles.bottomNavigation}>
-            <button
-              disabled={!formState.isValid}
-              onClick={handleNextButtonClick}
+        <AnimatePresence>
+          {!showAnimation && (
+            <motion.div
+              key="card"
+              className={styles.card}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={{
+                hidden: { opacity: 0, x: 200 },
+                visible: { opacity: 1, x: 0 },
+                exit: { opacity: 0, x: -200 },
+              }}
             >
-              Next
-            </button>
-          </div>
-        </div>
+              <p>{question.text}</p>
+
+              <div className={styles.singleQuestionForm}>
+                {question.options.map((o) => (
+                  <label
+                    key={o}
+                    className={clsx(styles.radioLabel, {
+                      [styles.selected]: o === userResponseString,
+                    })}
+                  >
+                    <input
+                      {...register("response", { required: true })}
+                      type="radio"
+                      value={o}
+                    />
+                    <span>{o}</span>
+                  </label>
+                ))}
+              </div>
+
+              <div className={styles.bottomNavigation}>
+                <button
+                  disabled={!formState.isValid}
+                  onClick={handleNextButtonClick}
+                >
+                  Next
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className={styles.rightNavigation}>
-          <span className={styles.navButton} onClick={handleNextButtonClick}>
+          <span
+            className={clsx(styles.navButton, {
+              [styles.disabled]: !formState.isValid,
+            })}
+            onClick={handleNextButtonClick}
+          >
             <IoIosArrowForward className={styles.reactIcon} />
           </span>
         </div>
