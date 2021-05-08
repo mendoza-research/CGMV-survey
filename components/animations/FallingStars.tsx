@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useResizeDetector } from "react-resize-detector";
-import styles from "./animations.module.scss";
+import styles from "./animations-common.module.scss";
 
 function rand(ar) {
   return Math.random() * (ar[1] - ar[0]) + ar[0];

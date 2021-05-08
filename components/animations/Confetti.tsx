@@ -1,6 +1,6 @@
 import { default as ReactConfetti } from "react-confetti";
 import { useResizeDetector } from "react-resize-detector";
-import styles from "./animations.module.scss";
+import styles from "./animations-common.module.scss";
 
 export default function Confetti() {
   const {

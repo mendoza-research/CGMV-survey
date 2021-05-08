@@ -32,22 +32,10 @@ $large-width: 120px;
 .balloon {
   display: inline-block;
   border-radius: 100%;
-  position: relative;
+  position: absolute;
   box-shadow: inset -10px -10px 0 rgba(0, 0, 0, 0.05);
   transform-origin: bottom center;
-  transition: transform 0.5s ease;
   z-index: 10;
-  animation: balloons 4s ease-in-out infinite;
-
-  @keyframes balloons {
-    0%,
-    100% {
-      transform: translateY(0) rotate(-4deg);
-    }
-    50% {
-      transform: translateY(-25px) rotate(4deg);
-    }
-  }
 
   &::before {
     content: "▲";
