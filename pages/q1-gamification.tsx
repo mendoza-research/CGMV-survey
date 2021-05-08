@@ -1,4 +1,3 @@
-import usePageNavigation from "hooks/usePageNavigation";
 import { ISingleQuestion } from "typings/survey";
 import { AnimationEnum } from "typings/animation";
 import SingleQuestionBox from "components/investment/SingleQuestionBox";

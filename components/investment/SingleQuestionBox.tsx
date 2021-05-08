@@ -94,8 +94,18 @@ export default function SingleQuestionBox({
             exit="exit"
             variants={{
               hidden: { opacity: 0 },
-              visible: { opacity: 1 },
-              exit: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  duration: 0.3,
+                },
+              },
+              exit: {
+                opacity: 0,
+                transition: {
+                  duration: 0.3,
+                },
+              },
             }}
             className={clsx(styles.investmentBox, {
               [styles.gamification]:
@@ -127,9 +137,24 @@ export default function SingleQuestionBox({
                   animate="visible"
                   exit="exit"
                   variants={{
-                    hidden: { opacity: 0, x: 200 },
-                    visible: { opacity: 1, x: 0 },
-                    exit: { opacity: 0, x: -200 },
+                    hidden: {
+                      opacity: 0,
+                      x: 200,
+                    },
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: {
+                        duration: 0.6,
+                      },
+                    },
+                    exit: {
+                      opacity: 0,
+                      x: -200,
+                      transition: {
+                        duration: 0.3,
+                      },
+                    },
                   }}
                   className={styles.card}
                 >
