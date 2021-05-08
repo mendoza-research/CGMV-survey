@@ -29,7 +29,7 @@ interface IBalloonProps {
 
 let balloons: IBalloonProps[] = [];
 
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 60; i++) {
   let color = _.sample(Object.values(BalloonColorEnum)) as BalloonColorEnum;
   let size = _.sample(Object.values(BalloonSizeEnum)) as BalloonSizeEnum;
 
@@ -50,11 +50,13 @@ function Balloon({ color, size, initialX, initialY }: IBalloonProps) {
         initial: {
           top: `${initialY}%`,
           left: `${initialX}%`,
+          opacity: 0.4,
           rotate: _.random(-20, 20, false),
         },
         exit: {
-          top: `${_.random(-20, -40, false)}%`,
+          top: `${initialY + _.random(-30, -80, false)}%`,
           left: `${initialX + _.random(-8, 8, false)}%`,
+          opacity: 1,
           rotate: _.random(-30, 30, false),
           transition: {
             duration: _.random(2, 3),
