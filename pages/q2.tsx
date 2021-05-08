@@ -23,7 +23,7 @@ export default function Q2Page() {
       fieldName="q2"
       question={question}
       toNext={toNext}
-      animation={AnimationEnum.CONFETTI}
+      animation={AnimationEnum.FALLING_STARS}
     />
   );
 }

@@ -1,7 +1,6 @@
 import Layout from "components/Layout";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useResizeDetector } from "react-resize-detector";
 import useSurveyStore from "stores/useSurveyStore";
 import { useMutation } from "@apollo/client";
 import { GamificationEnum, ISingleQuestion } from "typings/survey";
@@ -82,9 +81,9 @@ export default function SingleQuestionBox({
       setShowAnimation(true);
 
       // Start page exit animation after 2 seconds
-      // setTimeout(() => {
-      //   setIsPageExiting(true);
-      // }, 2000);
+      setTimeout(() => {
+        setIsPageExiting(true);
+      }, 2000);
 
       // Navigate to next page in 2.3 seconds
       // Animation is displayed for 2 seconds

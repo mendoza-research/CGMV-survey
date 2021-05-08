@@ -15,6 +15,7 @@ export default function FallingStars() {
 
   let w, h, ctx;
   let frame = (Math.random() * 360) | 0;
+  let animationRequestId;
   const size = [20, 60];
   const shineDir = [0.01, 0.05];
   const angSpeed = [0.03, 0.1];
@@ -22,9 +23,6 @@ export default function FallingStars() {
   const pentaRadiant = (Math.PI * 2) / 5;
 
   const canvasEl = useRef<HTMLCanvasElement | null>(null);
-  console.log(
-    `canvas width=${animationBoxWidth}, height=${animationBoxHeight}`
-  );
 
   function Star() {
     this.size = rand(size);
@@ -79,7 +77,7 @@ export default function FallingStars() {
   };
 
   function anim() {
-    window.requestAnimationFrame(anim);
+    animationRequestId = window.requestAnimationFrame(anim);
 
     ++frame;
 
@@ -105,6 +103,11 @@ export default function FallingStars() {
     h = canvasEl.current.height = window.innerHeight;
     ctx = canvasEl.current.getContext("2d");
     anim();
+
+    return () => {
+      // Cancel animation frame request previously scheduled
+      window.cancelAnimationFrame(animationRequestId);
+    };
   }, []);
 
   return (
