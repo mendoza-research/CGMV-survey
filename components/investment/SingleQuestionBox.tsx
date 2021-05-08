@@ -18,12 +18,14 @@ type FormValues = {
 };
 
 export interface ISingleQuestionBoxProps {
+  fieldName: string;
   question: ISingleQuestion;
   toNext: () => void;
   animation?: AnimationEnum;
 }
 
 export default function SingleQuestionBox({
+  fieldName,
   question,
   toNext,
   animation,
@@ -32,7 +34,7 @@ export default function SingleQuestionBox({
   const [isPageExiting, setIsPageExiting] = useState(false);
   const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification = useSurveyStore((state) => state.gamification);
-  const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery("q1");
+  const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery(fieldName);
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
 
   const {
@@ -73,11 +75,15 @@ export default function SingleQuestionBox({
     if (gamification === GamificationEnum.GAMIFICATION) {
       setShowAnimation(true);
 
+      // Start page exit animation after 2 seconds
       setTimeout(() => {
         setIsPageExiting(true);
       }, 2000);
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Navigate to next page in 2.3 seconds
+      // Animation is displayed for 2 seconds
+      // Exit animation takes 0.3 seconds (300 milliseconds)
+      await new Promise((resolve) => setTimeout(resolve, 2300));
     }
 
     toNext();

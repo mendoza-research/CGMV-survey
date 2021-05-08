@@ -26,6 +26,7 @@ export default function Q1Page() {
 
   return (
     <SingleQuestionBox
+      fieldName="q1"
       question={question}
       toNext={toNext}
       animation={AnimationEnum.CONFETTI}
