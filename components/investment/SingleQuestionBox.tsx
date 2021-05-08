@@ -158,7 +158,7 @@ export default function SingleQuestionBox({
                   }}
                   className={styles.card}
                 >
-                  <p>{question.text}</p>
+                  <div>{question.text}</div>
 
                   <div className={styles.singleQuestionForm}>
                     {question.options.map((o) => (
@@ -190,16 +190,18 @@ export default function SingleQuestionBox({
               )}
             </AnimatePresence>
 
-            <div className={styles.rightNavigation}>
-              <span
-                className={clsx(styles.navButton, {
-                  [styles.disabled]: !formState.isValid,
-                })}
-                onClick={handleNextButtonClick}
-              >
-                <IoIosArrowForward className={styles.reactIcon} />
-              </span>
-            </div>
+            {!showAnimation && (
+              <div className={styles.rightNavigation}>
+                <span
+                  className={clsx(styles.navButton, {
+                    [styles.disabled]: !formState.isValid,
+                  })}
+                  onClick={handleNextButtonClick}
+                >
+                  <IoIosArrowForward className={styles.reactIcon} />
+                </span>
+              </div>
+            )}
           </motion.main>
         )}
       </AnimatePresence>
