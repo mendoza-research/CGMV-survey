@@ -9,12 +9,24 @@ import { AnimationEnum } from "typings/animation";
 import { getSingleQuestionUpdateQuery } from "utils/gql-queries";
 import styles from "./investment.module.scss";
 import clsx from "clsx";
-import Confetti from "react-confetti";
+import Confetti from "components/animations/Confetti";
+import FallingStars from "components/animations/FallingStars";
 import { IoIosArrowForward } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 
 type FormValues = {
   response: string;
+};
+
+const getAnimationBox = (animation: AnimationEnum) => {
+  switch (animation) {
+    case AnimationEnum.CONFETTI:
+      return <Confetti />;
+    case AnimationEnum.FALLING_STARS:
+      return <FallingStars />;
+    default:
+      return <div />;
+  }
 };
 
 export interface ISingleQuestionBoxProps {
@@ -36,12 +48,6 @@ export default function SingleQuestionBox({
   const gamification = useSurveyStore((state) => state.gamification);
   const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery(fieldName);
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
-
-  const {
-    width: animationWrapperWidth,
-    height: animationWrapperHeight,
-    ref: animationWrapperRef,
-  } = useResizeDetector();
 
   const { register, watch, formState } = useForm<FormValues>({
     mode: "onChange",
@@ -76,9 +82,9 @@ export default function SingleQuestionBox({
       setShowAnimation(true);
 
       // Start page exit animation after 2 seconds
-      setTimeout(() => {
-        setIsPageExiting(true);
-      }, 2000);
+      // setTimeout(() => {
+      //   setIsPageExiting(true);
+      // }, 2000);
 
       // Navigate to next page in 2.3 seconds
       // Animation is displayed for 2 seconds
@@ -121,20 +127,11 @@ export default function SingleQuestionBox({
             })}
           >
             {showAnimation && (
-              <div
-                className={styles.animationWrapper}
-                ref={animationWrapperRef}
-              >
-                <Confetti
-                  width={animationWrapperWidth}
-                  height={animationWrapperHeight}
-                  initialVelocityX={8}
-                  initialVelocityY={20}
-                  numberOfPieces={100}
-                  gravity={0.4}
-                />
+              <div className={styles.animationWrapper}>
+                {getAnimationBox(animation)}
               </div>
             )}
+
             <AnimatePresence>
               {!showAnimation && (
                 <motion.div

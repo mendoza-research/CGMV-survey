@@ -1,18 +1,24 @@
-import Confetti from "react-confetti";
-import { IAnimationBoxProps } from "typings/animation";
+import { default as ReactConfetti } from "react-confetti";
+import { useResizeDetector } from "react-resize-detector";
+import styles from "./animations.module.scss";
 
-export default function ConfettiAnimationBox({
-  width,
-  height,
-}: IAnimationBoxProps) {
+export default function Confetti() {
+  const {
+    width: animationBoxWidth,
+    height: animationBoxHeight,
+    ref: animationBoxRef,
+  } = useResizeDetector();
+
   return (
-    <Confetti
-      width={width}
-      height={height}
-      initialVelocityX={8}
-      initialVelocityY={20}
-      numberOfPieces={100}
-      gravity={0.4}
-    />
+    <div ref={animationBoxRef} className={styles.animationBox}>
+      <ReactConfetti
+        width={animationBoxWidth}
+        height={animationBoxHeight}
+        initialVelocityX={8}
+        initialVelocityY={20}
+        numberOfPieces={100}
+        gravity={0.4}
+      />
+    </div>
   );
 }

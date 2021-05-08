@@ -7,16 +7,15 @@ main.investmentBox {
   line-height: 1.8;
   font-family: "Lato", sans-serif;
   position: relative;
+  overflow: hidden;
 
   .animationWrapper {
-    display: block;
     position: absolute;
     z-index: 10;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
   }
 
   .singleQuestionForm {

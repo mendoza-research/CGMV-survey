@@ -1,5 +1,6 @@
 export enum AnimationEnum {
   CONFETTI,
+  FALLING_STARS,
 }
 
 export interface IAnimationBoxProps {
