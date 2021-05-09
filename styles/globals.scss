@@ -34,15 +34,16 @@ button,
 a.button {
   font-size: 1em;
   display: inline-block;
-  background-color: #ddd;
-  border: 1px solid #ccc;
+  background-color: #ccc;
+  border: 1px solid #bbb;
   padding: 1rem 2rem;
   border-radius: 0.25rem;
   cursor: pointer;
+  transition: linear 0.2s;
 
   &:hover {
-    background-color: #e8e8e8;
-    border-color: #ddd;
+    background-color: #d6d6d6;
+    border-color: #ccc;
   }
 
   &:disabled {

@@ -15,7 +15,7 @@ const question: ISingleQuestion = {
 
 export default function Q4Page() {
   const { toNext } = usePageNavigation({
-    nextPathname: "/",
+    nextPathname: "/profile-complete",
   });
 
   return (

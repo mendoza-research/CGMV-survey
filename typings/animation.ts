@@ -1,7 +1,7 @@
 export enum AnimationEnum {
-  CONFETTI,
-  FALLING_STARS,
-  RISING_BALLOONS,
+  CONFETTI = "CONFETTI",
+  FALLING_STARS = "FALLING_STARS",
+  RISING_BALLOONS = "RISING_BALLOONS",
 }
 
 export interface IAnimationBoxProps {

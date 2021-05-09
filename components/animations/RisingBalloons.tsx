@@ -50,7 +50,7 @@ function Balloon({ color, size, initialX, initialY }: IBalloonProps) {
         initial: {
           top: `${initialY}%`,
           left: `${initialX}%`,
-          opacity: 0.4,
+          opacity: 0.1,
           rotate: _.random(-20, 20, false),
         },
         exit: {

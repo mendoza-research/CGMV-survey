@@ -72,7 +72,7 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/background",
+    nextPathname: "/profile-complete",
   });
 
   useEffect(() => {

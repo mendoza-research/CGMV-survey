@@ -9,7 +9,11 @@ import { getSingleQuestionUpdateQuery } from "utils/gql-queries";
 import styles from "./investment.module.scss";
 import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
-import { getAnimationBox, quickFadeInOutVariants } from "utils/animations";
+import {
+  getAnimationBox,
+  quickFadeInOutVariants,
+  slideInOutVariants,
+} from "utils/animations";
 import { AnimatePresence, motion } from "framer-motion";
 
 type FormValues = {
@@ -114,26 +118,7 @@ export default function SingleQuestionBox({
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  variants={{
-                    hidden: {
-                      opacity: 0,
-                      x: 200,
-                    },
-                    visible: {
-                      opacity: 1,
-                      x: 0,
-                      transition: {
-                        duration: 0.6,
-                      },
-                    },
-                    exit: {
-                      opacity: 0,
-                      x: -200,
-                      transition: {
-                        duration: 0.3,
-                      },
-                    },
-                  }}
+                  variants={slideInOutVariants}
                   className={styles.card}
                 >
                   <div>{question.text}</div>
