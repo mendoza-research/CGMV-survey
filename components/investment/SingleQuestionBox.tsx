@@ -70,6 +70,15 @@ export default function SingleQuestionBox({
       return;
     }
 
+    if (gamification === GamificationEnum.GAMIFICATION) {
+      setShowAnimation(true);
+
+      // Start page exit animation after 2 seconds
+      setTimeout(() => {
+        setIsPageExiting(true);
+      }, 2000);
+    }
+
     if (sessionId) {
       await recordSingleResponseToDb({
         variables: {
@@ -81,13 +90,6 @@ export default function SingleQuestionBox({
     }
 
     if (gamification === GamificationEnum.GAMIFICATION) {
-      setShowAnimation(true);
-
-      // Start page exit animation after 2 seconds
-      setTimeout(() => {
-        setIsPageExiting(true);
-      }, 2000);
-
       // Navigate to next page in 2.3 seconds
       // Animation is displayed for 2 seconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
