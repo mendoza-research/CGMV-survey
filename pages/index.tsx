@@ -19,6 +19,7 @@ const CREATE_CGMV_SESSION = gql`
     $ip_addr: inet!
     $gamification: String!
     $financial_information: String!
+    $screen_resolution: String!
   ) {
     insert_cgmv_sessions(
       objects: {
@@ -29,6 +30,7 @@ const CREATE_CGMV_SESSION = gql`
         ip_addr: $ip_addr
         gamification: $gamification
         financial_information: $financial_information
+        screen_resolution: $screen_resolution
       }
     ) {
       affected_rows
@@ -62,6 +64,7 @@ export default function Home() {
         ip_addr: ipAddress,
         gamification,
         financial_information: financialInformation,
+        screen_resolution: `${window.screen.width}x${window.screen.height}`,
       },
     });
 
@@ -72,7 +75,7 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/profile-complete",
+    nextPathname: "/background",
   });
 
   useEffect(() => {
