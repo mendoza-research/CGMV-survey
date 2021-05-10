@@ -4,7 +4,7 @@ import { AnimationEnum } from "typings/animation";
 
 export default function ProfileCompletePage() {
   const { toNext } = usePageNavigation({
-    nextPathname: "/financial-information",
+    nextPathname: "/invest",
   });
 
   return (
