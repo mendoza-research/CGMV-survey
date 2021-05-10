@@ -75,7 +75,7 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/background",
+    nextPathname: "/financial-information",
   });
 
   useEffect(() => {
