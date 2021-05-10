@@ -30,11 +30,11 @@ export default function Layout({ children }: ILayoutProps) {
         <title>Survey</title>
       </Head>
 
-      {process.env.NODE_ENV === "development" && (
-        <div className={styles.devBox}>
-          {gamification} / {financialInformation}
-        </div>
-      )}
+      {/* {process.env.NODE_ENV === "development" && ( */}
+      <div className={styles.devBox}>
+        {gamification} / {financialInformation}
+      </div>
+      {/* )} */}
 
       <div className={styles.container}>{children}</div>
     </>
