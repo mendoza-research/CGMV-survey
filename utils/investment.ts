@@ -16,3 +16,17 @@ export function formatAsCurrency(amount: number, showCurrency: boolean = true) {
 
   return formattedStr;
 }
+
+export const isValidAmountStr = (
+  inputVal: string,
+  minAmount: number,
+  maxAmount: number
+) => {
+  if (!Number.isNaN(Number.parseFloat(inputVal))) {
+    const newAmount = Number.parseFloat(inputVal);
+
+    return newAmount >= minAmount && newAmount <= maxAmount;
+  } else {
+    return false;
+  }
+};

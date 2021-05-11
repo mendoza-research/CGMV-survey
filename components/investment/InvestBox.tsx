@@ -7,7 +7,7 @@ import clsx from "clsx";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
-import { formatAsCurrency } from "utils/investment";
+import { formatAsCurrency, isValidAmountStr } from "utils/investment";
 import { useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
 
@@ -32,16 +32,6 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
 
   const [soundWavesInputVal, setSoundWavesInputVal] = useState("");
   const [virtuosoInputVal, setVirtuosoInputVal] = useState("");
-
-  const isValidAmountStr = (inputVal: string) => {
-    if (!Number.isNaN(inputVal) && !Number.isNaN(Number.parseFloat(inputVal))) {
-      const newAmount = Number.parseFloat(inputVal);
-
-      return newAmount >= 0 && newAmount <= totalAvailable;
-    } else {
-      return false;
-    }
-  };
 
   const handleSubmitButtonClick = async (e) => {
     e.preventDefault();
@@ -175,7 +165,9 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
                           `onBlur, e.target.value=${e.target.value}, inputVal=${soundWavesInputVal}`
                         );
 
-                        if (isValidAmountStr(e.target.value)) {
+                        if (
+                          isValidAmountStr(e.target.value, 0, totalAvailable)
+                        ) {
                           const newAmount = Number.parseFloat(e.target.value);
 
                           setSoundWavesAmount(newAmount);
@@ -232,7 +224,9 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
                           `onBlur, e.target.value=${e.target.value}, inputVal=${virtuosoInputVal}`
                         );
 
-                        if (isValidAmountStr(e.target.value)) {
+                        if (
+                          isValidAmountStr(e.target.value, 0, totalAvailable)
+                        ) {
                           const newAmount = Number.parseFloat(e.target.value);
 
                           setVirtuosoAmount(newAmount);
