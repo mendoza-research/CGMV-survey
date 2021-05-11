@@ -63,7 +63,7 @@ export default function SingleQuestionBox({
     if (gamification === GamificationEnum.GAMIFICATION) {
       setIsAnimating(true);
 
-      // Start page exit animation after 2 seconds
+      // Start page exit animation after ANIMATION_DURATION milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
       }, ANIMATION_DURATION);
@@ -80,8 +80,8 @@ export default function SingleQuestionBox({
     }
 
     if (gamification === GamificationEnum.GAMIFICATION) {
-      // Navigate to next page in 2.3 seconds
-      // Animation is displayed for 2 seconds
+      // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
+      // Animation is displayed for ANIMATION_DURATION milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
       await new Promise((resolve) =>
         setTimeout(resolve, ANIMATION_DURATION + 300)

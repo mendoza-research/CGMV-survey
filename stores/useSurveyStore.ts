@@ -15,19 +15,13 @@ const useSurveyStore = create<ISurveyState>(
         sessionId,
       })),
     // Randomly assign Gamification Mode (Gamification or NoGamification)
-    gamification:
-      Math.random() < 0.9999
-        ? GamificationEnum.GAMIFICATION
-        : GamificationEnum.NO_GAMIFICATION,
+    gamification: null,
     setGamification: (mode: GamificationEnum) =>
       set(() => ({
         gamification: mode,
       })),
     // Randomly assign Financial Information Mode (A or B)
-    financialInformation:
-      Math.random() < 0.5
-        ? FinancialInformationEnum.A
-        : FinancialInformationEnum.B,
+    financialInformation: null,
     setFinancialInformation: (mode: FinancialInformationEnum) =>
       set(() => ({
         financialInformation: mode,

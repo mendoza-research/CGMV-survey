@@ -31,13 +31,13 @@ export default function TextBox({
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      // Start page exit animation after ANIMATION_DURATION seconds
+      // Start page exit animation after ANIMATION_DURATION milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
       }, ANIMATION_DURATION);
 
       // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
-      // Animation is displayed for ANIMATION_DURATION seconds
+      // Animation is displayed for ANIMATION_DURATION milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
       await new Promise((resolve) =>
         setTimeout(resolve, ANIMATION_DURATION + 300)

@@ -2,7 +2,7 @@ import Layout from "components/Layout";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { quickFadeInOutVariants } from "survey-settings";
+import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
 import clsx from "clsx";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
@@ -17,6 +17,7 @@ interface IInvestBoxProps {
 }
 
 export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
+  const totalAvailable = 10000;
   const gamification = useSurveyStore((state) => state.gamification);
   const financialInformation = useSurveyStore(
     (state) => state.financialInformation
@@ -25,29 +26,30 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
     animation && gamification === GamificationEnum.GAMIFICATION;
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPageExiting, setIsPageExiting] = useState(false);
-
-  const totalAvailable = 10000;
   const [soundWavesAmount, setSoundWavesAmount] = useState(0);
-  const [virtuosoAmount, setVirtuosoAmount] = useState(0);
-
   const [soundWavesInputVal, setSoundWavesInputVal] = useState("");
+  const [virtuosoAmount, setVirtuosoAmount] = useState(0);
   const [virtuosoInputVal, setVirtuosoInputVal] = useState("");
 
   const handleSubmitButtonClick = async (e) => {
     e.preventDefault();
 
+    console.log(`Oh yeah`);
+
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      // Start page exit animation after 2 seconds
+      // Start page exit animation after ANIMATION_DURATION milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, 2000);
+      }, ANIMATION_DURATION);
 
-      // Navigate to next page in 2.3 seconds
-      // Animation is displayed for 2 seconds
+      // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
+      // Animation is displayed for ANIMATION_DURATION milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
-      await new Promise((resolve) => setTimeout(resolve, 2300));
+      await new Promise((resolve) =>
+        setTimeout(resolve, ANIMATION_DURATION + 300)
+      );
     }
 
     toNext();
@@ -174,11 +176,6 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
                           setSoundWavesInputVal(
                             formatAsCurrency(newAmount, false)
                           );
-
-                          setVirtuosoAmount(totalAvailable - newAmount);
-                          setVirtuosoInputVal(
-                            formatAsCurrency(totalAvailable - newAmount, false)
-                          );
                         }
                       }}
                     />
@@ -232,11 +229,6 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
                           setVirtuosoAmount(newAmount);
                           setVirtuosoInputVal(
                             formatAsCurrency(newAmount, false)
-                          );
-
-                          setSoundWavesAmount(totalAvailable - newAmount);
-                          setSoundWavesInputVal(
-                            formatAsCurrency(totalAvailable - newAmount, false)
                           );
                         }
                       }}
