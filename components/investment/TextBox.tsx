@@ -2,6 +2,7 @@ import Layout from "components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
 import { getAnimationBox, quickFadeInOutVariants } from "utils/animations";
+import { ANIMATION_DURATION } from "survey-settings";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
@@ -30,15 +31,17 @@ export default function TextBox({
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      // Start page exit animation after 2 seconds
+      // Start page exit animation after ANIMATION_DURATION seconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, 2000);
+      }, ANIMATION_DURATION);
 
-      // Navigate to next page in 2.3 seconds
-      // Animation is displayed for 2 seconds
+      // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
+      // Animation is displayed for ANIMATION_DURATION seconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
-      await new Promise((resolve) => setTimeout(resolve, 2300));
+      await new Promise((resolve) =>
+        setTimeout(resolve, ANIMATION_DURATION + 300)
+      );
     }
 
     toNext();

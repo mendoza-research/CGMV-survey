@@ -14,6 +14,7 @@ import {
   quickFadeInOutVariants,
   slideInOutVariants,
 } from "utils/animations";
+import { ANIMATION_DURATION } from "survey-settings";
 import { AnimatePresence, motion } from "framer-motion";
 
 type FormValues = {
@@ -65,7 +66,7 @@ export default function SingleQuestionBox({
       // Start page exit animation after 2 seconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, 2000);
+      }, ANIMATION_DURATION);
     }
 
     if (sessionId) {
@@ -82,7 +83,9 @@ export default function SingleQuestionBox({
       // Navigate to next page in 2.3 seconds
       // Animation is displayed for 2 seconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
-      await new Promise((resolve) => setTimeout(resolve, 2300));
+      await new Promise((resolve) =>
+        setTimeout(resolve, ANIMATION_DURATION + 300)
+      );
     }
 
     toNext();

@@ -219,7 +219,7 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
                       value={virtuosoInputVal}
                       onFocus={() => {
                         if (virtuosoAmount > 0) {
-                          setSoundWavesInputVal(virtuosoAmount.toString());
+                          setVirtuosoInputVal(virtuosoAmount.toString());
                         }
                       }}
                       onChange={(e) => {
