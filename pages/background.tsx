@@ -45,7 +45,7 @@ export default function BackgroundPage() {
               justifyContent: "center",
             }}
           >
-            <button onClick={toNext}>Begin</button>
+            <button onClick={toNext}>Enter Investment Platform</button>
           </div>
         </div>
       </main>
