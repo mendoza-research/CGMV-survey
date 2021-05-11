@@ -2,13 +2,14 @@ import Layout from "components/Layout";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { getAnimationBox, quickFadeInOutVariants } from "utils/animations";
+import { quickFadeInOutVariants } from "survey-settings";
 import clsx from "clsx";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
 import { formatAsCurrency } from "utils/investment";
 import { useState } from "react";
+import AnimationBox from "components/animations/AnimationBox";
 
 interface IInvestBoxProps {
   toNext: () => void;
@@ -76,7 +77,7 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
           >
             {isAnimating && (
               <div className={styles.animationWrapper}>
-                {getAnimationBox(animation)}
+                <AnimationBox animation={animation} />
               </div>
             )}
 

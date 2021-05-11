@@ -9,12 +9,12 @@ import { getSingleQuestionUpdateQuery } from "utils/gql-queries";
 import styles from "./investment.module.scss";
 import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
+import AnimationBox from "components/animations/AnimationBox";
 import {
-  getAnimationBox,
+  ANIMATION_DURATION,
   quickFadeInOutVariants,
   slideInOutVariants,
-} from "utils/animations";
-import { ANIMATION_DURATION } from "survey-settings";
+} from "survey-settings";
 import { AnimatePresence, motion } from "framer-motion";
 
 type FormValues = {
@@ -110,7 +110,7 @@ export default function SingleQuestionBox({
           >
             {isAnimating && (
               <div className={styles.animationWrapper}>
-                {getAnimationBox(animation)}
+                <AnimationBox animation={animation} />
               </div>
             )}
 

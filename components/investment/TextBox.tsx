@@ -1,12 +1,12 @@
 import Layout from "components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { getAnimationBox, quickFadeInOutVariants } from "utils/animations";
-import { ANIMATION_DURATION } from "survey-settings";
+import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
 import { useState } from "react";
+import AnimationBox from "components/animations/AnimationBox";
 
 interface ITextBoxProps {
   children: React.ReactNode;
@@ -61,7 +61,7 @@ export default function TextBox({
           >
             {isAnimating && (
               <div className={styles.animationWrapper}>
-                {getAnimationBox(animation)}
+                <AnimationBox animation={animation} />
               </div>
             )}
 
