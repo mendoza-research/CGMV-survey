@@ -42,7 +42,7 @@ export const roundToTwoDecimals = (v: number) => {
 };
 
 export function formatAsCurrency(amount: number, showCurrency: boolean = true) {
-  // Prevent Javascript's weird floating point precision creating signed negative 0
+  // Prevent Javascript's weird floating point precision creating a signed negative 0
   if (Math.abs(amount) <= 0.00000001) {
     amount = 0;
   }
@@ -53,6 +53,8 @@ export function formatAsCurrency(amount: number, showCurrency: boolean = true) {
     style: "decimal",
   };
 
+  // If showCurrency is set as true
+  // Append $ in front of the number using toLocaleString options
   if (showCurrency) {
     numberFormatOption = Object.assign({}, numberFormatOption, {
       currency: "USD",

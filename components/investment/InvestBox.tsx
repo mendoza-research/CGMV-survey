@@ -11,14 +11,35 @@ import { useEffect, useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
 import InvestAmountInput from "./InvestAmountInput";
 import clsx from "clsx";
+import { gql, useMutation } from "@apollo/client";
+
+const UPDATE_INVEST_AMOUNTS_QUERY = gql`
+  mutation RecordInvestAmounts(
+    $session_id: uuid!
+    $soundwaves_amount: numeric!
+    $virtuoso_amount: numeric!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        soundwaves_amount: $soundwaves_amount
+        virtuoso_amount: $virtuoso_amount
+      }
+    ) {
+      session_id
+    }
+  }
+`;
 
 const totalAvailable = 10000;
+
 interface IInvestBoxProps {
   toNext: () => void;
   animation?: AnimationEnum;
 }
 
 export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
+  const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification = useSurveyStore((state) => state.gamification);
   const financialInformation = useSurveyStore(
     (state) => state.financialInformation
@@ -30,6 +51,7 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
   const [soundWavesAmount, setSoundWavesAmount] = useState(0);
   const [virtuosoAmount, setVirtuosoAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
+  const [recordInvestAmountsToDb] = useMutation(UPDATE_INVEST_AMOUNTS_QUERY);
 
   useEffect(() => {
     if (
@@ -52,6 +74,14 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
 
     if (shouldAnimate) {
       setIsAnimating(true);
+
+      await recordInvestAmountsToDb({
+        variables: {
+          session_id: sessionId,
+          soundwaves_amount: soundWavesAmount,
+          virtuoso_amount: virtuosoAmount,
+        },
+      });
 
       // Start page exit animation after ANIMATION_DURATION milliseconds
       setTimeout(() => {
