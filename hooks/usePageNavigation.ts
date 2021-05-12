@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSurveyStore from "stores/useSurveyStore";
