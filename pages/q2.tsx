@@ -4,8 +4,11 @@ import { AnimationEnum } from "typings/animation";
 import SingleQuestionBox from "components/investment/SingleQuestionBox";
 
 const question: ISingleQuestion = {
-  text:
-    "Of the options below, which best describes your primary financial goal?",
+  text: (
+    <p>
+      Of the options below, which best describes your primary financial goal?
+    </p>
+  ),
   options: [
     "Wealth Preservation",
     "Retirement Planning",

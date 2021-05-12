@@ -22,7 +22,7 @@ export default function Layout({ children }: ILayoutProps) {
     if (isMobileOnly) {
       router.push("/unsupported-mobile");
     }
-  });
+  }, []);
 
   return (
     <>

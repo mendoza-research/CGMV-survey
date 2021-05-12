@@ -46,8 +46,15 @@ a.button {
     border-color: #ccc;
   }
 
+  &.disabled,
   &:disabled {
     cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      background-color: #ccc;
+      border-color: #bbb;
+    }
   }
 }
 

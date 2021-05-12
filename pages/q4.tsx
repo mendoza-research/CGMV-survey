@@ -4,8 +4,11 @@ import { AnimationEnum } from "typings/animation";
 import SingleQuestionBox from "components/investment/SingleQuestionBox";
 
 const question: ISingleQuestion = {
-  text:
-    "Five years from now, what do you expect your standard of living to be?",
+  text: (
+    <p>
+      Five years from now, what do you expect your standard of living to be?
+    </p>
+  ),
   options: [
     "Worse than it is today",
     "The same as it is today",

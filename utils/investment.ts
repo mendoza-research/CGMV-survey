@@ -37,7 +37,16 @@ export function getTreatmentGroups(prevTreatmentGroups: ITreatmentGroups) {
   return assignSequence[newIndex];
 }
 
+export const roundToTwoDecimals = (v: number) => {
+  return Math.round(v * 100) / 100;
+};
+
 export function formatAsCurrency(amount: number, showCurrency: boolean = true) {
+  // Prevent Javascript's weird floating point precision creating signed negative 0
+  if (Math.abs(amount) <= 0.00000001) {
+    amount = 0;
+  }
+
   let numberFormatOption = {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
@@ -68,4 +77,14 @@ export const isValidAmountStr = (
   } else {
     return false;
   }
+};
+
+export const parseAmountStr = (amountStr: string) => {
+  let cleanedAmountStr = amountStr.replace(/[^0-9\.]/g, "");
+  let parsedAmount = Number.parseFloat(cleanedAmountStr);
+
+  // Round to 2 nearest decimals
+  parsedAmount = roundToTwoDecimals(parsedAmount);
+
+  return parsedAmount;
 };

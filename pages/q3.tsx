@@ -4,8 +4,12 @@ import { AnimationEnum } from "typings/animation";
 import SingleQuestionBox from "components/investment/SingleQuestionBox";
 
 const question: ISingleQuestion = {
-  text:
-    "What is the time frame in which you hope to achieve your primary financial goal?",
+  text: (
+    <p>
+      What is the time frame in which you hope to achieve your primary financial
+      goal?
+    </p>
+  ),
   options: ["0 - 4 Years", "5 - 9 Years", "10 Years or Longer"],
 };
 

@@ -8,12 +8,13 @@
 }
 
 .devBox {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 20;
   color: white;
   background: black;
   padding: 1rem 1.5rem;
   font-family: "Lato", sans-serif;
   font-size: 1.1rem;
-  top: 0;
-  right: 0;
 }

@@ -3,21 +3,22 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
 import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
-import clsx from "clsx";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
-import { formatAsCurrency, isValidAmountStr } from "utils/investment";
-import { useState } from "react";
+import { formatAsCurrency } from "utils/investment";
+import { useEffect, useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
+import InvestAmountInput from "./InvestAmountInput";
+import clsx from "clsx";
 
+const totalAvailable = 10000;
 interface IInvestBoxProps {
   toNext: () => void;
   animation?: AnimationEnum;
 }
 
 export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
-  const totalAvailable = 10000;
   const gamification = useSurveyStore((state) => state.gamification);
   const financialInformation = useSurveyStore(
     (state) => state.financialInformation
@@ -27,14 +28,27 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPageExiting, setIsPageExiting] = useState(false);
   const [soundWavesAmount, setSoundWavesAmount] = useState(0);
-  const [soundWavesInputVal, setSoundWavesInputVal] = useState("");
   const [virtuosoAmount, setVirtuosoAmount] = useState(0);
-  const [virtuosoInputVal, setVirtuosoInputVal] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (
+      errorMessage !== "" &&
+      soundWavesAmount + virtuosoAmount === totalAvailable
+    ) {
+      setErrorMessage("");
+    }
+  }, [soundWavesAmount, virtuosoAmount]);
 
   const handleSubmitButtonClick = async (e) => {
     e.preventDefault();
 
-    console.log(`Oh yeah`);
+    if (soundWavesAmount + virtuosoAmount !== totalAvailable) {
+      setErrorMessage("Whoops! You still have funds remaining.");
+      return;
+    } else {
+      setErrorMessage("");
+    }
 
     if (shouldAnimate) {
       setIsAnimating(true);
@@ -134,132 +148,65 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
               </div>
 
               <div className={styles.inputBoxWrapper}>
-                <div className={clsx(styles.inputBox, styles.leftInputBox)}>
-                  <div className={styles.logoImageWrapper}>
+                <InvestAmountInput
+                  companyName="Sound Waves Inc."
+                  logoImage={
                     <Image
                       src="/images/Soundwaves_Logo.png"
                       alt="Sound Waves Logo"
                       width={160}
                       height={30}
                     />
-                  </div>
+                  }
+                  amount={soundWavesAmount}
+                  setAmount={setSoundWavesAmount}
+                  minAmount={0}
+                  maxAmount={totalAvailable - virtuosoAmount}
+                />
 
-                  <h2 className={styles.boxTitle}>
-                    Invest in Sound Waves Inc.
-                  </h2>
-
-                  <div className={styles.amountBox}>
-                    <span>Amount: $</span>
-                    <input
-                      type="text"
-                      value={soundWavesInputVal}
-                      onFocus={() => {
-                        if (soundWavesAmount > 0) {
-                          setSoundWavesInputVal(soundWavesAmount.toString());
-                        }
-                      }}
-                      onChange={(e) => {
-                        console.log(`onChange, val=${e.target.value}`);
-                        setSoundWavesInputVal(e.target.value);
-                      }}
-                      onBlur={(e) => {
-                        console.log(
-                          `onBlur, e.target.value=${e.target.value}, inputVal=${soundWavesInputVal}`
-                        );
-
-                        if (
-                          isValidAmountStr(e.target.value, 0, totalAvailable)
-                        ) {
-                          const newAmount = Number.parseFloat(e.target.value);
-
-                          setSoundWavesAmount(newAmount);
-                          setSoundWavesInputVal(
-                            formatAsCurrency(newAmount, false)
-                          );
-                        }
-                      }}
-                    />
-                  </div>
-
-                  <div className={styles.orderSummary}>
-                    <h3>Order Summary</h3>
-                    <p>
-                      You are buying {formatAsCurrency(soundWavesAmount)} of
-                      Sound Waves Inc. at the current market price.
-                    </p>
-                  </div>
-                </div>
-
-                <div className={clsx(styles.inputBox, styles.rightInputBox)}>
-                  <div className={styles.logoImageWrapper}>
+                <InvestAmountInput
+                  companyName="Virtuoso Corp."
+                  logoImage={
                     <Image
                       src="/images/Virtuoso_Logo.png"
                       alt="Virtuoso Logo"
                       width={233}
                       height={30}
                     />
-                  </div>
-
-                  <h2 className={styles.boxTitle}>Invest in Virtuoso Corp.</h2>
-
-                  <div className={styles.amountBox}>
-                    <span>Amount: $</span>
-                    <input
-                      type="text"
-                      value={virtuosoInputVal}
-                      onFocus={() => {
-                        if (virtuosoAmount > 0) {
-                          setVirtuosoInputVal(virtuosoAmount.toString());
-                        }
-                      }}
-                      onChange={(e) => {
-                        console.log(`onChange, val=${e.target.value}`);
-                        setVirtuosoInputVal(e.target.value);
-                      }}
-                      onBlur={(e) => {
-                        console.log(
-                          `onBlur, e.target.value=${e.target.value}, inputVal=${virtuosoInputVal}`
-                        );
-
-                        if (
-                          isValidAmountStr(e.target.value, 0, totalAvailable)
-                        ) {
-                          const newAmount = Number.parseFloat(e.target.value);
-
-                          setVirtuosoAmount(newAmount);
-                          setVirtuosoInputVal(
-                            formatAsCurrency(newAmount, false)
-                          );
-                        }
-                      }}
-                    />
-                  </div>
-
-                  <div className={styles.orderSummary}>
-                    <h3>Order Summary</h3>
-                    <p>
-                      You are buying {formatAsCurrency(virtuosoAmount)} of
-                      Virtuoso Corp. at the current market price.
-                    </p>
-                  </div>
-                </div>
+                  }
+                  amount={virtuosoAmount}
+                  setAmount={setVirtuosoAmount}
+                  minAmount={0}
+                  maxAmount={totalAvailable - soundWavesAmount}
+                />
               </div>
 
               <div
                 style={{
                   marginTop: "2rem",
-                  display: "flex",
-                  justifyContent: "center",
+                  textAlign: "center",
                 }}
               >
-                <button
+                <a
+                  className={clsx("button", {
+                    disabled:
+                      soundWavesAmount + virtuosoAmount !== totalAvailable,
+                  })}
                   onClick={handleSubmitButtonClick}
-                  disabled={
-                    soundWavesAmount + virtuosoAmount !== totalAvailable
-                  }
                 >
                   Submit Order
-                </button>
+                </a>
+
+                {errorMessage !== "" && (
+                  <p
+                    style={{
+                      marginTop: "10px",
+                      color: "red",
+                    }}
+                  >
+                    {errorMessage}
+                  </p>
+                )}
               </div>
             </div>
           </motion.main>

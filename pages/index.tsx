@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Layout from "components/Layout";
@@ -10,7 +11,7 @@ import {
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { getTreatmentGroups } from "utils/investment";
-import { FinancialInformationEnum, GamificationEnum } from "typings/survey";
+import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
 
 const LATEST_TREATMENT_QUERY = gql`
   query LatestTreatmentsQuery {
@@ -60,6 +61,7 @@ export default function Home() {
   const setFinancialInformation = useSurveyStore(
     (state) => state.setFinancialInformation
   );
+  const router = useRouter();
 
   const {
     loading: latestTreatmentLoading,
@@ -77,7 +79,22 @@ export default function Home() {
     let newFinancialInformation: FinancialInformationEnum =
       FinancialInformationEnum.A;
 
-    if (latestTreatmentData["cgmv_sessions"].length > 0) {
+    // If the URL query contains Gamification and FinancialInformation values, manually assign them
+    if (
+      router.query.hasOwnProperty("gamification") &&
+      router.query.hasOwnProperty("financialInformation")
+    ) {
+      newGamification =
+        GamificationEnum[
+          router.query.gamification as keyof typeof GamificationEnum
+        ];
+
+      newFinancialInformation =
+        FinancialInformationEnum[
+          router.query
+            .financialInformation as keyof typeof FinancialInformationEnum
+        ];
+    } else if (latestTreatmentData["cgmv_sessions"].length > 0) {
       const latestTreatmentGroups = latestTreatmentData["cgmv_sessions"][0];
       const newTreatmentGroups = getTreatmentGroups({
         gamification: latestTreatmentGroups["gamification"],
@@ -111,14 +128,18 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/background",
+    nextPathname: "/invest",
   });
 
   useEffect(() => {
-    if (typeof latestTreatmentData !== "undefined" && isFirstVisit) {
+    if (
+      typeof latestTreatmentData !== "undefined" &&
+      isFirstVisit &&
+      router.isReady
+    ) {
       initializeSurveySession();
     }
-  }, [latestTreatmentData]);
+  }, [latestTreatmentData, router]);
 
   useEffect(() => {
     if (sessionId) {

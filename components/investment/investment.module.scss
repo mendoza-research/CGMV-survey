@@ -30,13 +30,13 @@ main.investmentBox {
         padding-left: 1rem;
       }
 
-      &:hover {
-        background-color: #f9f9f9;
+      &:hover,
+      &.selected:hover {
+        background-color: #ddd;
       }
 
-      &.selected,
-      &.selected:hover {
-        background-color: yellowgreen;
+      &.selected {
+        background-color: transparent;
       }
     }
   }
@@ -147,69 +147,5 @@ main.investmentBox {
   .inputBoxWrapper {
     display: flex;
     width: 100%;
-
-    .inputBox {
-      border: 6px solid #adb9ca;
-      padding: 20px 10px 10px 10px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 0;
-
-      &.leftInputBox {
-        margin-right: 10px;
-      }
-
-      &.rightInputBox {
-        margin-left: 10px;
-      }
-
-      .logoImageWrapper {
-        position: absolute;
-        top: -20px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-      }
-
-      h2 {
-        text-decoration: none;
-        text-align: center;
-      }
-
-      .amountBox {
-        display: inline-flex;
-        align-items: center;
-        margin-top: 1rem;
-
-        input[type="text"] {
-          width: 80px;
-          margin-left: 4px;
-          background: transparent;
-          border: none;
-          outline: none;
-          border-bottom: 1px solid black;
-          font-size: 1em;
-        }
-      }
-
-      .orderSummary {
-        text-align: left;
-        margin-top: 1rem;
-        line-height: 1.4;
-
-        h3 {
-          text-decoration: none;
-          font-size: 0.9em;
-        }
-
-        p {
-          margin-top: 0.5rem;
-          font-size: 0.8em;
-        }
-      }
-    }
   }
 }
