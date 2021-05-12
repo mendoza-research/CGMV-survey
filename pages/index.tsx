@@ -12,49 +12,13 @@ import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { getTreatmentGroups } from "utils/investment";
 import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
-
-const LATEST_TREATMENT_QUERY = gql`
-  query LatestTreatmentsQuery {
-    cgmv_sessions(limit: 1, order_by: { start_time: desc }) {
-      financial_information
-      gamification
-    }
-  }
-`;
-
-const CREATE_CGMV_SESSION = gql`
-  mutation CreateSession(
-    $os: String!
-    $device_type: String!
-    $browser_name: String!
-    $browser_version: String!
-    $ip_addr: inet!
-    $gamification: String!
-    $financial_information: String!
-    $screen_resolution: String!
-  ) {
-    insert_cgmv_sessions(
-      objects: {
-        browser_name: $browser_name
-        browser_version: $browser_version
-        device_type: $device_type
-        os: $os
-        ip_addr: $ip_addr
-        gamification: $gamification
-        financial_information: $financial_information
-        screen_resolution: $screen_resolution
-      }
-    ) {
-      affected_rows
-      returning {
-        session_id
-      }
-    }
-  }
-`;
+import {
+  LATEST_TREATMENT_QUERY,
+  CREATE_CGMV_SESSION_QUERY,
+} from "utils/gql-queries";
 
 export default function Home() {
-  const [createSessionInDb] = useMutation(CREATE_CGMV_SESSION);
+  const [createSessionInDb] = useMutation(CREATE_CGMV_SESSION_QUERY);
   const sessionId = useSurveyStore((state) => state.sessionId);
   const setSessionId = useSurveyStore((state) => state.setSessionId);
   const setGamification = useSurveyStore((state) => state.setGamification);
@@ -63,11 +27,7 @@ export default function Home() {
   );
   const router = useRouter();
 
-  const {
-    loading: latestTreatmentLoading,
-    error: latestTreatmentError,
-    data: latestTreatmentData,
-  } = useQuery(LATEST_TREATMENT_QUERY);
+  const { data: latestTreatmentData } = useQuery(LATEST_TREATMENT_QUERY);
 
   const initializeSurveySession = async () => {
     const res = await fetch("/api/get-ip");

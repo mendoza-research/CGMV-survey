@@ -2,29 +2,10 @@ import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSurveyStore from "stores/useSurveyStore";
-
-const RECORD_PAGE_ENTER = gql`
-  mutation RecordPageEnter($session_id: uuid, $pathname: String) {
-    insert_cgmv_navigations(
-      objects: { session_id: $session_id, pathname: $pathname }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-const RECORD_PAGE_EXIT = gql`
-  mutation RecordPageExit($session_id: uuid, $pathname: String) {
-    update_cgmv_navigations(
-      where: {
-        _and: { session_id: { _eq: $session_id }, pathname: { _eq: $pathname } }
-      }
-      _set: { exit_time: "now" }
-    ) {
-      affected_rows
-    }
-  }
-`;
+import {
+  RECORD_PAGE_ENTER_QUERY,
+  RECORD_PAGE_EXIT_QUERY,
+} from "utils/gql-queries";
 
 interface IPageNavigationOptions {
   nextPathname: string;
@@ -35,8 +16,8 @@ export default function usePageNavigation({
 }: IPageNavigationOptions) {
   const router = useRouter();
   const sessionId = useSurveyStore((state) => state.sessionId);
-  const [recordPageEnterInDb] = useMutation(RECORD_PAGE_ENTER);
-  const [recordPageExitInDb] = useMutation(RECORD_PAGE_EXIT);
+  const [recordPageEnterInDb] = useMutation(RECORD_PAGE_ENTER_QUERY);
+  const [recordPageExitInDb] = useMutation(RECORD_PAGE_EXIT_QUERY);
   const currentPathname = useSurveyStore((state) => state.currentPathname);
   const setCurrentPathname = useSurveyStore(
     (state) => state.setCurrentPathname
