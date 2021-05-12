@@ -23,10 +23,6 @@ export default function Fireworks() {
     ref: animationBoxRef,
   } = useResizeDetector();
 
-  console.log(
-    `Fireworks, width=${animationBoxWidth}, height=${animationBoxHeight}, ref=${animationBoxRef}`
-  );
-
   const [isContainerReady, setIsContainerReady] = useState(false);
 
   useEffect(() => {
@@ -42,8 +38,7 @@ export default function Fireworks() {
     p5.createCanvas(animationBoxWidth, animationBoxHeight).parent(
       animationBoxRef
     );
-    p5.background(0);
-    p5.strokeWeight(1);
+    p5.strokeWeight(4);
     p5.colorMode(p5.HSB);
   }
 
@@ -54,7 +49,7 @@ export default function Fireworks() {
   */
   function draw(p5: p5Types) {
     p5.translate(p5.width / 2, p5.height);
-    p5.background("rgba(0, 0, 0, 0.2)");
+    // p5.background("#e6e6e6");
 
     /* Remove the exploded shells and burnt out stars */
     shells = shells.filter((shell) => !shell.exploded);
@@ -65,7 +60,7 @@ export default function Fireworks() {
     for (let star of stars) star.draw();
 
     /* Generate new shell with small probability */
-    if (p5.random() < 0.03) {
+    if (p5.random() < 0.3) {
       let s = new Shell(p5);
       shells.push(s);
     }
@@ -84,7 +79,7 @@ export default function Fireworks() {
     constructor(p5: p5Types) {
       this.p5 = p5;
       this.position = p5.createVector(
-        p5.int(p5.random(-p5.width / 4, p5.width / 4)),
+        p5.int(p5.random(-p5.width / 5, p5.width / 5)),
         0
       );
       this.speed = p5.createVector(p5.random(-2, 2), -p5.random(11, 16));
@@ -118,7 +113,6 @@ export default function Fireworks() {
           p5,
           position: sparklePos,
           speed: sparkleSpd,
-          fade: p5.random(50, 75),
           hue: p5.floor(p5.random(20, 40)),
           sat: p5.floor(p5.random(0, 30)),
           type: undefined,
@@ -137,8 +131,6 @@ export default function Fireworks() {
       numStars,
       velMin,
       velMax,
-      fadeMin,
-      fadeMax,
       type,
       baseDir,
       angle,
@@ -146,8 +138,6 @@ export default function Fireworks() {
       numStars: number;
       velMin: number;
       velMax: number;
-      fadeMin: number;
-      fadeMax: number;
       type?: string;
       baseDir?: number;
       angle?: number;
@@ -165,12 +155,10 @@ export default function Fireworks() {
         );
         let hue = this.hue + p5.round(p5.random(-10, 10));
         let sat = p5.round(p5.random(0, 40));
-        let fade = p5.random(fadeMin, fadeMax);
         let star = new Star({
           p5: this.p5,
           position: this.position.copy(),
           speed: starSpd,
-          fade,
           hue,
           sat,
           type: typeof type === "undefined" ? "default" : type,
@@ -188,8 +176,6 @@ export default function Fireworks() {
           numStars: 30,
           velMin: 3,
           velMax: 5,
-          fadeMin: 3,
-          fadeMax: 8,
           type: "writer",
         });
 
@@ -197,8 +183,6 @@ export default function Fireworks() {
           numStars: 10,
           velMin: 3,
           velMax: 5,
-          fadeMin: 3,
-          fadeMax: 6,
           type: "sparkler",
         });
       } else if (this.type == "burst") {
@@ -206,8 +190,6 @@ export default function Fireworks() {
           numStars: 60,
           velMin: 0,
           velMax: 6,
-          fadeMin: 3,
-          fadeMax: 8,
           type: "sparkler",
         });
       } else if (this.type == "double") {
@@ -215,16 +197,12 @@ export default function Fireworks() {
           numStars: 90,
           velMin: 3,
           velMax: 5,
-          fadeMin: 2,
-          fadeMax: 4,
         });
 
         this.drawStars({
           numStars: 90,
           velMin: 0.5,
           velMax: 2,
-          fadeMin: 4,
-          fadeMax: 6,
           type: "writer",
         });
       } else if (this.type == "mega") {
@@ -232,16 +210,12 @@ export default function Fireworks() {
           numStars: 600,
           velMin: 0,
           velMax: 8,
-          fadeMin: 3,
-          fadeMax: 8,
         });
       } else if (this.type == "writer") {
         this.drawStars({
           numStars: 100,
           velMin: 0,
           velMax: 5,
-          fadeMin: 1,
-          fadeMax: 3,
           type: "writer",
         });
       } else if (this.type == "simple") {
@@ -249,8 +223,6 @@ export default function Fireworks() {
           numStars: 100,
           velMin: 0,
           velMax: 5,
-          fadeMin: 1,
-          fadeMax: 3,
         });
       } else if (this.type == "pent") {
         let baseDir = p5.random(0, p5.TWO_PI);
@@ -260,8 +232,6 @@ export default function Fireworks() {
             numStars: 20,
             velMin: 3,
             velMax: 5,
-            fadeMin: 3,
-            fadeMax: 8,
             type: "writer",
             baseDir: baseDir + (i / 5) * p5.PI,
             angle: 6,
@@ -275,8 +245,6 @@ export default function Fireworks() {
             numStars: 10,
             velMin: 3,
             velMax: 7,
-            fadeMin: 3,
-            fadeMax: 8,
             type: "sparkler",
             baseDir: baseDir + (i / 3) * p5.PI,
             angle: 128,
@@ -287,8 +255,6 @@ export default function Fireworks() {
           numStars: 200,
           velMin: 0,
           velMax: 8,
-          fadeMin: 3,
-          fadeMax: 8,
           type: "writer",
         });
       }
@@ -300,18 +266,16 @@ export default function Fireworks() {
     p5: p5Types;
     position: any;
     speed: any;
-    fade: any;
     hue: any;
     sat: any;
     type: string;
     brt: number;
     burntime: number;
 
-    constructor({ p5, position, speed, fade, hue, sat, type }) {
+    constructor({ p5, position, speed, hue, sat, type }) {
       this.p5 = p5;
       this.position = position;
       this.speed = speed;
-      this.fade = fade;
       this.hue = hue;
       this.sat = sat;
       this.type = typeof type === "undefined" ? "default" : type;
@@ -329,7 +293,7 @@ export default function Fireworks() {
         p5.log(this.burntime) * 8 * this.speed.y +
         this.burntime * GRAVITY;
 
-      p5.point(newXPos, newYPos);
+      // p5.point(newXPos, newYPos);
 
       if (this.type == "writer" && this.burntime > 1) {
         p5.line(
@@ -350,7 +314,6 @@ export default function Fireworks() {
           p5,
           position: p5.createVector(newXPos + starSpd.x, newYPos + starSpd.y),
           speed: starSpd,
-          fade: p5.random(50, 75),
           hue: p5.round(p5.random(20, 40)),
           sat: p5.round(p5.random(0, 30)),
           type: "default",
@@ -358,7 +321,6 @@ export default function Fireworks() {
         stars.push(star);
       }
 
-      this.brt -= this.fade;
       this.burntime++;
     }
   }
@@ -368,14 +330,7 @@ export default function Fireworks() {
   }
 
   return (
-    <div
-      ref={animationBoxRef}
-      className={styles.animationBox}
-      style={{
-        background: "#fc3",
-      }}
-    >
-      <p>Hello World</p>
+    <div ref={animationBoxRef} className={styles.animationBox}>
       {isContainerReady && (
         <Sketch setup={setup} draw={draw} windowResized={windowResized} />
       )}
