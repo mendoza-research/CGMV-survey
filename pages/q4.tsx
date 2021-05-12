@@ -23,7 +23,7 @@ export default function Q4Page() {
       fieldName="q4"
       question={question}
       toNext={toNext}
-      animation={AnimationEnum.RISING_BALLOONS}
+      animation={AnimationEnum.FIREWORKS}
     />
   );
 }
