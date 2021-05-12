@@ -1,6 +1,8 @@
-import { ISingleQuestion } from "typings/survey";
+import { GamificationEnum, ISingleQuestion } from "typings/survey";
 import { AnimationEnum } from "typings/animation";
 import SingleQuestionBox from "components/investment/SingleQuestionBox";
+import { useEffect } from "react";
+import useSurveyStore from "stores/useSurveyStore";
 
 const question: ISingleQuestion = {
   text: (
@@ -24,12 +26,18 @@ const question: ISingleQuestion = {
 export default function Q1Page() {
   const toNext = () => {};
 
+  const setGamification = useSurveyStore((state) => state.setGamification);
+
+  useEffect(() => {
+    setGamification(GamificationEnum.GAMIFICATION);
+  }, []);
+
   return (
     <SingleQuestionBox
       fieldName="q1"
       question={question}
       toNext={toNext}
-      animation={AnimationEnum.RISING_BALLOONS}
+      animation={AnimationEnum.FIREWORKS}
     />
   );
 }

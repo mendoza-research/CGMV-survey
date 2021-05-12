@@ -1,8 +1,12 @@
 import { AnimationEnum } from "typings/animation";
+import dynamic from "next/dynamic";
 import Confetti from "components/animations/Confetti";
 import FallingStars from "components/animations/FallingStars";
 import RisingBalloons from "components/animations/RisingBalloons";
-import Fireworks from "./Fireworks";
+
+const Fireworks = dynamic(() => import("./Fireworks"), {
+  ssr: false,
+});
 
 interface IAnimationBoxProps {
   animation: AnimationEnum;

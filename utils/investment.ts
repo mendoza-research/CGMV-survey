@@ -32,10 +32,8 @@ export function getTreatmentGroups(prevTreatmentGroups: ITreatmentGroups) {
     _.isEqual(o, prevTreatmentGroups)
   );
 
-  // Return the next treatment groups
+  // Return the next treatment combination
   const newIndex = (prevIndex + 1) % assignSequence.length;
-
-  // Return
   return assignSequence[newIndex];
 }
 

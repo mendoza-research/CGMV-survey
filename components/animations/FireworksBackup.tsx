@@ -23,18 +23,6 @@ export default function Fireworks() {
     ref: animationBoxRef,
   } = useResizeDetector();
 
-  console.log(
-    `Fireworks, width=${animationBoxWidth}, height=${animationBoxHeight}, ref=${animationBoxRef}`
-  );
-
-  const [isContainerReady, setIsContainerReady] = useState(false);
-
-  useEffect(() => {
-    if (animationBoxWidth) {
-      setIsContainerReady(true);
-    }
-  }, [animationBoxWidth]);
-
   let shells = [];
   let stars = [];
 
@@ -363,10 +351,6 @@ export default function Fireworks() {
     }
   }
 
-  function windowResized(p5) {
-    p5.resizeCanvas(animationBoxWidth, animationBoxHeight);
-  }
-
   return (
     <div
       ref={animationBoxRef}
@@ -376,9 +360,7 @@ export default function Fireworks() {
       }}
     >
       <p>Hello World</p>
-      {isContainerReady && (
-        <Sketch setup={setup} draw={draw} windowResized={windowResized} />
-      )}
+      <Sketch setup={setup} draw={draw} />
     </div>
   );
 }

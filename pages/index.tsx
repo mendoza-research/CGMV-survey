@@ -56,11 +56,7 @@ export default function Home() {
   const [createSessionInDb] = useMutation(CREATE_CGMV_SESSION);
   const sessionId = useSurveyStore((state) => state.sessionId);
   const setSessionId = useSurveyStore((state) => state.setSessionId);
-  const gamification = useSurveyStore((state) => state.gamification);
   const setGamification = useSurveyStore((state) => state.setGamification);
-  const financialInformation = useSurveyStore(
-    (state) => state.financialInformation
-  );
   const setFinancialInformation = useSurveyStore(
     (state) => state.setFinancialInformation
   );
