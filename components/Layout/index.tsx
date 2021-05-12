@@ -28,6 +28,7 @@ export default function Layout({ children }: ILayoutProps) {
     <>
       <Head>
         <title>Survey</title>
+        <meta name="robots" content="noindex" />
       </Head>
 
       {/* {process.env.NODE_ENV === "development" && ( */}
