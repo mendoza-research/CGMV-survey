@@ -1,9 +1,11 @@
 import usePageNavigation from "hooks/usePageNavigation";
 import TextBox from "components/investment/TextBox";
 import { AnimationEnum } from "typings/animation";
-import styles from "components/investment/investment.module.scss";
 import { useState } from "react";
 import KnowledgeItem from "components/investment/KnowledgeItem";
+import { RECORD_KNOWLEDGE_ITEM_CLICKS_QUERY } from "utils/gql-queries";
+import { useMutation } from "@apollo/client";
+import useSurveyStore from "stores/useSurveyStore";
 
 interface IKnowledgeItem {
   fieldName: string; // database field name
@@ -150,17 +152,24 @@ let knowledgeItems: IKnowledgeItem[] = [
 ];
 
 export default function OrderConfirmedPage() {
+  const sessionId = useSurveyStore((state) => state.sessionId);
   const { toNext } = usePageNavigation({
     nextPathname: "/investment-questions",
   });
+
+  const [recordKnowledgeItemClicks] = useMutation(
+    RECORD_KNOWLEDGE_ITEM_CLICKS_QUERY
+  );
 
   const itemsStatusInitialMap: IItemsStatusMap = {};
   knowledgeItems.forEach((item) => {
     itemsStatusInitialMap[item.fieldName] = {
       isClicked: false,
-      isOpen: true,
+      isOpen: false,
     };
   });
+
+  console.log(knowledgeItems.map((o) => o.fieldName));
 
   const [itemsStatusMap, setItemsStatusMap] = useState<IItemsStatusMap>(
     itemsStatusInitialMap
@@ -177,8 +186,29 @@ export default function OrderConfirmedPage() {
     );
   };
 
+  const onNextButtonClick = async () => {
+    await recordKnowledgeItemClicks({
+      variables: {
+        session_id: sessionId,
+        click_EPS: itemsStatusMap["click_EPS"].isClicked,
+        click_PE_ratio: itemsStatusMap["click_PE_ratio"].isClicked,
+        click_debt_ratio: itemsStatusMap["click_debt_ratio"].isClicked,
+        click_fiscal_year: itemsStatusMap["click_fiscal_year"].isClicked,
+        click_market_cap: itemsStatusMap["click_market_cap"].isClicked,
+        click_gross_margin: itemsStatusMap["click_gross_margin"].isClicked,
+        click_net_income: itemsStatusMap["click_net_income"].isClicked,
+        click_stock_split: itemsStatusMap["click_stock_split"].isClicked,
+      },
+    });
+
+    toNext();
+  };
+
   return (
-    <TextBox toNext={toNext} animation={AnimationEnum.RISING_BALLOONS}>
+    <TextBox
+      toNext={onNextButtonClick}
+      animation={AnimationEnum.RISING_BALLOONS}
+    >
       <p
         style={{
           fontWeight: "bold",

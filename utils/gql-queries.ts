@@ -96,3 +96,33 @@ export const UPDATE_INVEST_AMOUNTS_QUERY = gql`
     }
   }
 `;
+
+export const RECORD_KNOWLEDGE_ITEM_CLICKS_QUERY = gql`
+  mutation RecordKnowledgeItemClicks(
+    $session_id: uuid!
+    $click_EPS: Boolean!
+    $click_PE_ratio: Boolean!
+    $click_debt_ratio: Boolean!
+    $click_fiscal_year: Boolean!
+    $click_market_cap: Boolean!
+    $click_gross_margin: Boolean!
+    $click_net_income: Boolean!
+    $click_stock_split: Boolean!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        click_EPS: $click_EPS
+        click_PE_ratio: $click_PE_ratio
+        click_debt_ratio: $click_debt_ratio
+        click_fiscal_year: $click_fiscal_year
+        click_market_cap: $click_market_cap
+        click_gross_margin: $click_gross_margin
+        click_net_income: $click_net_income
+        click_stock_split: $click_stock_split
+      }
+    ) {
+      session_id
+    }
+  }
+`;
