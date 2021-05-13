@@ -8,6 +8,15 @@ import clsx from "clsx";
 import AgreementScale from "components/questions/AgreementScale";
 import { useMutation } from "@apollo/client";
 import { RECORD_PLATFORM_QUESTIONS_QUERY } from "utils/gql-queries";
+import _ from "lodash";
+import { useMemo } from "react";
+
+interface RiskRecollectionOption {
+  value: string;
+  imagePath: string;
+  imageWidth: number;
+  imageHeight: number;
+}
 
 export default function PlatformQuestionsPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
@@ -22,7 +31,7 @@ export default function PlatformQuestionsPage() {
     register,
     watch,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useForm({
     mode: "onChange",
   });
@@ -30,9 +39,6 @@ export default function PlatformQuestionsPage() {
   const risk_recollection = watch("risk_recollection");
 
   const onSubmit = async (data) => {
-    console.log(data);
-    console.error(errors);
-
     if (isValid) {
       await recordPlatformQuestionsToDb({
         variables: {
@@ -45,6 +51,47 @@ export default function PlatformQuestionsPage() {
       toNext();
     }
   };
+
+  const riskRecollectionOptions = [
+    <label
+      key="financial-information-A"
+      className={clsx({
+        [styles.selected]: risk_recollection === "A",
+      })}
+    >
+      <input
+        {...register("risk_recollection", { required: true })}
+        type="radio"
+        value="A"
+      />
+      <Image
+        src="/images/financial_information_A.png"
+        width={900}
+        height={280}
+      />
+    </label>,
+    <label
+      key="financial-information-B"
+      className={clsx({
+        [styles.selected]: risk_recollection === "B",
+      })}
+    >
+      <input
+        {...register("risk_recollection", { required: true })}
+        type="radio"
+        value="B"
+      />
+      <Image
+        src="/images/financial_information_B.png"
+        width={900}
+        height={289}
+      />
+    </label>,
+  ];
+
+  const shuffledRiskRecollectionOptions = useMemo(() => {
+    return _.shuffle(riskRecollectionOptions);
+  }, []);
 
   return (
     <Layout>
@@ -62,38 +109,7 @@ export default function PlatformQuestionsPage() {
             Waves and Virtuoso:
           </p>
 
-          <label
-            className={clsx({
-              [styles.selected]: risk_recollection === "A",
-            })}
-          >
-            <input
-              {...register("risk_recollection", { required: true })}
-              type="radio"
-              value="A"
-            />
-            <Image
-              src="/images/financial_information_A.png"
-              width={900}
-              height={280}
-            />
-          </label>
-          <label
-            className={clsx({
-              [styles.selected]: risk_recollection === "B",
-            })}
-          >
-            <input
-              {...register("risk_recollection", { required: true })}
-              type="radio"
-              value="B"
-            />
-            <Image
-              src="/images/financial_information_A.png"
-              width={900}
-              height={289}
-            />
-          </label>
+          {shuffledRiskRecollectionOptions}
 
           <h2>Overall Experience</h2>
 

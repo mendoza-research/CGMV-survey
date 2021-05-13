@@ -33,7 +33,7 @@ export default function AgreementScale({
 
       <div className={styles.optionsWrapper}>
         {optionLabels.map((v, index) => (
-          <label>
+          <label key={v}>
             <span className={styles.labelText}>{v}</span>
             <input
               {...register(fieldName, { required })}
