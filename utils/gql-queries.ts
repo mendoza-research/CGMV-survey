@@ -144,3 +144,37 @@ export const RECORD_PLATFORM_QUESTIONS_QUERY = gql`
     }
   }
 `;
+
+export const RECORD_FIRST_EXIT_SURVEY_QUERY = gql`
+  mutation RecordSingleResponse(
+    $session_id: uuid!
+    $attention_check: Int!
+    $need_to_accomplish: Int!
+    $strive_for_accomplishment: Int!
+    $motivates_progress: Int!
+    $time_pass_quickly: Int!
+    $grabs_attention: Int!
+    $lose_myself: Int!
+    $playful_experience: Int!
+    $feel_like_exploring_things: Int!
+    $want_to_know_next: Int!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        attention_check: $attention_check
+        need_to_accomplish: $need_to_accomplish
+        strive_for_accomplishment: $strive_for_accomplishment
+        motivates_progress: $motivates_progress
+        time_pass_quickly: $time_pass_quickly
+        grabs_attention: $grabs_attention
+        lose_myself: $lose_myself
+        playful_experience: $playful_experience
+        feel_like_exploring_things: $feel_like_exploring_things
+        want_to_know_next: $want_to_know_next
+      }
+    ) {
+      session_id
+    }
+  }
+`;

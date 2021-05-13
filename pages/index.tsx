@@ -88,7 +88,7 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/platform-questions",
+    nextPathname: "/background",
   });
 
   useEffect(() => {

@@ -7,11 +7,13 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
 
       span.labelText {
         display: flex;
         align-items: center;
-        text-align: center;
         font-size: 0.9em;
         line-height: 1.35;
         height: 60px;
@@ -19,7 +21,6 @@
       }
 
       input[type="radio"] {
-        display: block;
       }
     }
   }

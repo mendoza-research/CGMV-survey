@@ -11,13 +11,6 @@ import { RECORD_PLATFORM_QUESTIONS_QUERY } from "utils/gql-queries";
 import _ from "lodash";
 import { useMemo } from "react";
 
-interface RiskRecollectionOption {
-  value: string;
-  imagePath: string;
-  imageWidth: number;
-  imageHeight: number;
-}
-
 export default function PlatformQuestionsPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
   const { toNext } = usePageNavigation({
