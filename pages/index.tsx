@@ -88,7 +88,7 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/invest",
+    nextPathname: "/order-confirmed",
   });
 
   useEffect(() => {

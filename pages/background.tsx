@@ -10,7 +10,13 @@ export default function BackgroundPage() {
     <Layout>
       <main>
         <div>
-          <h2>Background</h2>
+          <h2
+            style={{
+              textDecoration: "underline",
+            }}
+          >
+            Background
+          </h2>
           <p>
             For this study, assume you have just received a $10,000 cash
             inheritance from a distant relative, and you have decided to use
