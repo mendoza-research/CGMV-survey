@@ -154,7 +154,7 @@ let knowledgeItems: IKnowledgeItem[] = [
 export default function OrderConfirmedPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
   const { toNext } = usePageNavigation({
-    nextPathname: "/investment-questions",
+    nextPathname: "/platform-questions",
   });
 
   const [recordKnowledgeItemClicks] = useMutation(
@@ -168,8 +168,6 @@ export default function OrderConfirmedPage() {
       isOpen: false,
     };
   });
-
-  console.log(knowledgeItems.map((o) => o.fieldName));
 
   const [itemsStatusMap, setItemsStatusMap] = useState<IItemsStatusMap>(
     itemsStatusInitialMap

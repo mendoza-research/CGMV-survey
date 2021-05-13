@@ -149,3 +149,29 @@ main.investmentBox {
     width: 100%;
   }
 }
+
+.platformQuestions {
+  h2 {
+    text-decoration: underline;
+    margin-top: 20px;
+  }
+
+  p {
+    margin-top: 12px;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin-top: 16px;
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    &.selected {
+      background: #ddd;
+    }
+  }
+}

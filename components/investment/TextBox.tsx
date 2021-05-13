@@ -12,18 +12,22 @@ interface ITextBoxProps {
   children: React.ReactNode;
   toNext: () => void;
   animation?: AnimationEnum;
+  nextButtonText?: string;
 }
 
 export default function TextBox({
   children,
   toNext,
   animation,
+  nextButtonText,
 }: ITextBoxProps) {
   const gamification = useSurveyStore((state) => state.gamification);
   const shouldAnimate =
     animation && gamification === GamificationEnum.GAMIFICATION;
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPageExiting, setIsPageExiting] = useState(false);
+
+  nextButtonText = nextButtonText ? nextButtonText : "Next";
 
   const handleNextButtonClick = async (e) => {
     e.preventDefault();
@@ -75,7 +79,9 @@ export default function TextBox({
                   justifyContent: "flex-end",
                 }}
               >
-                <button onClick={handleNextButtonClick}>Next</button>
+                <button onClick={handleNextButtonClick}>
+                  {nextButtonText}
+                </button>
               </div>
             </div>
           </motion.main>

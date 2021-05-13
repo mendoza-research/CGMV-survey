@@ -88,7 +88,7 @@ export default function Home() {
   };
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/order-confirmed",
+    nextPathname: "/platform-questions",
   });
 
   useEffect(() => {

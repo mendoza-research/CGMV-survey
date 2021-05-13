@@ -126,3 +126,21 @@ export const RECORD_KNOWLEDGE_ITEM_CLICKS_QUERY = gql`
     }
   }
 `;
+
+export const RECORD_PLATFORM_QUESTIONS_QUERY = gql`
+  mutation RecordSingleResponse(
+    $session_id: uuid!
+    $risk_recollection: String!
+    $overall_experience: Int!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        risk_recollection: $risk_recollection
+        overall_experience: $overall_experience
+      }
+    ) {
+      session_id
+    }
+  }
+`;
