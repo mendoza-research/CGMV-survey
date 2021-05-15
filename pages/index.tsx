@@ -28,7 +28,7 @@ export default function Home() {
   const router = useRouter();
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/background",
+    nextPathname: "/exit-survey-01",
   });
 
   const { data: latestTreatmentData } = useQuery(LATEST_TREATMENT_QUERY);

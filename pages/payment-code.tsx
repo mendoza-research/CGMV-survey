@@ -23,7 +23,7 @@ export default function BackgroundPage() {
               padding: "4px 8px",
             }}
           >
-            {sessionId.substring(0, 6)}
+            {sessionId ? sessionId.substring(0, 6) : "Generating..."}
           </span>
         </p>
       </main>
