@@ -55,16 +55,16 @@ export default function InvestBox({ toNext, animation }: IInvestBoxProps) {
       setErrorMessage("");
     }
 
+    await recordInvestAmountsToDb({
+      variables: {
+        session_id: sessionId,
+        soundwaves_amount: soundWavesAmount,
+        virtuoso_amount: virtuosoAmount,
+      },
+    });
+
     if (shouldAnimate) {
       setIsAnimating(true);
-
-      await recordInvestAmountsToDb({
-        variables: {
-          session_id: sessionId,
-          soundwaves_amount: soundWavesAmount,
-          virtuoso_amount: virtuosoAmount,
-        },
-      });
 
       // Start page exit animation after ANIMATION_DURATION milliseconds
       setTimeout(() => {

@@ -100,20 +100,20 @@ export const UPDATE_INVEST_AMOUNTS_QUERY = gql`
 export const RECORD_KNOWLEDGE_ITEM_CLICKS_QUERY = gql`
   mutation RecordKnowledgeItemClicks(
     $session_id: uuid!
-    $click_EPS: Boolean!
-    $click_PE_ratio: Boolean!
-    $click_debt_ratio: Boolean!
-    $click_fiscal_year: Boolean!
-    $click_market_cap: Boolean!
-    $click_gross_margin: Boolean!
-    $click_net_income: Boolean!
-    $click_stock_split: Boolean!
+    $click_eps: Int!
+    $click_pe_ratio: Int!
+    $click_debt_ratio: Int!
+    $click_fiscal_year: Int!
+    $click_market_cap: Int!
+    $click_gross_margin: Int!
+    $click_net_income: Int!
+    $click_stock_split: Int!
   ) {
     update_cgmv_sessions_by_pk(
       pk_columns: { session_id: $session_id }
       _set: {
-        click_EPS: $click_EPS
-        click_PE_ratio: $click_PE_ratio
+        click_eps: $click_eps
+        click_pe_ratio: $click_pe_ratio
         click_debt_ratio: $click_debt_ratio
         click_fiscal_year: $click_fiscal_year
         click_market_cap: $click_market_cap
@@ -146,7 +146,7 @@ export const RECORD_PLATFORM_QUESTIONS_QUERY = gql`
 `;
 
 export const RECORD_FIRST_EXIT_SURVEY_QUERY = gql`
-  mutation RecordSingleResponse(
+  mutation RecordFirstExitSurvey(
     $session_id: uuid!
     $attention_check: Int!
     $need_to_accomplish: Int!
@@ -173,6 +173,73 @@ export const RECORD_FIRST_EXIT_SURVEY_QUERY = gql`
         feel_like_exploring_things: $feel_like_exploring_things
         want_to_know_next: $want_to_know_next
       }
+    ) {
+      session_id
+    }
+  }
+`;
+
+export const RECORD_SECOND_EXIT_SURVEY_QUERY = gql`
+  mutation RecordSecondExitSurvey(
+    $session_id: uuid!
+    $used_robinhood: Int!
+    $used_acorns: Int!
+    $used_public: Int!
+    $used_webull: Int!
+    $used_sofi: Int!
+    $used_ally_invest: Int!
+    $used_other: Int!
+    $other_platform: String!
+    $never_used: Int!
+    $invested_in_stock: Int!
+    $investing_knowledge: Int!
+    $plan_to_invest: Int!
+    $num_accy_courses: Int!
+    $num_fin_courses: Int!
+    $english_first_language: Int!
+    $other_first_language: String!
+    $age: Int!
+    $gender: Int!
+    $gender_self_describe: String!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        used_robinhood: $used_robinhood
+        used_acorns: $used_acorns
+        used_public: $used_public
+        used_webull: $used_webull
+        used_sofi: $used_sofi
+        used_ally_invest: $used_ally_invest
+        used_other: $used_other
+        other_platform: $other_platform
+        never_used: $never_used
+        invested_in_stock: $invested_in_stock
+        investing_knowledge: $investing_knowledge
+        plan_to_invest: $plan_to_invest
+        num_accy_courses: $num_accy_courses
+        num_fin_courses: $num_fin_courses
+        english_first_language: $english_first_language
+        other_first_language: $other_first_language
+        age: $age
+        gender: $gender
+        gender_self_describe: $gender_self_describe
+      }
+    ) {
+      session_id
+    }
+  }
+`;
+
+export const RECORD_OPTIONAL_GAME_PAGE_QUERY = gql`
+  mutation RecordOptionalGamePage(
+    $session_id: uuid!
+    $game_duration: Int!
+    $final_thoughts: String!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: { game_duration: $game_duration, final_thoughts: $final_thoughts }
     ) {
       session_id
     }

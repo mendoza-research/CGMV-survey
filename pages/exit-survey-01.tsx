@@ -106,8 +106,6 @@ export default function PlatformQuestionsPage() {
     RECORD_FIRST_EXIT_SURVEY_QUERY
   );
 
-  console.log(pageQuestions.map((o) => o.fieldName));
-
   const {
     register,
     handleSubmit,
@@ -140,10 +138,16 @@ export default function PlatformQuestionsPage() {
 
   return (
     <Layout>
-      <main className={clsx(styles.exitSurveyFirst)}>
+      <main className={clsx(styles.exitSurvey)}>
+        <p>
+          Please indicate your agreement with each of the following statements
+          using the respective scale. Please base your responses on your
+          experience with the investment platform presented on the prior
+          screens.
+        </p>
         <form onSubmit={handleSubmit(onSubmit)}>
           {shuffledQuestions.map((q) => (
-            <div className={styles.questionWrapper}>
+            <div key={q.fieldName} className={styles.questionWrapper}>
               <AgreementScale
                 fieldName={q.fieldName}
                 text={q.text}

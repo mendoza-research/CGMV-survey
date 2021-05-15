@@ -38,7 +38,7 @@ let knowledgeItems: IKnowledgeItem[] = [
     ),
   },
   {
-    fieldName: "click_EPS",
+    fieldName: "click_eps",
     title: "What is Earnings per Share?",
     explanation: (
       <p>
@@ -111,7 +111,7 @@ let knowledgeItems: IKnowledgeItem[] = [
     ),
   },
   {
-    fieldName: "click_PE_ratio",
+    fieldName: "click_pe_ratio",
     title: "What is a Price Earnings (P/E) Ratio?",
     explanation: (
       <>
@@ -188,14 +188,20 @@ export default function OrderConfirmedPage() {
     await recordKnowledgeItemClicks({
       variables: {
         session_id: sessionId,
-        click_EPS: itemsStatusMap["click_EPS"].isClicked,
-        click_PE_ratio: itemsStatusMap["click_PE_ratio"].isClicked,
-        click_debt_ratio: itemsStatusMap["click_debt_ratio"].isClicked,
-        click_fiscal_year: itemsStatusMap["click_fiscal_year"].isClicked,
-        click_market_cap: itemsStatusMap["click_market_cap"].isClicked,
-        click_gross_margin: itemsStatusMap["click_gross_margin"].isClicked,
-        click_net_income: itemsStatusMap["click_net_income"].isClicked,
-        click_stock_split: itemsStatusMap["click_stock_split"].isClicked,
+        click_eps: Number(itemsStatusMap["click_eps"].isClicked),
+        click_pe_ratio: Number(itemsStatusMap["click_pe_ratio"].isClicked),
+        click_debt_ratio: Number(itemsStatusMap["click_debt_ratio"].isClicked),
+        click_fiscal_year: Number(
+          itemsStatusMap["click_fiscal_year"].isClicked
+        ),
+        click_market_cap: Number(itemsStatusMap["click_market_cap"].isClicked),
+        click_gross_margin: Number(
+          itemsStatusMap["click_gross_margin"].isClicked
+        ),
+        click_net_income: Number(itemsStatusMap["click_net_income"].isClicked),
+        click_stock_split: Number(
+          itemsStatusMap["click_stock_split"].isClicked
+        ),
       },
     });
 

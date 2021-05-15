@@ -1,10 +1,66 @@
-.exitSurveyFirst {
+.exitSurvey {
+  width: 860px;
+  margin: 0 auto;
+
+  .animationWrapper {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  form {
+    width: 100%;
+  }
+
   .questionWrapper {
     margin-top: 50px;
 
     p {
       font-weight: bold;
       margin-bottom: 12px;
+    }
+  }
+
+  .optionsWrapper {
+    label,
+    .label {
+      display: flex;
+      align-items: center;
+      padding: 4px 8px;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      input[type="radio"],
+      input[type="checkbox"] {
+        display: inline-block;
+        margin-right: 8px;
+      }
+
+      .innerLabel {
+        padding: 0;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        font-family: "EB Garamond", serif;
+        font-size: 1em;
+        display: inline-block;
+        background: transparent;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid black;
+        padding: 2px 4px;
+        margin-left: 6px;
+
+        &:focus {
+          border-color: #4472c4;
+        }
+      }
     }
   }
 }
