@@ -1,6 +1,7 @@
+import Image from "next/image";
 import { useMutation } from "@apollo/client";
 import Layout from "components/Layout";
-import SnakeGame from "components/snake-game";
+import SnakeGame from "components/SnakeGame";
 import usePageNavigation from "hooks/usePageNavigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -61,6 +62,15 @@ export default function OptionalGamePage() {
           </p>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <SnakeGame />
+
+            <div style={{ paddingLeft: "20px" }}>
+              <Image
+                src="/images/arrows_hand.png"
+                layout="fixed"
+                width={120}
+                height={97}
+              />
+            </div>
           </div>
         </div>
 

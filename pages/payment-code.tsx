@@ -17,7 +17,7 @@ export default function BackgroundPage() {
             style={{
               display: "inline-block",
               background: "#eee",
-              fontSize: "4rem",
+              fontSize: "3rem",
               padding: "4px 8px",
             }}
           >
