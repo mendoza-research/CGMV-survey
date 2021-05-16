@@ -1,6 +1,4 @@
 import Layout from "components/Layout";
-import usePageNavigation from "hooks/usePageNavigation";
-import { useEffect } from "react";
 import useSurveyStore from "stores/useSurveyStore";
 
 export default function BackgroundPage() {
@@ -19,7 +17,7 @@ export default function BackgroundPage() {
             style={{
               display: "inline-block",
               background: "#eee",
-              fontSize: "2rem",
+              fontSize: "4rem",
               padding: "4px 8px",
             }}
           >

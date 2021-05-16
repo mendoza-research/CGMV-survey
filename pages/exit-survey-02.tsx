@@ -3,10 +3,8 @@ import styles from "components/exit-survey/exit-survey.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { useForm } from "react-hook-form";
 import usePageNavigation from "hooks/usePageNavigation";
-import clsx from "clsx";
 import { useMutation } from "@apollo/client";
 import { RECORD_SECOND_EXIT_SURVEY_QUERY } from "utils/gql-queries";
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import { GamificationEnum } from "typings/survey";
 import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
@@ -52,7 +50,7 @@ export default function PlatformQuestionsPage() {
     setValue,
     trigger,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<IExitSurveyFormData>({
     reValidateMode: "onChange",
   });

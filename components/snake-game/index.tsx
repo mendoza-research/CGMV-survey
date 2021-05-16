@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import styles from "./snake-game.module.scss";
-import { Game, Keyboard, Component } from "lib/snake-game";
+import { Game } from "lib/snake-game";
 
 export default function SnakeGame() {
   const canvasRef = useRef(null);
