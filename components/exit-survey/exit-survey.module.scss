@@ -2,15 +2,6 @@
   width: 860px;
   margin: 0 auto;
 
-  .animationWrapper {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
   form {
     width: 100%;
   }
@@ -18,7 +9,7 @@
   .questionWrapper {
     margin-top: 50px;
 
-    p {
+    & > p {
       font-weight: bold;
       margin-bottom: 12px;
     }
@@ -63,4 +54,14 @@
       }
     }
   }
+}
+
+.animationWrapper {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: yellowgreen;
 }

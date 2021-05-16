@@ -12,6 +12,7 @@ import { GamificationEnum } from "typings/survey";
 import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
 import { AnimationEnum } from "typings/animation";
 import AnimationBox from "components/animations/AnimationBox";
+import ErrorMessageBox from "components/questions/ErrorMessageBox";
 
 interface IExitSurveyFormData {
   used_robinhood: boolean;
@@ -41,18 +42,23 @@ export default function PlatformQuestionsPage() {
   const { toNext } = usePageNavigation({
     nextPathname: "/optional-game",
   });
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(true);
   const [isPageExiting, setIsPageExiting] = useState(false);
 
   const {
     register,
     watch,
     setValue,
+    trigger,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<IExitSurveyFormData>({
-    mode: "onChange",
+    reValidateMode: "onChange",
   });
+
+  const other_platform = register("other_platform");
+  const other_first_language = register("other_first_language");
+  const gender_self_describe = register("gender_self_describe");
 
   const watchData = watch();
 
@@ -69,6 +75,7 @@ export default function PlatformQuestionsPage() {
 
     if (isAnyPlatformSelected) {
       setValue("never_used", false);
+      trigger("never_used");
     }
   }, [
     watchData.used_robinhood,
@@ -96,14 +103,11 @@ export default function PlatformQuestionsPage() {
         setValue(field as any, false);
       });
     }
+
+    trigger("used_other");
   }, [watchData.never_used]);
 
-  // Custom validation logic on top of react-hook-form's built-in validations
-  const validate = () => {
-    if (!isValid) {
-      return false;
-    }
-
+  const validateUsedPlatform = (never_used: boolean) => {
     if (
       [
         watchData.used_robinhood,
@@ -113,12 +117,16 @@ export default function PlatformQuestionsPage() {
         watchData.used_sofi,
         watchData.used_ally_invest,
         watchData.used_other,
-        watchData.never_used,
+        never_used,
       ].every((v) => !v)
     ) {
       return false;
     }
 
+    return true;
+  };
+
+  const validateUsedOtherPlatform = (v: any) => {
     if (
       watchData.used_other &&
       (!watchData.other_platform || watchData.other_platform.trim() === "")
@@ -126,16 +134,28 @@ export default function PlatformQuestionsPage() {
       return false;
     }
 
+    return true;
+  };
+
+  const validateEnglishFirstLanguage = (v: number) => {
+    v = Number(v);
+
     if (
-      Number(watchData.english_first_language) === 0 &&
+      v === 0 &&
       (!watchData.other_first_language ||
         watchData.other_first_language.trim() === "")
     ) {
       return false;
     }
 
+    return true;
+  };
+
+  const validateGender = (v: number) => {
+    v = Number(v);
+
     if (
-      Number(watchData.gender) === 4 &&
+      v === 4 &&
       (!watchData.gender_self_describe ||
         watchData.gender_self_describe.trim() === "")
     ) {
@@ -150,8 +170,7 @@ export default function PlatformQuestionsPage() {
   );
 
   const onSubmit = async (data) => {
-    console.log(data);
-    if (validate()) {
+    if (isValid) {
       await recordSecondExitSurveyQuestionsToDb({
         variables: {
           session_id: sessionId,
@@ -193,7 +212,7 @@ export default function PlatformQuestionsPage() {
         );
       }
 
-      toNext();
+      // toNext();
     }
   };
 
@@ -270,18 +289,27 @@ export default function PlatformQuestionsPage() {
                 <input
                   type="checkbox"
                   placeholder="used_other"
-                  {...register("used_other")}
+                  {...register("used_other", {
+                    validate: validateUsedOtherPlatform,
+                  })}
                 />
 
                 <div className={styles.innerLabel}>
                   <span className={styles.labelText}>Other</span>
                   <input
-                    type="text"
                     onFocus={() => {
                       setValue("used_other", true);
                     }}
-                    placeholder="Type here..."
-                    {...register("other_platform")}
+                    type="text"
+                    onChange={(e) => {
+                      setValue("other_platform", e.target.value);
+                      other_platform.onChange(e);
+                    }}
+                    onBlur={(e) => {
+                      trigger("used_other");
+                      other_platform.onBlur(e);
+                    }}
+                    ref={other_platform.ref}
                   />
                 </div>
               </label>
@@ -289,13 +317,20 @@ export default function PlatformQuestionsPage() {
                 <input
                   type="checkbox"
                   placeholder="never_used"
-                  {...register("never_used")}
+                  {...register("never_used", {
+                    validate: validateUsedPlatform,
+                  })}
                 />
                 <span className={styles.labelText}>
                   I have never used an investment platform.
                 </span>
               </label>
             </div>
+
+            {errors.used_other?.type === "validate" && (
+              <ErrorMessageBox message="Please enter the other platform(s) you have used." />
+            )}
+            {errors.never_used?.type === "validate" && <ErrorMessageBox />}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -321,6 +356,7 @@ export default function PlatformQuestionsPage() {
                 <span className={styles.labelText}>No</span>
               </label>
             </div>
+            {errors.invested_in_stock && <ErrorMessageBox />}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -359,6 +395,8 @@ export default function PlatformQuestionsPage() {
                 <span className={styles.labelText}>Extensive</span>
               </label>
             </div>
+
+            {errors.investing_knowledge && <ErrorMessageBox />}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -384,6 +422,8 @@ export default function PlatformQuestionsPage() {
                 <span className={styles.labelText}>No</span>
               </label>
             </div>
+
+            {errors.plan_to_invest && <ErrorMessageBox />}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -427,6 +467,13 @@ export default function PlatformQuestionsPage() {
                 </label>
               </div>
             </div>
+
+            {errors.num_accy_courses && (
+              <ErrorMessageBox message="Number of Accounting classes cannot be negative." />
+            )}
+            {errors.num_fin_courses && (
+              <ErrorMessageBox message="Number of Finance classes cannot be negative." />
+            )}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -434,7 +481,10 @@ export default function PlatformQuestionsPage() {
             <div className={styles.optionsWrapper}>
               <label>
                 <input
-                  {...register("english_first_language", { required: true })}
+                  {...register("english_first_language", {
+                    required: true,
+                    validate: validateEnglishFirstLanguage,
+                  })}
                   type="radio"
                   value="1"
                 />
@@ -447,6 +497,7 @@ export default function PlatformQuestionsPage() {
                 <input
                   {...register("english_first_language", {
                     required: true,
+                    validate: validateEnglishFirstLanguage,
                   })}
                   type="radio"
                   value="0"
@@ -460,12 +511,26 @@ export default function PlatformQuestionsPage() {
                       setValue("english_first_language", "0" as any);
                     }}
                     type="text"
-                    placeholder="Type here..."
-                    {...register("other_first_language")}
+                    onChange={(e) => {
+                      setValue("other_first_language", e.target.value);
+                      other_first_language.onChange(e);
+                    }}
+                    onBlur={(e) => {
+                      trigger("english_first_language");
+                      other_first_language.onBlur(e);
+                    }}
+                    ref={other_first_language.ref}
                   />
                 </div>
               </label>
             </div>
+
+            {errors.english_first_language?.type === "required" && (
+              <ErrorMessageBox />
+            )}
+            {errors.english_first_language?.type === "validate" && (
+              <ErrorMessageBox message="You must specify another first language if you select the second option." />
+            )}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -483,6 +548,10 @@ export default function PlatformQuestionsPage() {
                 </label>
               </div>
             </div>
+            {errors.age?.type === "required" && <ErrorMessageBox />}
+            {errors.age?.type === "min" && (
+              <ErrorMessageBox message="Age cannot be a negative number." />
+            )}
           </div>
 
           <div className={styles.questionWrapper}>
@@ -490,7 +559,10 @@ export default function PlatformQuestionsPage() {
             <div className={styles.optionsWrapper}>
               <label>
                 <input
-                  {...register("gender", { required: true })}
+                  {...register("gender", {
+                    required: true,
+                    validate: validateGender,
+                  })}
                   type="radio"
                   value="0"
                 />
@@ -498,7 +570,10 @@ export default function PlatformQuestionsPage() {
               </label>
               <label>
                 <input
-                  {...register("gender", { required: true })}
+                  {...register("gender", {
+                    required: true,
+                    validate: validateGender,
+                  })}
                   type="radio"
                   value="1"
                 />
@@ -506,7 +581,10 @@ export default function PlatformQuestionsPage() {
               </label>
               <label>
                 <input
-                  {...register("gender", { required: true })}
+                  {...register("gender", {
+                    required: true,
+                    validate: validateGender,
+                  })}
                   type="radio"
                   value="2"
                 />
@@ -514,7 +592,10 @@ export default function PlatformQuestionsPage() {
               </label>
               <label>
                 <input
-                  {...register("gender", { required: true })}
+                  {...register("gender", {
+                    required: true,
+                    validate: validateGender,
+                  })}
                   type="radio"
                   value="4"
                 />
@@ -528,26 +609,34 @@ export default function PlatformQuestionsPage() {
                       setValue("gender", "4" as any);
                     }}
                     type="text"
-                    placeholder="Type here..."
-                    {...register("gender_self_describe")}
+                    onChange={(e) => {
+                      setValue("gender_self_describe", e.target.value);
+                      gender_self_describe.onChange(e);
+                    }}
+                    onBlur={(e) => {
+                      trigger("gender");
+                      gender_self_describe.onBlur(e);
+                    }}
+                    ref={gender_self_describe.ref}
                   />
                 </div>
               </label>
             </div>
+
+            {errors.gender?.type === "required" && <ErrorMessageBox />}
+            {errors.gender?.type === "validate" && (
+              <ErrorMessageBox message="You must specify a gender if you select this option." />
+            )}
           </div>
 
           <div
             style={{
+              display: "flex",
+              justifyContent: "flex-end",
               marginTop: "40px",
-              textAlign: "right",
             }}
           >
-            <input
-              type="submit"
-              className="button"
-              value="Next"
-              disabled={!validate()}
-            />
+            <input type="submit" className="button" value="Next" />
           </div>
         </form>
       </main>

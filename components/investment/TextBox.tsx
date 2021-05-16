@@ -46,6 +46,9 @@ export default function TextBox({
       await new Promise((resolve) =>
         setTimeout(resolve, ANIMATION_DURATION + 300)
       );
+    } else {
+      setIsPageExiting(true);
+      await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
     toNext();
