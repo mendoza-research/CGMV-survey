@@ -9,6 +9,7 @@ import { useMutation } from "@apollo/client";
 import { RECORD_FIRST_EXIT_SURVEY_QUERY } from "utils/gql-queries";
 import _ from "lodash";
 import { useMemo } from "react";
+import ErrorMessageBox from "components/questions/ErrorMessageBox";
 
 interface IPageQuestion {
   fieldName: string;
@@ -34,7 +35,6 @@ const pageQuestions: IPageQuestion[] = [
       </p>
     ),
   },
-
   {
     fieldName: "strive_for_accomplishment",
     text: (
@@ -109,7 +109,7 @@ export default function PlatformQuestionsPage() {
   const {
     register,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm({
     mode: "onChange",
   });
@@ -153,6 +153,7 @@ export default function PlatformQuestionsPage() {
                 text={q.text}
                 register={register}
               />
+              {errors[q.fieldName] && <ErrorMessageBox />}
             </div>
           ))}
 
@@ -162,12 +163,7 @@ export default function PlatformQuestionsPage() {
               textAlign: "right",
             }}
           >
-            <input
-              type="submit"
-              className="button"
-              value="Next"
-              disabled={!isValid}
-            />
+            <input type="submit" className="button" value="Next" />
           </div>
         </form>
       </main>

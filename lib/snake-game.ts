@@ -216,11 +216,14 @@ export class SnakeGameController {
     this.ctx.fillStyle = "#bbb";
     this.ctx.font = "20px Lato";
     this.ctx.fillText(`Score: ${this.score}`, 5, this.canvasHeight - 5);
-    this.ctx.fillText(
-      `Duration: ${this.totalPlayDuration}`,
-      5,
-      this.canvasHeight - 25
-    );
+
+    if (process.env.NODE_ENV === "development") {
+      this.ctx.fillText(
+        `Duration: ${this.getPlayDuration()}`,
+        5,
+        this.canvasHeight - 25
+      );
+    }
   }
 
   drawCell(pos: TVector) {

@@ -1,7 +1,7 @@
 import Layout from "components/Layout";
 import useSurveyStore from "stores/useSurveyStore";
 
-export default function BackgroundPage() {
+export default function PaymentCodePage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
 
   return (

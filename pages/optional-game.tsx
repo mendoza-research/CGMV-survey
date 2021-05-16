@@ -6,7 +6,6 @@ import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { RECORD_OPTIONAL_GAME_PAGE_QUERY } from "utils/gql-queries";
 import { SnakeGameController } from "lib/snake-game";
-import _ from "lodash";
 import { useHotkeys } from "react-hotkeys-hook";
 
 const canvasWidth = 520;
