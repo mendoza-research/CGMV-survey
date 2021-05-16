@@ -1,3 +1,4 @@
+import { SnakeGameController } from "lib/snake-game";
 import { State } from "zustand";
 
 export enum GamificationEnum {
@@ -20,6 +21,8 @@ export interface ISurveyState extends State {
   currentPathname: string;
   setCurrentPathname: (newPathname: string) => void;
   visitedPathnames: string[];
+  snakeGameController: SnakeGameController;
+  setSnakeGameController: (controller: SnakeGameController) => void;
 }
 
 export interface ISingleQuestion {

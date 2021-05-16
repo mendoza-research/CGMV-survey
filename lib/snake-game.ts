@@ -21,7 +21,8 @@ export class SnakeGameController {
   snakeSize: number;
   canvasRef: RefObject<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D;
-  startTime: Date;
+  fps: number;
+  totalPlayDuration: number;
   isPlaying: boolean;
   snakePos: TVector;
   applePos: TVector;
@@ -36,12 +37,14 @@ export class SnakeGameController {
     cellWidth,
     snakeSize,
     canvasRef,
+    fps,
   }: {
     canvasWidth: number;
     canvasHeight: number;
     cellWidth: number;
     snakeSize: number;
     canvasRef: RefObject<HTMLCanvasElement>;
+    fps: number;
   }) {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
@@ -49,11 +52,13 @@ export class SnakeGameController {
     this.snakeSize = snakeSize;
     this.canvasRef = canvasRef;
     this.ctx = canvasRef.current.getContext("2d");
+    this.fps = fps;
     this.snakePos = null;
     this.applePos = null;
     this.snakeDirection = SnakeDirectionEnum.RIGHT;
     this.score = 0;
     this.isPlaying = false;
+    this.totalPlayDuration = 0;
   }
 
   handleKeydown(e) {
@@ -83,9 +88,6 @@ export class SnakeGameController {
 
   initSnake() {
     this.snakeCells = [];
-    // for (let i = 0; i < this.snakeSize; i++) {
-    //   this.snakeCells.push({ x: i, y: 0 });
-    // }
 
     for (let i = this.snakeSize - 1; i >= 0; i--) {
       this.snakeCells.push({ x: i, y: 0 });
@@ -103,33 +105,51 @@ export class SnakeGameController {
     };
   }
 
-  start() {
-    this.bindKeys();
-    this.restart();
-    this.startTime = new Date();
-    this.isPlaying = true;
-
+  startInterval() {
     if (!this.intervalControl) {
       this.intervalControl = setInterval(() => {
+        this.totalPlayDuration += 1000 / this.fps;
         this.updateFrame();
-      }, 100);
+      }, 1000 / this.fps);
     }
   }
 
-  restart() {
+  stopInterval() {
+    if (this.intervalControl) {
+      clearInterval(this.intervalControl);
+    }
+
+    this.intervalControl = null;
+  }
+
+  start() {
+    this.bindKeys();
+    this.reset();
+    this.isPlaying = true;
+
+    this.startInterval();
+  }
+
+  reset() {
     this.initSnake();
     this.initApple();
     this.snakeDirection = SnakeDirectionEnum.RIGHT;
     this.score = 0;
   }
 
-  stop() {
+  pause() {
     this.unbindKeys();
-    this.isPlaying = false;
+    this.stopInterval();
+  }
 
-    if (this.intervalControl) {
-      clearInterval(this.intervalControl);
-    }
+  stop() {
+    this.pause();
+  }
+
+  resume() {
+    this.bindKeys();
+    this.startInterval();
+    this.isPlaying = true;
   }
 
   updateFrame() {
@@ -154,7 +174,7 @@ export class SnakeGameController {
     }
 
     if (this.didCollide()) {
-      this.restart();
+      this.reset();
       return;
     }
 
@@ -196,6 +216,11 @@ export class SnakeGameController {
     this.ctx.fillStyle = "#bbb";
     this.ctx.font = "20px Lato";
     this.ctx.fillText(`Score: ${this.score}`, 5, this.canvasHeight - 5);
+    this.ctx.fillText(
+      `Duration: ${this.totalPlayDuration}`,
+      5,
+      this.canvasHeight - 25
+    );
   }
 
   drawCell(pos: TVector) {
@@ -217,8 +242,8 @@ export class SnakeGameController {
     );
   }
 
-  // Return the total amount of game played in duration
+  // Return the cumulative duration of game played in seconds
   getPlayDuration() {
-    return Math.round((new Date().getTime() - this.startTime.getTime()) / 1000);
+    return Math.round(this.totalPlayDuration / 1000);
   }
 }

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./SnakeGame.module.scss";
 import { SnakeGameController } from "lib/snake-game";
 import _ from "lodash";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -8,9 +7,10 @@ const canvasWidth = 520;
 const canvasHeight = 400;
 const cellWidth = 10;
 const snakeSize = 4;
+const fps = 10;
 
 export default function SnakeGame() {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   let snakeGame: SnakeGameController = null;
 
   useEffect(() => {
@@ -21,6 +21,7 @@ export default function SnakeGame() {
         cellWidth,
         snakeSize,
         canvasRef,
+        fps,
       });
     }
 
@@ -42,7 +43,7 @@ export default function SnakeGame() {
     <>
       <canvas
         ref={canvasRef}
-        className={styles.canvas}
+        style={{ border: "2px solid #999" }}
         width={canvasWidth}
         height={canvasHeight}
       />

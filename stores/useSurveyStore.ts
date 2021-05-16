@@ -5,6 +5,7 @@ import {
   FinancialInformationEnum,
   ISurveyState,
 } from "typings/survey";
+import { SnakeGameController } from "lib/snake-game";
 
 const useSurveyStore = create<ISurveyState>(
   devtools((set, get) => ({
@@ -35,6 +36,11 @@ const useSurveyStore = create<ISurveyState>(
         currentPathname: newPathname,
       })),
     visitedPathnames: [],
+    snakeGameController: null,
+    setSnakeGameController: (controller: SnakeGameController) =>
+      set(() => ({
+        snakeGameController: controller,
+      })),
   }))
 );
 
