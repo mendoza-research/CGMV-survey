@@ -31,11 +31,11 @@ export default function Layout({ children }: ILayoutProps) {
         <meta name="robots" content="noindex" />
       </Head>
 
-      {/* {process.env.NODE_ENV === "development" && ( */}
-      <div className={styles.devBox}>
-        {gamification} / {financialInformation}
-      </div>
-      {/* )} */}
+      {process.env.NODE_ENV === "development" && (
+        <div className={styles.devBox}>
+          {gamification} / {financialInformation}
+        </div>
+      )}
 
       <div className={styles.container}>{children}</div>
     </>

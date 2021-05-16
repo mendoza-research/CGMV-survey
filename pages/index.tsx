@@ -28,7 +28,7 @@ export default function Home() {
   const router = useRouter();
 
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/exit-survey-02",
+    nextPathname: "/background",
   });
 
   const { data: latestTreatmentData } = useQuery(LATEST_TREATMENT_QUERY);
@@ -68,6 +68,10 @@ export default function Home() {
       newGamification = newTreatmentGroups.gamification;
       newFinancialInformation = newTreatmentGroups.financialInformation;
     }
+
+    console.log(
+      `gamification=${newGamification}, financialInformation=${newFinancialInformation}`
+    );
 
     setGamification(newGamification);
     setFinancialInformation(newFinancialInformation);
