@@ -21,8 +21,8 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "attention_check",
     text: (
       <p>
-        Select "Strongly Disagree" on the scale below if you are paying
-        attention.
+          <strong>Select "Strongly Disagree" on the scale below if you are paying
+          attention.</strong>
       </p>
     ),
   },
@@ -30,8 +30,8 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "need_to_accomplish",
     text: (
       <p>
-        Using the investment platform makes me feel like I need to accomplish
-        things.
+          <strong>Using the investment platform makes me feel like I need to accomplish
+            things.</strong>
       </p>
     ),
   },
