@@ -94,16 +94,7 @@ export default function PlatformQuestionsPage() {
             Please answer two questions to help us improve this investment
             platform.
           </p>
-
-          <h2>Presentation of Investment Information</h2>
-
-          <p>
-            Please indicate your recollection of the risk potential for Sound
-            Waves and Virtuoso:
-          </p>
-
-          {shuffledRiskRecollectionOptions}
-
+          
           <h2>Overall Experience</h2>
 
           <AgreementScale
@@ -122,6 +113,15 @@ export default function PlatformQuestionsPage() {
             }
             register={register}
           />
+          
+          <h2>Presentation of Investment Information</h2>
+
+          <p>
+            Please indicate your recollection of the risk potential for Sound
+            Waves and Virtuoso:
+          </p>
+
+          {shuffledRiskRecollectionOptions}
 
           <div
             style={{
