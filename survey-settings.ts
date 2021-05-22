@@ -1,6 +1,6 @@
 // Gamification animation duration in milliseconds
 // 2000 == 2 seconds
-export const ANIMATION_DURATION = 2000;
+export const ANIMATION_DURATION = 2500;
 
 // Framer-motion animation variants
 export const quickFadeInOutVariants = {
