@@ -140,10 +140,9 @@ export default function PlatformQuestionsPage() {
     <Layout>
       <main className={clsx(styles.exitSurvey)}>
         <p>
-          Please indicate your agreement with each of the following statements
-          using the respective scale. Please base your responses on your
-          experience with the investment platform presented on the prior
-          screens.
+          Based on your experience with the investment platform presented on 
+          the prior screens, please indicate your agreement with each of the 
+          following statements.
         </p>
         <form onSubmit={handleSubmit(onSubmit)}>
           {shuffledQuestions.map((q) => (
