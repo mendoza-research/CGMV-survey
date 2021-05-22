@@ -39,7 +39,7 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "strive_for_accomplishment",
     text: (
       <p>
-        Using the investment platform pushes me to strive for accomplishments.
+        <strong>Using the investment platform pushes me to strive for accomplishments.</strong>
       </p>
     ),
   },
@@ -47,23 +47,23 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "motivates_progress",
     text: (
       <p>
-        Using the investment platform motivates me to progress and get better.
+        <strong>Using the investment platform motivates me to progress and get better.</strong>
       </p>
     ),
   },
   {
     fieldName: "time_pass_quickly",
-    text: <p>Using the investment platform makes time pass quickly.</p>,
+    text: <p><strong>Using the investment platform makes time pass quickly.</strong></p>,
   },
   {
     fieldName: "grabs_attention",
-    text: <p>Using the investment platform grabs all of my attention.</p>,
+    text: <p><strong>Using the investment platform grabs all of my attention.</strong></p>,
   },
   {
     fieldName: "lose_myself",
     text: (
       <p>
-        Using the investment platform makes me lose myself in what I am doing.
+        <strong>Using the investment platform makes me lose myself in what I am doing.</strong>
       </p>
     ),
   },
@@ -71,7 +71,7 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "playful_experience",
     text: (
       <p>
-        Using the investment platform provides an overall playful experience.
+        <strong>Using the investment platform provides an overall playful experience.</strong>
       </p>
     ),
   },
@@ -79,7 +79,7 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "feel_like_exploring_things",
     text: (
       <p>
-        Using the investment platform makes me feel like I am exploring things.
+        <strong>Using the investment platform makes me feel like I am exploring things.</strong>
       </p>
     ),
   },
@@ -87,7 +87,7 @@ const pageQuestions: IPageQuestion[] = [
     fieldName: "want_to_know_next",
     text: (
       <p>
-        Using the investment platform makes me want to know what comes next.
+        <strong>Using the investment platform makes me want to know what comes next.</strong>
       </p>
     ),
   },
