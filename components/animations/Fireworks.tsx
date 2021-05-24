@@ -49,7 +49,6 @@ export default function Fireworks() {
   */
   function draw(p5: p5Types) {
     p5.translate(p5.width / 2, p5.height);
-    // p5.background("#e6e6e6");
 
     /* Remove the exploded shells and burnt out stars */
     shells = shells.filter((shell) => !shell.exploded);
