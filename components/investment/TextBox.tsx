@@ -1,12 +1,13 @@
 import Layout from "components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
+import { quickFadeInOutVariants } from "survey-settings";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
 import { useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
+import { getAnimationDuration } from "utils/animation";
 
 interface ITextBoxProps {
   children: React.ReactNode;
@@ -35,16 +36,18 @@ export default function TextBox({
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      // Start page exit animation after ANIMATION_DURATION milliseconds
+      const animationDuration = getAnimationDuration(animation);
+
+      // Start page exit animation after animationDuration milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, ANIMATION_DURATION);
+      }, animationDuration);
 
-      // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
-      // Animation is displayed for ANIMATION_DURATION milliseconds
+      // Navigate to next page in animationDuration + 0.3 seconds
+      // Animation is displayed for animationDuration milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
       await new Promise((resolve) =>
-        setTimeout(resolve, ANIMATION_DURATION + 300)
+        setTimeout(resolve, animationDuration + 300)
       );
     } else {
       setIsPageExiting(true);

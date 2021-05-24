@@ -10,12 +10,9 @@ import styles from "./investment.module.scss";
 import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
 import AnimationBox from "components/animations/AnimationBox";
-import {
-  ANIMATION_DURATION,
-  quickFadeInOutVariants,
-  slideInOutVariants,
-} from "survey-settings";
+import { quickFadeInOutVariants, slideInOutVariants } from "survey-settings";
 import { AnimatePresence, motion } from "framer-motion";
+import { getAnimationDuration } from "utils/animation";
 
 type FormValues = {
   response: string;
@@ -60,13 +57,15 @@ export default function SingleQuestionBox({
       return;
     }
 
+    const animationDuration = getAnimationDuration(animation);
+
     if (gamification === GamificationEnum.GAMIFICATION) {
       setIsAnimating(true);
 
-      // Start page exit animation after ANIMATION_DURATION milliseconds
+      // Start page exit animation after animationDuration milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, ANIMATION_DURATION);
+      }, animationDuration);
     }
 
     if (sessionId) {
@@ -80,11 +79,11 @@ export default function SingleQuestionBox({
     }
 
     if (gamification === GamificationEnum.GAMIFICATION) {
-      // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
-      // Animation is displayed for ANIMATION_DURATION milliseconds
+      // Navigate to next page in animationDuration + 0.3 seconds
+      // Animation is displayed for animationDuration milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
       await new Promise((resolve) =>
-        setTimeout(resolve, ANIMATION_DURATION + 300)
+        setTimeout(resolve, animationDuration + 300)
       );
     } else {
       setIsPageExiting(true);

@@ -245,7 +245,7 @@ export class SnakeGameController {
     );
   }
 
-  // Return the cumulative duration of game played in seconds
+  // Return the cumulative duration of game played in seconds (rounded to the nearest integer)
   getPlayDuration() {
     return Math.round(this.totalPlayDuration / 1000);
   }

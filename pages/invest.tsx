@@ -3,7 +3,7 @@ import Image from "next/image";
 import usePageNavigation from "hooks/usePageNavigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
+import { quickFadeInOutVariants } from "survey-settings";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
 import { formatAsCurrency } from "utils/investment";
@@ -14,8 +14,10 @@ import clsx from "clsx";
 import styles from "components/investment/investment.module.scss";
 import { UPDATE_INVEST_AMOUNTS_QUERY } from "utils/gql-queries";
 import { useMutation } from "@apollo/client";
+import { getAnimationDuration } from "utils/animation";
 
 const totalAvailable = 10000;
+const animation = AnimationEnum.FALLING_STARS;
 
 export default function InvestBox() {
   const { toNext } = usePageNavigation({
@@ -61,19 +63,21 @@ export default function InvestBox() {
       },
     });
 
+    const animationDuration = getAnimationDuration(animation);
+
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      // Start page exit animation after ANIMATION_DURATION milliseconds
+      // Start page exit animation after animationDuration milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, ANIMATION_DURATION);
+      }, animationDuration);
 
-      // Navigate to next page in ANIMATION_DURATION + 0.3 seconds
-      // Animation is displayed for ANIMATION_DURATION milliseconds
+      // Navigate to next page in animationDuration + 0.3 seconds
+      // Animation is displayed for animationDuration milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
       await new Promise((resolve) =>
-        setTimeout(resolve, ANIMATION_DURATION + 300)
+        setTimeout(resolve, animationDuration + 300)
       );
     }
 
@@ -94,7 +98,7 @@ export default function InvestBox() {
           >
             {isAnimating && (
               <div className={styles.animationWrapper}>
-                <AnimationBox animation={AnimationEnum.FALLING_STARS} />
+                <AnimationBox animation={animation} />
               </div>
             )}
 

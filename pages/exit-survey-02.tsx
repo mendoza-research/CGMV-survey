@@ -7,11 +7,12 @@ import { useMutation } from "@apollo/client";
 import { RECORD_SECOND_EXIT_SURVEY_QUERY } from "utils/gql-queries";
 import { useEffect, useState } from "react";
 import { GamificationEnum } from "typings/survey";
-import { ANIMATION_DURATION, quickFadeInOutVariants } from "survey-settings";
+import { quickFadeInOutVariants } from "survey-settings";
 import { AnimationEnum } from "typings/animation";
 import AnimationBox from "components/animations/AnimationBox";
 import ErrorMessageBox from "components/questions/ErrorMessageBox";
 import { motion, AnimatePresence } from "framer-motion";
+import { getAnimationDuration } from "utils/animation";
 
 interface IExitSurveyFormData {
   used_robinhood: boolean;
@@ -34,6 +35,8 @@ interface IExitSurveyFormData {
   gender: number;
   gender_self_describe: string;
 }
+
+const animation = AnimationEnum.FIREWORKS;
 
 export default function PlatformQuestionsPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
@@ -194,16 +197,18 @@ export default function PlatformQuestionsPage() {
       },
     });
 
+    const animationDuration = getAnimationDuration(animation);
+
     if (gamification === GamificationEnum.GAMIFICATION) {
       setIsAnimating(true);
 
-      // Start page exit animation after ANIMATION_DURATION milliseconds
+      // Start page exit animation after animationDuration milliseconds
       setTimeout(() => {
         setIsPageExiting(true);
-      }, ANIMATION_DURATION);
+      }, animationDuration);
 
       await new Promise((resolve) =>
-        setTimeout(resolve, ANIMATION_DURATION + 300)
+        setTimeout(resolve, animationDuration + 300)
       );
     } else {
       setIsPageExiting(true);
@@ -227,7 +232,7 @@ export default function PlatformQuestionsPage() {
           >
             {isAnimating && (
               <div className={styles.animationWrapper}>
-                <AnimationBox animation={AnimationEnum.FIREWORKS} />
+                <AnimationBox animation={animation} />
               </div>
             )}
             <p>

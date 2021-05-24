@@ -1,6 +1,14 @@
 // Gamification animation duration in milliseconds
-// 2000 == 2 seconds
-export const ANIMATION_DURATION = 2500;
+
+import { AnimationEnum } from "typings/animation";
+
+// Animation duration in milliseconds
+export const ANIMATION_DURATIONS: { [key in AnimationEnum]?: number } = {
+  [AnimationEnum.CONFETTI]: 2000,
+  [AnimationEnum.FALLING_STARS]: 2500,
+  [AnimationEnum.FIREWORKS]: 3000,
+  [AnimationEnum.RISING_BALLOONS]: 2000,
+};
 
 // Framer-motion animation variants
 export const quickFadeInOutVariants = {
