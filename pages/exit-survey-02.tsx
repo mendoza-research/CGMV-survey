@@ -7,12 +7,11 @@ import { useMutation } from "@apollo/client";
 import { RECORD_SECOND_EXIT_SURVEY_QUERY } from "utils/gql-queries";
 import { useEffect, useState } from "react";
 import { GamificationEnum } from "typings/survey";
-import { quickFadeInOutVariants } from "survey-settings";
 import { AnimationEnum } from "typings/animation";
 import AnimationBox from "components/animations/AnimationBox";
 import ErrorMessageBox from "components/questions/ErrorMessageBox";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAnimationDuration } from "utils/animation";
+import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
 
 interface IExitSurveyFormData {
   used_robinhood: boolean;
@@ -41,6 +40,7 @@ const animation = AnimationEnum.FIREWORKS;
 export default function PlatformQuestionsPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification = useSurveyStore((state) => state.gamification);
+  const shouldAnimate = gamification === GamificationEnum.GAMIFICATION;
   const { toNext } = usePageNavigation({
     nextPathname: "/optional-game",
   });
@@ -199,7 +199,7 @@ export default function PlatformQuestionsPage() {
 
     const animationDuration = getAnimationDuration(animation);
 
-    if (gamification === GamificationEnum.GAMIFICATION) {
+    if (shouldAnimate) {
       setIsAnimating(true);
 
       // Start page exit animation after animationDuration milliseconds
@@ -210,9 +210,6 @@ export default function PlatformQuestionsPage() {
       await new Promise((resolve) =>
         setTimeout(resolve, animationDuration + 300)
       );
-    } else {
-      setIsPageExiting(true);
-      await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
     toNext();
@@ -227,7 +224,7 @@ export default function PlatformQuestionsPage() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={quickFadeInOutVariants}
+            variants={getFadeInOutVariants(shouldAnimate)}
             className={styles.exitSurvey}
           >
             {isAnimating && (

@@ -3,7 +3,6 @@ import Image from "next/image";
 import usePageNavigation from "hooks/usePageNavigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { quickFadeInOutVariants } from "survey-settings";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
 import { formatAsCurrency } from "utils/investment";
@@ -14,7 +13,7 @@ import clsx from "clsx";
 import styles from "components/investment/investment.module.scss";
 import { UPDATE_INVEST_AMOUNTS_QUERY } from "utils/gql-queries";
 import { useMutation } from "@apollo/client";
-import { getAnimationDuration } from "utils/animation";
+import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
 
 const totalAvailable = 10000;
 const animation = AnimationEnum.FALLING_STARS;
@@ -93,7 +92,7 @@ export default function InvestBox() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={quickFadeInOutVariants}
+            variants={getFadeInOutVariants(shouldAnimate)}
             className={styles.investmentBox}
           >
             {isAnimating && (

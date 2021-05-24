@@ -10,9 +10,12 @@ import styles from "./investment.module.scss";
 import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
 import AnimationBox from "components/animations/AnimationBox";
-import { quickFadeInOutVariants, slideInOutVariants } from "survey-settings";
 import { AnimatePresence, motion } from "framer-motion";
-import { getAnimationDuration } from "utils/animation";
+import {
+  getAnimationDuration,
+  getFadeInOutVariants,
+  getSlideInOutVariants,
+} from "utils/animation";
 
 type FormValues = {
   response: string;
@@ -35,6 +38,7 @@ export default function SingleQuestionBox({
   const [isPageExiting, setIsPageExiting] = useState(false);
   const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification = useSurveyStore((state) => state.gamification);
+  const shouldAnimate = gamification === GamificationEnum.GAMIFICATION;
   const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery(fieldName);
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
 
@@ -59,7 +63,7 @@ export default function SingleQuestionBox({
 
     const animationDuration = getAnimationDuration(animation);
 
-    if (gamification === GamificationEnum.GAMIFICATION) {
+    if (shouldAnimate) {
       setIsAnimating(true);
 
       // Start page exit animation after animationDuration milliseconds
@@ -78,16 +82,13 @@ export default function SingleQuestionBox({
       });
     }
 
-    if (gamification === GamificationEnum.GAMIFICATION) {
+    if (shouldAnimate) {
       // Navigate to next page in animationDuration + 0.3 seconds
       // Animation is displayed for animationDuration milliseconds
       // Exit animation takes 0.3 seconds (300 milliseconds)
       await new Promise((resolve) =>
         setTimeout(resolve, animationDuration + 300)
       );
-    } else {
-      setIsPageExiting(true);
-      await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
     toNext();
@@ -102,7 +103,7 @@ export default function SingleQuestionBox({
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={quickFadeInOutVariants}
+            variants={getFadeInOutVariants(shouldAnimate)}
             className={clsx(styles.investmentBox, {
               [styles.gamification]:
                 gamification === GamificationEnum.GAMIFICATION,
@@ -123,7 +124,7 @@ export default function SingleQuestionBox({
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  variants={slideInOutVariants}
+                  variants={getSlideInOutVariants(shouldAnimate)}
                   className={styles.card}
                 >
                   <div>{question.text}</div>

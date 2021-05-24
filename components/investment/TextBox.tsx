@@ -1,13 +1,12 @@
 import Layout from "components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
-import { quickFadeInOutVariants } from "survey-settings";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
 import { useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
-import { getAnimationDuration } from "utils/animation";
+import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
 
 interface ITextBoxProps {
   children: React.ReactNode;
@@ -49,9 +48,6 @@ export default function TextBox({
       await new Promise((resolve) =>
         setTimeout(resolve, animationDuration + 300)
       );
-    } else {
-      setIsPageExiting(true);
-      await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
     toNext();
@@ -66,7 +62,7 @@ export default function TextBox({
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={quickFadeInOutVariants}
+            variants={getFadeInOutVariants(shouldAnimate)}
             className={styles.investmentBox}
           >
             {isAnimating && (
