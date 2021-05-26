@@ -12,6 +12,7 @@ import AnimationBox from "components/animations/AnimationBox";
 import ErrorMessageBox from "components/questions/ErrorMessageBox";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
+import clsx from "clsx";
 
 interface IExitSurveyFormData {
   used_robinhood: boolean;
@@ -28,6 +29,7 @@ interface IExitSurveyFormData {
   plan_to_invest: number;
   num_accy_courses: number;
   num_fin_courses: number;
+  no_accy_fin_course: boolean;
   english_first_language: number;
   other_first_language: string;
   age: number;
@@ -189,7 +191,8 @@ export default function PlatformQuestionsPage() {
         plan_to_invest: data["plan_to_invest"],
         num_accy_courses: Number(data["num_accy_courses"]),
         num_fin_courses: Number(data["num_fin_courses"]),
-        english_first_language: data["english_first_language"],
+        no_accy_fin_course: Number(data["no_accy_fin_course"]),
+        english_first_language: Number(data["english_first_language"]),
         other_first_language: data["other_first_language"],
         age: data["age"],
         gender: data["gender"],
@@ -440,7 +443,11 @@ export default function PlatformQuestionsPage() {
                   currently enrolled?
                 </p>
                 <div className={styles.optionsWrapper}>
-                  <div className={styles.label}>
+                  <div
+                    className={clsx(styles.label, {
+                      [styles.inactive]: watchData.no_accy_fin_course,
+                    })}
+                  >
                     <input
                       type="checkbox"
                       checked={watchData.num_accy_courses > 0}
@@ -458,7 +465,11 @@ export default function PlatformQuestionsPage() {
                       />
                     </label>
                   </div>
-                  <div className={styles.label}>
+                  <div
+                    className={clsx(styles.label, {
+                      [styles.inactive]: watchData.no_accy_fin_course,
+                    })}
+                  >
                     <input
                       type="checkbox"
                       checked={watchData.num_fin_courses > 0}
@@ -476,6 +487,16 @@ export default function PlatformQuestionsPage() {
                       />
                     </label>
                   </div>
+                  <label>
+                    <input
+                      type="checkbox"
+                      {...register("no_accy_fin_course")}
+                    />
+
+                    <span className={styles.labelText}>
+                      I have not taken any accounting or finance courses.
+                    </span>
+                  </label>
                 </div>
 
                 {errors.num_accy_courses && (

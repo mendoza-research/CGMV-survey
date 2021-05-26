@@ -292,8 +292,6 @@ export default function Fireworks() {
         p5.log(this.burntime) * 8 * this.speed.y +
         this.burntime * GRAVITY;
 
-      // p5.point(newXPos, newYPos);
-
       if (this.type == "writer" && this.burntime > 1) {
         p5.line(
           newXPos,

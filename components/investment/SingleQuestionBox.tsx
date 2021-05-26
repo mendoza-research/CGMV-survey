@@ -100,6 +100,10 @@ export default function SingleQuestionBox({
         {!isPageExiting && (
           <motion.main
             key="main"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={getFadeInOutVariants(shouldAnimate)}
             className={clsx(styles.investmentBox, {
               [styles.gamification]:
                 gamification === GamificationEnum.GAMIFICATION,
