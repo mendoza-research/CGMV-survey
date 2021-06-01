@@ -65,6 +65,8 @@ export default function PlatformQuestionsPage() {
   const gender_self_describe = register("gender_self_describe");
 
   const watchData = watch();
+  console.log("watchData");
+  console.log(watchData);
 
   useEffect(() => {
     const isAnyPlatformSelected = [
@@ -91,6 +93,9 @@ export default function PlatformQuestionsPage() {
     watchData.used_other,
   ]);
 
+  // If the user has selected
+  // "I have never used an investment platform.",
+  // uncheck all other options
   useEffect(() => {
     const fields = [
       "used_robinhood",
@@ -110,6 +115,13 @@ export default function PlatformQuestionsPage() {
 
     trigger("used_other");
   }, [watchData.never_used]);
+
+  useEffect(() => {
+    if (watchData.no_accy_fin_course) {
+      setValue("num_accy_courses", 0);
+      setValue("num_fin_courses", 0);
+    }
+  }, [watchData.no_accy_fin_course]);
 
   const validateUsedPlatform = (never_used: boolean) => {
     if (
@@ -136,6 +148,31 @@ export default function PlatformQuestionsPage() {
       (!watchData.other_platform || watchData.other_platform.trim() === "")
     ) {
       return false;
+    }
+
+    return true;
+  };
+
+  const validateAccyFinCourses = (v: any) => {
+    console.log(
+      `validateAccyFinCourses, no_accy_fin=${watchData.no_accy_fin_course}, num_accy=${watchData.num_accy_courses}, num_fin=${watchData.num_fin_courses}`
+    );
+    console.log(v);
+
+    if (watchData.no_accy_fin_course === false) {
+      if (
+        Number.isNaN(watchData.num_accy_courses) &&
+        Number.isNaN(watchData.num_fin_courses)
+      ) {
+        return false;
+      }
+
+      const num_accy = watchData.num_accy_courses || 0;
+      const num_fin = watchData.num_fin_courses || 0;
+
+      if (num_accy + num_fin === 0) {
+        return false;
+      }
     }
 
     return true;
@@ -174,6 +211,14 @@ export default function PlatformQuestionsPage() {
   );
 
   const onSubmit = async (data) => {
+    let num_accy_courses = 0;
+    let num_fin_courses = 0;
+
+    if (!data["no_accy_fin_course"]) {
+      num_accy_courses = data["num_accy_courses"] || 0;
+      num_fin_courses = data["num_fin_courses"] || 0;
+    }
+
     await recordSecondExitSurveyQuestionsToDb({
       variables: {
         session_id: sessionId,
@@ -186,11 +231,11 @@ export default function PlatformQuestionsPage() {
         used_other: Number(data["used_other"]),
         other_platform: data["other_platform"],
         never_used: Number(data["never_used"]),
-        invested_in_stock: data["invested_in_stock"],
-        investing_knowledge: data["investing_knowledge"],
-        plan_to_invest: data["plan_to_invest"],
-        num_accy_courses: Number(data["num_accy_courses"]),
-        num_fin_courses: Number(data["num_fin_courses"]),
+        invested_in_stock: Number(data["invested_in_stock"]),
+        investing_knowledge: Number(data["investing_knowledge"]),
+        plan_to_invest: Number(data["plan_to_invest"]),
+        num_accy_courses: num_accy_courses,
+        num_fin_courses: num_fin_courses,
         no_accy_fin_course: Number(data["no_accy_fin_course"]),
         english_first_language: Number(data["english_first_language"]),
         other_first_language: data["other_first_language"],
@@ -353,7 +398,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("invested_in_stock", { required: true })}
                       type="radio"
-                      value="1"
+                      value={1}
                     />
                     <span className={styles.labelText}>Yes</span>
                   </label>
@@ -361,7 +406,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("invested_in_stock", { required: true })}
                       type="radio"
-                      value="0"
+                      value={0}
                     />
                     <span className={styles.labelText}>No</span>
                   </label>
@@ -376,7 +421,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("investing_knowledge", { required: true })}
                       type="radio"
-                      value="1"
+                      value={1}
                     />
                     <span className={styles.labelText}>Non-existent</span>
                   </label>
@@ -384,7 +429,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("investing_knowledge", { required: true })}
                       type="radio"
-                      value="2"
+                      value={2}
                     />
                     <span className={styles.labelText}>Limited</span>
                   </label>
@@ -392,7 +437,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("investing_knowledge", { required: true })}
                       type="radio"
-                      value="3"
+                      value={3}
                     />
                     <span className={styles.labelText}>Good</span>
                   </label>
@@ -400,7 +445,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("investing_knowledge", { required: true })}
                       type="radio"
-                      value="4"
+                      value={4}
                     />
                     <span className={styles.labelText}>Extensive</span>
                   </label>
@@ -419,7 +464,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("plan_to_invest", { required: true })}
                       type="radio"
-                      value="1"
+                      value={1}
                     />
                     <span className={styles.labelText}>Yes</span>
                   </label>
@@ -427,7 +472,7 @@ export default function PlatformQuestionsPage() {
                     <input
                       {...register("plan_to_invest", { required: true })}
                       type="radio"
-                      value="0"
+                      value={0}
                     />
                     <span className={styles.labelText}>No</span>
                   </label>
@@ -461,7 +506,10 @@ export default function PlatformQuestionsPage() {
                       <input
                         type="number"
                         placeholder="Number here..."
-                        {...register("num_accy_courses", { min: 0 })}
+                        {...register("num_accy_courses", {
+                          min: 0,
+                          valueAsNumber: true,
+                        })}
                       />
                     </label>
                   </div>
@@ -483,14 +531,19 @@ export default function PlatformQuestionsPage() {
                       <input
                         type="number"
                         placeholder="Number here..."
-                        {...register("num_fin_courses", { min: 0 })}
+                        {...register("num_fin_courses", {
+                          min: 0,
+                          valueAsNumber: true,
+                        })}
                       />
                     </label>
                   </div>
                   <label>
                     <input
                       type="checkbox"
-                      {...register("no_accy_fin_course")}
+                      {...register("no_accy_fin_course", {
+                        validate: validateAccyFinCourses,
+                      })}
                     />
 
                     <span className={styles.labelText}>
@@ -504,6 +557,9 @@ export default function PlatformQuestionsPage() {
                 )}
                 {errors.num_fin_courses && (
                   <ErrorMessageBox message="Number of Finance classes cannot be negative." />
+                )}
+                {errors.no_accy_fin_course && (
+                  <ErrorMessageBox message="Please enter the number of courses." />
                 )}
               </div>
 
@@ -576,7 +632,11 @@ export default function PlatformQuestionsPage() {
                       <input
                         type="number"
                         placeholder="Type here..."
-                        {...register("age", { min: 0, required: true })}
+                        {...register("age", {
+                          min: 0,
+                          required: true,
+                          valueAsNumber: true,
+                        })}
                       />
                     </label>
                   </div>
@@ -597,7 +657,7 @@ export default function PlatformQuestionsPage() {
                         validate: validateGender,
                       })}
                       type="radio"
-                      value="0"
+                      value={0}
                     />
                     <span className={styles.labelText}>Male</span>
                   </label>
@@ -608,7 +668,7 @@ export default function PlatformQuestionsPage() {
                         validate: validateGender,
                       })}
                       type="radio"
-                      value="1"
+                      value={1}
                     />
                     <span className={styles.labelText}>Female</span>
                   </label>
@@ -619,7 +679,7 @@ export default function PlatformQuestionsPage() {
                         validate: validateGender,
                       })}
                       type="radio"
-                      value="2"
+                      value={2}
                     />
                     <span className={styles.labelText}>
                       Prefer not to answer
@@ -632,7 +692,7 @@ export default function PlatformQuestionsPage() {
                         validate: validateGender,
                       })}
                       type="radio"
-                      value="4"
+                      value={4}
                     />
 
                     <div className={styles.innerLabel}>
@@ -641,7 +701,7 @@ export default function PlatformQuestionsPage() {
                       </span>
                       <input
                         onFocus={() => {
-                          setValue("gender", "4" as any);
+                          setValue("gender", 4);
                         }}
                         type="text"
                         onChange={(e) => {

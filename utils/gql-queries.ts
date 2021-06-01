@@ -196,6 +196,7 @@ export const RECORD_SECOND_EXIT_SURVEY_QUERY = gql`
     $plan_to_invest: Int!
     $num_accy_courses: Int!
     $num_fin_courses: Int!
+    $no_accy_fin_course: Int!
     $english_first_language: Int!
     $other_first_language: String!
     $age: Int!
@@ -219,6 +220,7 @@ export const RECORD_SECOND_EXIT_SURVEY_QUERY = gql`
         plan_to_invest: $plan_to_invest
         num_accy_courses: $num_accy_courses
         num_fin_courses: $num_fin_courses
+        no_accy_fin_course: $no_accy_fin_course
         english_first_language: $english_first_language
         other_first_language: $other_first_language
         age: $age
