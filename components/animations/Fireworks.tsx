@@ -69,7 +69,6 @@ export default function Fireworks() {
     p5: p5Types;
     position: p5Types.Vector;
     speed: p5Types.Vector;
-    sparkleTrail: boolean;
     type: string;
     fuse: number;
     hue: number;
@@ -79,10 +78,9 @@ export default function Fireworks() {
       this.p5 = p5;
       this.position = p5.createVector(
         p5.int(p5.random(-p5.width / 5, p5.width / 5)),
-        0
+        p5.int(p5.random(-p5.height / 4, -p5.height / 1.5))
       );
-      this.speed = p5.createVector(p5.random(-2, 2), -p5.random(11, 16));
-      this.sparkleTrail = p5.random() < 0.5;
+      this.speed = p5.createVector(p5.random(-2, 2), -p5.random(1, 6));
       this.type = SHELLTYPES[Math.floor(Math.random() * SHELLTYPES.length)];
       this.fuse = p5.random(-3, -1);
       this.hue = p5.round(p5.random(0, 360));
@@ -95,28 +93,6 @@ export default function Fireworks() {
       if (this.fuse < this.speed.y) {
         this.explode();
         return;
-      }
-
-      if (this.sparkleTrail) {
-        let sparkleDir = p5.random(0, p5.TWO_PI);
-        let sparkleVel = p5.random(0, 1);
-        let sparkleSpd = p5.createVector(
-          sparkleVel * p5.cos(sparkleDir),
-          sparkleVel * p5.sin(sparkleDir)
-        );
-        let sparklePos = p5.createVector(
-          this.position.x + sparkleSpd.x,
-          this.position.y + sparkleSpd.y
-        );
-        let s = new Star({
-          p5,
-          position: sparklePos,
-          speed: sparkleSpd,
-          hue: p5.floor(p5.random(20, 40)),
-          sat: p5.floor(p5.random(0, 30)),
-          type: undefined,
-        });
-        stars.push(s);
       }
 
       p5.stroke(this.hue + p5.round(p5.random(-10, 10)), p5.random(0, 20), 90);
@@ -206,7 +182,7 @@ export default function Fireworks() {
         });
       } else if (this.type == "mega") {
         this.drawStars({
-          numStars: 600,
+          numStars: 300,
           velMin: 0,
           velMax: 8,
         });
