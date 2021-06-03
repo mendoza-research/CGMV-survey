@@ -211,7 +211,6 @@ export default function OrderConfirmedPage() {
 
   return (
     <TextBox
-      prefetchUrl={nextPathname}
       toNext={onNextButtonClick}
       animation={AnimationEnum.RISING_BALLOONS}
     >

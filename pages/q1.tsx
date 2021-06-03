@@ -32,7 +32,6 @@ export default function Q1Page() {
     <SingleQuestionBox
       fieldName="q1"
       question={question}
-      prefetchUrl={nextPathname}
       toNext={toNext}
       animation={AnimationEnum.CONFETTI}
     />

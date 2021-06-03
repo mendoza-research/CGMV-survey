@@ -14,7 +14,6 @@ import { UPDATE_INVEST_AMOUNTS_QUERY } from "utils/gql-queries";
 import { useMutation } from "@apollo/client";
 import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/router";
 
 const totalAvailable = 10000;
 const animation = AnimationEnum.FALLING_STARS;
@@ -36,11 +35,6 @@ export default function InvestBox() {
   const [virtuosoAmount, setVirtuosoAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [recordInvestAmountsToDb] = useMutation(UPDATE_INVEST_AMOUNTS_QUERY);
-  const router = useRouter();
-
-  useEffect(() => {
-    router.prefetch(nextPathname);
-  }, []);
 
   useEffect(() => {
     if (

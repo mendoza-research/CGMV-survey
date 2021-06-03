@@ -27,7 +27,7 @@ export default function Home() {
   );
   const router = useRouter();
 
-  const nextPathname = "/invest";
+  const nextPathname = "/background";
   const { isFirstVisit, toNext } = usePageNavigation({
     nextPathname,
   });
@@ -95,10 +95,6 @@ export default function Home() {
 
     setSessionId(sessionId);
   };
-
-  useEffect(() => {
-    router.prefetch(nextPathname);
-  }, []);
 
   useEffect(() => {
     if (

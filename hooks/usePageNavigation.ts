@@ -58,6 +58,7 @@ export default function usePageNavigation({
     if (!sessionId && router.pathname !== "/") {
       // Force page reload
       window.location.href = "/";
+      return;
     }
 
     if (router.pathname !== currentPathname) {
@@ -73,6 +74,9 @@ export default function usePageNavigation({
     if (sessionId) {
       recordPageEnter();
     }
+
+    // Prefetch next page
+    router.prefetch(nextPathname);
 
     return () => {
       if (sessionId) {

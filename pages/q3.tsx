@@ -23,7 +23,6 @@ export default function Q3Page() {
     <SingleQuestionBox
       fieldName="q3"
       question={question}
-      prefetchUrl={nextPathname}
       toNext={toNext}
       animation={AnimationEnum.RISING_BALLOONS}
     />

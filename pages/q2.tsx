@@ -26,7 +26,6 @@ export default function Q2Page() {
     <SingleQuestionBox
       fieldName="q2"
       question={question}
-      prefetchUrl={nextPathname}
       toNext={toNext}
       animation={AnimationEnum.FALLING_STARS}
     />

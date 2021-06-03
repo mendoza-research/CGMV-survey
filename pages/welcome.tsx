@@ -8,7 +8,7 @@ export default function WelcomePage() {
   });
 
   return (
-    <TextBox prefetchUrl={nextPathname} toNext={toNext}>
+    <TextBox toNext={toNext}>
       <p>
         Welcome – thank you for funding your account and for your interest in
         Sound Waves Inc. and Virtuoso Corp.! Before you can access more

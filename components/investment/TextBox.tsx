@@ -3,15 +3,13 @@ import { AnimationEnum } from "typings/animation";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
 import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/router";
 
 interface ITextBoxProps {
   children: React.ReactNode;
-  prefetchUrl?: string;
   toNext: () => void;
   animation?: AnimationEnum;
   nextButtonText?: string;
@@ -19,7 +17,6 @@ interface ITextBoxProps {
 
 export default function TextBox({
   children,
-  prefetchUrl,
   toNext,
   animation,
   nextButtonText,
@@ -29,15 +26,8 @@ export default function TextBox({
     animation && gamification === GamificationEnum.GAMIFICATION;
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPageExiting, setIsPageExiting] = useState(false);
-  const router = useRouter();
 
   nextButtonText = nextButtonText ? nextButtonText : "Next";
-
-  useEffect(() => {
-    if (prefetchUrl) {
-      router.prefetch(prefetchUrl);
-    }
-  }, []);
 
   const handleNextButtonClick = async (e) => {
     e.preventDefault();
