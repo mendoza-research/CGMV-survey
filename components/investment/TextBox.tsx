@@ -5,7 +5,8 @@ import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
 import { useEffect, useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
-import { getAnimationDuration } from "utils/animation";
+import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 
 interface ITextBoxProps {
@@ -27,6 +28,7 @@ export default function TextBox({
   const shouldAnimate =
     animation && gamification === GamificationEnum.GAMIFICATION;
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPageExiting, setIsPageExiting] = useState(false);
   const router = useRouter();
 
   nextButtonText = nextButtonText ? nextButtonText : "Next";
@@ -40,12 +42,19 @@ export default function TextBox({
   const handleNextButtonClick = async (e) => {
     e.preventDefault();
 
+    const animationDuration = getAnimationDuration(animation);
+
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      const animationDuration = getAnimationDuration(animation);
+      // Start page exit animation after animationDuration milliseconds
+      setTimeout(() => {
+        setIsPageExiting(true);
+      }, animationDuration);
 
-      await new Promise((resolve) => setTimeout(resolve, animationDuration));
+      await new Promise((resolve) =>
+        setTimeout(resolve, animationDuration + 300)
+      );
     }
 
     toNext();
@@ -55,9 +64,20 @@ export default function TextBox({
     <Layout>
       <main key="main" className={styles.investmentBox}>
         {isAnimating && (
-          <div className={styles.animationWrapper}>
-            <AnimationBox animation={animation} />
-          </div>
+          <AnimatePresence>
+            {!isPageExiting && (
+              <motion.div
+                key="gameAnimation"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={getFadeInOutVariants(shouldAnimate)}
+                className={styles.animationWrapper}
+              >
+                <AnimationBox animation={animation} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
 
         <div>

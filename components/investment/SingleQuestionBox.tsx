@@ -11,7 +11,12 @@ import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
 import AnimationBox from "components/animations/AnimationBox";
 import { AnimatePresence, motion } from "framer-motion";
-import { getAnimationDuration, getSlideInOutVariants } from "utils/animation";
+import {
+  getAnimationDuration,
+  getFadeInOutVariants,
+  getFadeOutVariants,
+  getSlideInOutVariants,
+} from "utils/animation";
 import { useRouter } from "next/router";
 
 type FormValues = {
@@ -111,9 +116,20 @@ export default function SingleQuestionBox({
         })}
       >
         {isAnimating && (
-          <div className={styles.animationWrapper}>
-            <AnimationBox animation={animation} />
-          </div>
+          <AnimatePresence>
+            {!isPageExiting && (
+              <motion.div
+                key="gameAnimation"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={getFadeInOutVariants(shouldAnimate)}
+                className={styles.animationWrapper}
+              >
+                <AnimationBox animation={animation} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
 
         <AnimatePresence>

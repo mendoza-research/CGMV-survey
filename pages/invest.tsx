@@ -12,14 +12,17 @@ import clsx from "clsx";
 import styles from "components/investment/investment.module.scss";
 import { UPDATE_INVEST_AMOUNTS_QUERY } from "utils/gql-queries";
 import { useMutation } from "@apollo/client";
-import { getAnimationDuration } from "utils/animation";
+import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/router";
 
 const totalAvailable = 10000;
 const animation = AnimationEnum.FALLING_STARS;
 
 export default function InvestBox() {
+  const nextPathname = "/order-confirmed";
   const { toNext } = usePageNavigation({
-    nextPathname: "/order-confirmed",
+    nextPathname,
   });
   const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification = useSurveyStore((state) => state.gamification);
@@ -33,6 +36,11 @@ export default function InvestBox() {
   const [virtuosoAmount, setVirtuosoAmount] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [recordInvestAmountsToDb] = useMutation(UPDATE_INVEST_AMOUNTS_QUERY);
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(nextPathname);
+  }, []);
 
   useEffect(() => {
     if (
@@ -66,9 +74,14 @@ export default function InvestBox() {
     if (shouldAnimate) {
       setIsAnimating(true);
 
-      // Navigate to next page in animationDuration milliseconds
-      // Animation is displayed for animationDuration milliseconds
-      await new Promise((resolve) => setTimeout(resolve, animationDuration));
+      // Start page exit animation after animationDuration milliseconds
+      setTimeout(() => {
+        setIsPageExiting(true);
+      }, animationDuration);
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, animationDuration + 300)
+      );
     }
 
     toNext();
@@ -78,9 +91,20 @@ export default function InvestBox() {
     <Layout>
       <main key="main" className={styles.investmentBox}>
         {isAnimating && (
-          <div className={styles.animationWrapper}>
-            <AnimationBox animation={animation} />
-          </div>
+          <AnimatePresence>
+            {!isPageExiting && (
+              <motion.div
+                key="gameAnimation"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={getFadeInOutVariants(shouldAnimate)}
+                className={styles.animationWrapper}
+              >
+                <AnimationBox animation={animation} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
 
         <div className={styles.financialInformationBox}>
