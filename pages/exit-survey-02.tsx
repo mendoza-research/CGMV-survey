@@ -65,8 +65,6 @@ export default function PlatformQuestionsPage() {
   const gender_self_describe = register("gender_self_describe");
 
   const watchData = watch();
-  console.log("watchData");
-  console.log(watchData);
 
   useEffect(() => {
     const isAnyPlatformSelected = [
@@ -154,11 +152,6 @@ export default function PlatformQuestionsPage() {
   };
 
   const validateAccyFinCourses = (v: any) => {
-    console.log(
-      `validateAccyFinCourses, no_accy_fin=${watchData.no_accy_fin_course}, num_accy=${watchData.num_accy_courses}, num_fin=${watchData.num_fin_courses}`
-    );
-    console.log(v);
-
     if (watchData.no_accy_fin_course === false) {
       if (
         Number.isNaN(watchData.num_accy_courses) &&
@@ -234,8 +227,8 @@ export default function PlatformQuestionsPage() {
         invested_in_stock: Number(data["invested_in_stock"]),
         investing_knowledge: Number(data["investing_knowledge"]),
         plan_to_invest: Number(data["plan_to_invest"]),
-        num_accy_courses: num_accy_courses,
-        num_fin_courses: num_fin_courses,
+        num_accy_courses,
+        num_fin_courses,
         no_accy_fin_course: Number(data["no_accy_fin_course"]),
         english_first_language: Number(data["english_first_language"]),
         other_first_language: data["other_first_language"],
