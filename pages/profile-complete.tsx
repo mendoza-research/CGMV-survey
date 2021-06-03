@@ -3,12 +3,17 @@ import TextBox from "components/investment/TextBox";
 import { AnimationEnum } from "typings/animation";
 
 export default function ProfileCompletePage() {
+  const nextPathname = "/invest";
   const { toNext } = usePageNavigation({
-    nextPathname: "/invest",
+    nextPathname,
   });
 
   return (
-    <TextBox toNext={toNext} animation={AnimationEnum.CONFETTI}>
+    <TextBox
+      prefetchUrl={nextPathname}
+      toNext={toNext}
+      animation={AnimationEnum.CONFETTI}
+    >
       <p>
         Profile complete! Now that you have completed your profile, you are
         ready to make an investment decision. Click "Next" to review the

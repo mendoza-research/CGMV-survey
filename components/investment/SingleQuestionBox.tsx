@@ -11,11 +11,7 @@ import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
 import AnimationBox from "components/animations/AnimationBox";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  getAnimationDuration,
-  getFadeInOutVariants,
-  getSlideInOutVariants,
-} from "utils/animation";
+import { getAnimationDuration, getSlideInOutVariants } from "utils/animation";
 import { useRouter } from "next/router";
 
 type FormValues = {
@@ -106,84 +102,75 @@ export default function SingleQuestionBox({
 
   return (
     <Layout>
-      <AnimatePresence>
-        {!isPageExiting && (
-          <motion.main
-            key="main"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={getFadeInOutVariants(shouldAnimate)}
-            className={clsx(styles.investmentBox, {
-              [styles.gamification]:
-                gamification === GamificationEnum.GAMIFICATION,
-              [styles.noGamification]:
-                gamification === GamificationEnum.NO_GAMIFICATION,
-            })}
-          >
-            {isAnimating && (
-              <div className={styles.animationWrapper}>
-                <AnimationBox animation={animation} />
+      <main
+        key="main"
+        className={clsx(styles.investmentBox, {
+          [styles.gamification]: gamification === GamificationEnum.GAMIFICATION,
+          [styles.noGamification]:
+            gamification === GamificationEnum.NO_GAMIFICATION,
+        })}
+      >
+        {isAnimating && (
+          <div className={styles.animationWrapper}>
+            <AnimationBox animation={animation} />
+          </div>
+        )}
+
+        <AnimatePresence>
+          {!isPageExiting && (
+            <motion.div
+              key="card"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={getSlideInOutVariants(shouldAnimate)}
+              className={styles.card}
+            >
+              <div>{question.text}</div>
+
+              <div className={styles.singleQuestionForm}>
+                {question.options.map((o) => (
+                  <label
+                    key={o}
+                    className={clsx(styles.radioLabel, {
+                      [styles.selected]: o === userResponseString,
+                    })}
+                  >
+                    <input
+                      {...register("response", { required: true })}
+                      type="radio"
+                      value={o}
+                    />
+                    <span>{o}</span>
+                  </label>
+                ))}
               </div>
-            )}
 
-            <AnimatePresence>
-              {!isAnimating && (
-                <motion.div
-                  key="card"
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={getSlideInOutVariants(shouldAnimate)}
-                  className={styles.card}
-                >
-                  <div>{question.text}</div>
-
-                  <div className={styles.singleQuestionForm}>
-                    {question.options.map((o) => (
-                      <label
-                        key={o}
-                        className={clsx(styles.radioLabel, {
-                          [styles.selected]: o === userResponseString,
-                        })}
-                      >
-                        <input
-                          {...register("response", { required: true })}
-                          type="radio"
-                          value={o}
-                        />
-                        <span>{o}</span>
-                      </label>
-                    ))}
-                  </div>
-
-                  <div className={styles.bottomNavigation}>
-                    <button
-                      disabled={!formState.isValid}
-                      onClick={handleNextButtonClick}
-                    >
-                      Next
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {!isAnimating && (
-              <div className={styles.rightNavigation}>
-                <span
-                  className={clsx(styles.navButton, {
-                    [styles.disabled]: !formState.isValid,
-                  })}
+              <div className={styles.bottomNavigation}>
+                <button
+                  disabled={!formState.isValid}
                   onClick={handleNextButtonClick}
                 >
-                  <IoIosArrowForward className={styles.reactIcon} />
-                </span>
+                  Next
+                </button>
               </div>
-            )}
-          </motion.main>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {!isAnimating && (
+          <div className={styles.rightNavigation}>
+            <span
+              className={clsx(styles.navButton, {
+                [styles.disabled]: !formState.isValid,
+              })}
+              onClick={handleNextButtonClick}
+            >
+              <IoIosArrowForward className={styles.reactIcon} />
+            </span>
+          </div>
         )}
-      </AnimatePresence>
+      </main>
     </Layout>
   );
 }

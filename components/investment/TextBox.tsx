@@ -1,15 +1,16 @@
 import Layout from "components/Layout";
-import { motion, AnimatePresence } from "framer-motion";
 import { AnimationEnum } from "typings/animation";
 import styles from "./investment.module.scss";
 import useSurveyStore from "stores/useSurveyStore";
 import { GamificationEnum } from "typings/survey";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
-import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
+import { getAnimationDuration } from "utils/animation";
+import { useRouter } from "next/router";
 
 interface ITextBoxProps {
   children: React.ReactNode;
+  prefetchUrl?: string;
   toNext: () => void;
   animation?: AnimationEnum;
   nextButtonText?: string;
@@ -17,6 +18,7 @@ interface ITextBoxProps {
 
 export default function TextBox({
   children,
+  prefetchUrl,
   toNext,
   animation,
   nextButtonText,
@@ -25,9 +27,15 @@ export default function TextBox({
   const shouldAnimate =
     animation && gamification === GamificationEnum.GAMIFICATION;
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isPageExiting, setIsPageExiting] = useState(false);
+  const router = useRouter();
 
   nextButtonText = nextButtonText ? nextButtonText : "Next";
+
+  useEffect(() => {
+    if (prefetchUrl) {
+      router.prefetch(prefetchUrl);
+    }
+  }, []);
 
   const handleNextButtonClick = async (e) => {
     e.preventDefault();
@@ -37,17 +45,7 @@ export default function TextBox({
 
       const animationDuration = getAnimationDuration(animation);
 
-      // Start page exit animation after animationDuration milliseconds
-      setTimeout(() => {
-        setIsPageExiting(true);
-      }, animationDuration);
-
-      // Navigate to next page in animationDuration + 0.3 seconds
-      // Animation is displayed for animationDuration milliseconds
-      // Exit animation takes 0.3 seconds (300 milliseconds)
-      await new Promise((resolve) =>
-        setTimeout(resolve, animationDuration + 300)
-      );
+      await new Promise((resolve) => setTimeout(resolve, animationDuration));
     }
 
     toNext();
@@ -55,40 +53,27 @@ export default function TextBox({
 
   return (
     <Layout>
-      <AnimatePresence>
-        {!isPageExiting && (
-          <motion.main
-            key="main"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={getFadeInOutVariants(shouldAnimate)}
-            className={styles.investmentBox}
-          >
-            {isAnimating && (
-              <div className={styles.animationWrapper}>
-                <AnimationBox animation={animation} />
-              </div>
-            )}
-
-            <div>
-              {children}
-
-              <div
-                style={{
-                  marginTop: "2rem",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <button onClick={handleNextButtonClick}>
-                  {nextButtonText}
-                </button>
-              </div>
-            </div>
-          </motion.main>
+      <main key="main" className={styles.investmentBox}>
+        {isAnimating && (
+          <div className={styles.animationWrapper}>
+            <AnimationBox animation={animation} />
+          </div>
         )}
-      </AnimatePresence>
+
+        <div>
+          {children}
+
+          <div
+            style={{
+              marginTop: "2rem",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <button onClick={handleNextButtonClick}>{nextButtonText}</button>
+          </div>
+        </div>
+      </main>
     </Layout>
   );
 }

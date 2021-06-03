@@ -153,8 +153,9 @@ let knowledgeItems: IKnowledgeItem[] = [
 
 export default function OrderConfirmedPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
+  const nextPathname = "/platform-questions";
   const { toNext } = usePageNavigation({
-    nextPathname: "/platform-questions",
+    nextPathname,
   });
 
   const [recordKnowledgeItemClicks] = useMutation(
@@ -210,6 +211,7 @@ export default function OrderConfirmedPage() {
 
   return (
     <TextBox
+      prefetchUrl={nextPathname}
       toNext={onNextButtonClick}
       animation={AnimationEnum.RISING_BALLOONS}
     >
