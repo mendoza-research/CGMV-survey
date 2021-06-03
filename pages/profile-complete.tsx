@@ -1,12 +1,19 @@
 import usePageNavigation from "hooks/usePageNavigation";
 import TextBox from "components/investment/TextBox";
 import { AnimationEnum } from "typings/animation";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function ProfileCompletePage() {
   const nextPathname = "/invest";
   const { toNext } = usePageNavigation({
     nextPathname,
   });
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(nextPathname);
+  }, []);
 
   return (
     <TextBox
