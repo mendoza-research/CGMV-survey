@@ -17,14 +17,16 @@ const question: ISingleQuestion = {
 };
 
 export default function Q4Page() {
+  const nextPathname = "/profile-complete";
   const { toNext } = usePageNavigation({
-    nextPathname: "/profile-complete",
+    nextPathname,
   });
 
   return (
     <SingleQuestionBox
       fieldName="q4"
       question={question}
+      prefetchUrl={nextPathname}
       toNext={toNext}
       animation={AnimationEnum.FIREWORKS}
     />

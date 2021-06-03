@@ -1,5 +1,5 @@
 import Layout from "components/Layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSurveyStore from "stores/useSurveyStore";
 import { useMutation } from "@apollo/client";
@@ -16,6 +16,7 @@ import {
   getFadeInOutVariants,
   getSlideInOutVariants,
 } from "utils/animation";
+import { useRouter } from "next/router";
 
 type FormValues = {
   response: string;
@@ -24,6 +25,7 @@ type FormValues = {
 export interface ISingleQuestionBoxProps {
   fieldName: string;
   question: ISingleQuestion;
+  prefetchUrl?: string;
   toNext: () => void;
   animation?: AnimationEnum;
 }
@@ -31,6 +33,7 @@ export interface ISingleQuestionBoxProps {
 export default function SingleQuestionBox({
   fieldName,
   question,
+  prefetchUrl,
   toNext,
   animation,
 }: ISingleQuestionBoxProps) {
@@ -41,6 +44,13 @@ export default function SingleQuestionBox({
   const shouldAnimate = gamification === GamificationEnum.GAMIFICATION;
   const RECORD_SINGLE_RESPONSE = getSingleQuestionUpdateQuery(fieldName);
   const [recordSingleResponseToDb] = useMutation(RECORD_SINGLE_RESPONSE);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (prefetchUrl) {
+      router.prefetch(prefetchUrl);
+    }
+  }, []);
 
   const { register, watch, formState } = useForm<FormValues>({
     mode: "onChange",

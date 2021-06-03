@@ -14,14 +14,16 @@ const question: ISingleQuestion = {
 };
 
 export default function Q3Page() {
+  const nextPathname = "/q4";
   const { toNext } = usePageNavigation({
-    nextPathname: "/q4",
+    nextPathname,
   });
 
   return (
     <SingleQuestionBox
       fieldName="q3"
       question={question}
+      prefetchUrl={nextPathname}
       toNext={toNext}
       animation={AnimationEnum.RISING_BALLOONS}
     />
