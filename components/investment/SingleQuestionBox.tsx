@@ -14,7 +14,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   getAnimationDuration,
   getFadeInOutVariants,
-  getFadeOutVariants,
   getSlideInOutVariants,
 } from "utils/animation";
 import { useRouter } from "next/router";

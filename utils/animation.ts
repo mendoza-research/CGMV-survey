@@ -7,23 +7,6 @@ export const noAnimationVariants = {
   exit: {},
 };
 
-// Framer-motion animation variants
-export const fadeOutVariants = {
-  hidden: {},
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.3,
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.3,
-    },
-  },
-};
-
 export const quickFadeInOutVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -74,10 +57,6 @@ export function getAnimationDuration(animation: AnimationEnum): number {
 
   // If unknown animation type, return 0
   return 0;
-}
-
-export function getFadeOutVariants(shouldAnimate: boolean) {
-  return shouldAnimate ? fadeOutVariants : noAnimationVariants;
 }
 
 export function getFadeInOutVariants(shouldAnimate: boolean) {
