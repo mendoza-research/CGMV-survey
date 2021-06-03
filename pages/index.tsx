@@ -27,8 +27,9 @@ export default function Home() {
   );
   const router = useRouter();
 
+  const nextPathname = "/background";
   const { isFirstVisit, toNext } = usePageNavigation({
-    nextPathname: "/profile-complete",
+    nextPathname,
   });
 
   const { data: latestTreatmentData } = useQuery(LATEST_TREATMENT_QUERY);
@@ -94,6 +95,10 @@ export default function Home() {
 
     setSessionId(sessionId);
   };
+
+  useEffect(() => {
+    router.prefetch(nextPathname);
+  }, []);
 
   useEffect(() => {
     if (
