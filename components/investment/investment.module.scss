@@ -118,22 +118,11 @@ main.investmentBox {
 .financialInformationBox {
   display: flex;
   text-align: center;
-
-  .leftBox {
-    flex: 1;
-    padding-right: 20px;
-    border-right: 2px solid black;
-  }
-
-  .rightBox {
-    flex: 1;
-    padding-left: 20px;
-  }
 }
 
 .allocationBox {
   border: 12px solid #cecece;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 1rem 2rem;
   position: relative;
 
