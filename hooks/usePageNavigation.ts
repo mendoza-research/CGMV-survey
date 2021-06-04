@@ -1,11 +1,8 @@
 import { useMutation } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSurveyStore from "stores/useSurveyStore";
-import {
-  RECORD_PAGE_ENTER_QUERY,
-  RECORD_PAGE_EXIT_QUERY,
-} from "utils/gql-queries";
+import { getRecordPageDuration } from "utils/gql-queries";
 
 interface IPageNavigationOptions {
   nextPathname: string;
@@ -16,36 +13,32 @@ export default function usePageNavigation({
 }: IPageNavigationOptions) {
   const router = useRouter();
   const sessionId = useSurveyStore((state) => state.sessionId);
-  const [recordPageEnterInDb] = useMutation(RECORD_PAGE_ENTER_QUERY);
-  const [recordPageExitInDb] = useMutation(RECORD_PAGE_EXIT_QUERY);
+  const [recordPageDurationInDb] = useMutation(
+    getRecordPageDuration(router.pathname)
+  );
   const currentPathname = useSurveyStore((state) => state.currentPathname);
   const setCurrentPathname = useSurveyStore(
     (state) => state.setCurrentPathname
   );
   const visitedPathnames = useSurveyStore((state) => state.visitedPathnames);
 
-  const recordPageEnter = async () => {
-    try {
-      await recordPageEnterInDb({
-        variables: {
-          session_id: sessionId,
-          pathname: router.pathname,
-        },
-      });
-    } catch (err) {
-      // Common error case is when a participant presses the back button in the browser and navigates to a previous page
-      // These backwards navigations should send back a participant to the originating page and NOT record a new page enter timestamp for a previous page
-      // This is implemented by enforcing a unique constraint on (session_id, pathname) in the cgmv_navigations table
-      console.error(err);
-    }
+  let enterTime;
+
+  const handlePageEnter = async () => {
+    enterTime = new Date();
   };
 
-  const recordPageExit = async () => {
+  const handlePageExit = async () => {
+    // Calculate the duration based on enter timestamp
+    let duration = Math.round(
+      (new Date().getTime() - enterTime.getTime()) / 1000
+    );
+
     try {
-      await recordPageExitInDb({
+      await recordPageDurationInDb({
         variables: {
           session_id: sessionId,
-          pathname: router.pathname,
+          duration,
         },
       });
     } catch (err) {
@@ -72,7 +65,7 @@ export default function usePageNavigation({
 
     // Record page enter timestamp if session has been intialized
     if (sessionId) {
-      recordPageEnter();
+      handlePageEnter();
     }
 
     // Prefetch next page
@@ -80,7 +73,7 @@ export default function usePageNavigation({
 
     return () => {
       if (sessionId) {
-        recordPageExit();
+        handlePageExit();
       }
     };
   }, []);

@@ -40,28 +40,28 @@ export const CREATE_CGMV_SESSION_QUERY = gql`
   }
 `;
 
-export const RECORD_PAGE_ENTER_QUERY = gql`
-  mutation RecordPageEnter($session_id: uuid, $pathname: String) {
-    insert_cgmv_navigations(
-      objects: { session_id: $session_id, pathname: $pathname }
-    ) {
-      affected_rows
-    }
-  }
-`;
+export function getRecordPageDuration(pathName: string) {
+  // Get the database field name from path
+  // Example: /order-confirmed --> order_confirmed_page_duration
+  let fieldName =
+    pathName
+      .replace(/[^\w]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .toLowerCase() + "_page_duration";
 
-export const RECORD_PAGE_EXIT_QUERY = gql`
-  mutation RecordPageExit($session_id: uuid, $pathname: String) {
-    update_cgmv_navigations(
-      where: {
-        _and: { session_id: { _eq: $session_id }, pathname: { _eq: $pathname } }
+  return gql`
+  mutation RecordPageDuration($session_id: uuid!, $duration: Int!) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        ${fieldName}: $duration,
       }
-      _set: { exit_time: "now" }
     ) {
-      affected_rows
+      session_id
     }
   }
 `;
+}
 
 export function getSingleQuestionUpdateQuery(fieldName: string) {
   return gql`
