@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSurveyStore from "stores/useSurveyStore";
 import { getRecordPageDuration } from "utils/gql-queries";

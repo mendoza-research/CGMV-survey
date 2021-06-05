@@ -19,6 +19,8 @@ export default function OptionalGamePage() {
     nextPathname: "/payment-code",
   });
   const sessionId = useSurveyStore((state) => state.sessionId);
+  const getPaymentCode = useSurveyStore((state) => state.getPaymentCode);
+  const paymentCode = getPaymentCode();
   const [finalThoughts, setFinalThoughts] = useState("");
   const [recordOptionalGamePageToDb] = useMutation(
     RECORD_OPTIONAL_GAME_PAGE_QUERY
@@ -68,15 +70,20 @@ export default function OptionalGamePage() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    await recordOptionalGamePageToDb({
-      variables: {
-        session_id: sessionId,
-        game_duration: snakeGameController
-          ? snakeGameController.getPlayDuration()
-          : 0,
-        final_thoughts: finalThoughts,
-      },
-    });
+    try {
+      await recordOptionalGamePageToDb({
+        variables: {
+          session_id: sessionId,
+          game_duration: snakeGameController
+            ? snakeGameController.getPlayDuration()
+            : 0,
+          final_thoughts: finalThoughts,
+          payment_code: paymentCode,
+        },
+      });
+    } catch (ex) {
+      console.error(ex);
+    }
 
     toNext();
   };

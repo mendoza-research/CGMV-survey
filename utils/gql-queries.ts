@@ -238,10 +238,16 @@ export const RECORD_OPTIONAL_GAME_PAGE_QUERY = gql`
     $session_id: uuid!
     $game_duration: Int!
     $final_thoughts: String!
+    $payment_code: String!
   ) {
     update_cgmv_sessions_by_pk(
       pk_columns: { session_id: $session_id }
-      _set: { game_duration: $game_duration, final_thoughts: $final_thoughts }
+      _set: {
+        game_duration: $game_duration
+        final_thoughts: $final_thoughts
+        end_time: "now()"
+        payment_code: $payment_code
+      }
     ) {
       session_id
     }

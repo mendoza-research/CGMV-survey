@@ -2,7 +2,8 @@ import Layout from "components/Layout";
 import useSurveyStore from "stores/useSurveyStore";
 
 export default function PaymentCodePage() {
-  const sessionId = useSurveyStore((state) => state.sessionId);
+  const getPaymentCode = useSurveyStore((state) => state.getPaymentCode);
+  const paymentCode = getPaymentCode();
 
   return (
     <Layout>
@@ -21,7 +22,7 @@ export default function PaymentCodePage() {
               padding: "4px 8px",
             }}
           >
-            {sessionId ? sessionId.substring(0, 6) : "Generating..."}
+            {paymentCode ? paymentCode : "Error generating payment code"}
           </span>
         </p>
       </main>

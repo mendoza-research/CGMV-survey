@@ -39,6 +39,10 @@ const useSurveyStore = create<ISurveyState>(
       set(() => ({
         snakeGameController: controller,
       })),
+    getPaymentCode: () => {
+      const sessionId = get().sessionId;
+      return sessionId ? sessionId.substring(0, 6) : null;
+    },
   }))
 );
 

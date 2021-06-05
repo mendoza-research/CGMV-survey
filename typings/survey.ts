@@ -23,6 +23,7 @@ export interface ISurveyState extends State {
   visitedPathnames: string[];
   snakeGameController: SnakeGameController;
   setSnakeGameController: (controller: SnakeGameController) => void;
+  getPaymentCode: () => string;
 }
 
 export interface ISingleQuestion {
