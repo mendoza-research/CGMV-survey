@@ -694,7 +694,7 @@ export default function PlatformQuestionsPage() {
                       </span>
                       <input
                         onFocus={() => {
-                          setValue("gender", 4);
+                          setValue("gender", "4" as any);
                         }}
                         type="text"
                         onChange={(e) => {
