@@ -127,6 +127,26 @@ export default function createApolloClient() {
 }
 ```
 
+### Required PostgreSQL Trigger ✨
+
+A Postgres trigger is used to automatically calculate the total duration of a session (`duration` field in `cgmv_sessions` table) when `end_time` is updated. Run the SQL snippet below in pgAdmin or Hasura console to create the trigger.
+
+```sql
+CREATE OR REPLACE FUNCTION update_total_duration()
+    RETURNS trigger AS $BODY$
+    BEGIN
+    IF NEW.start_time IS NOT NULL AND NEW.end_time IS NOT NULL THEN
+        NEW.duration = EXTRACT(EPOCH FROM (NEW.end_time - NEW.start_time)) AS INTEGER;
+    END IF;
+    RETURN NEW;
+    END;
+    $BODY$ LANGUAGE plpgsql;
+
+CREATE TRIGGER on_end_time_update 
+BEFORE UPDATE OF end_time ON cgmv_sessions
+FOR EACH ROW EXECUTE PROCEDURE update_total_duration();
+```
+
 ## Running locally 🏃‍♀️
 
 To run the site in a local environment, install the two programs below.
