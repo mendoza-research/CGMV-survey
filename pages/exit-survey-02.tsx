@@ -27,12 +27,12 @@ interface IExitSurveyFormData {
   invested_in_stock: number;
   investing_knowledge: number;
   plan_to_invest: number;
-  num_accy_courses: number;
-  num_fin_courses: number;
+  num_accy_courses: string;
+  num_fin_courses: string;
   no_accy_fin_course: boolean;
   english_first_language: number;
   other_first_language: string;
-  age: number;
+  age: string;
   gender: number;
   gender_self_describe: string;
 }
@@ -116,8 +116,8 @@ export default function PlatformQuestionsPage() {
 
   useEffect(() => {
     if (watchData.no_accy_fin_course) {
-      setValue("num_accy_courses", 0);
-      setValue("num_fin_courses", 0);
+      setValue("num_accy_courses", "0");
+      setValue("num_fin_courses", "0");
     }
   }, [watchData.no_accy_fin_course]);
 
@@ -153,19 +153,10 @@ export default function PlatformQuestionsPage() {
 
   const validateAccyFinCourses = (v: any) => {
     if (watchData.no_accy_fin_course === false) {
-      if (
-        Number.isNaN(watchData.num_accy_courses) &&
-        Number.isNaN(watchData.num_fin_courses)
-      ) {
-        return false;
-      }
+      const num_accy = Number(watchData.num_accy_courses.trim()) || 0;
+      const num_fin = Number(watchData.num_fin_courses.trim()) || 0;
 
-      const num_accy = watchData.num_accy_courses || 0;
-      const num_fin = watchData.num_fin_courses || 0;
-
-      if (num_accy + num_fin === 0) {
-        return false;
-      }
+      return num_accy + num_fin > 0;
     }
 
     return true;
@@ -208,8 +199,8 @@ export default function PlatformQuestionsPage() {
     let num_fin_courses = 0;
 
     if (!data["no_accy_fin_course"]) {
-      num_accy_courses = data["num_accy_courses"] || 0;
-      num_fin_courses = data["num_fin_courses"] || 0;
+      num_accy_courses = Number(data["num_accy_courses"].trim()) || 0;
+      num_fin_courses = Number(data["num_fin_courses"].trim()) || 0;
     }
 
     await recordSecondExitSurveyQuestionsToDb({
@@ -232,7 +223,7 @@ export default function PlatformQuestionsPage() {
         no_accy_fin_course: Number(data["no_accy_fin_course"]),
         english_first_language: Number(data["english_first_language"]),
         other_first_language: data["other_first_language"],
-        age: data["age"],
+        age: Number(data["age"].trim()),
         gender: data["gender"],
         gender_self_describe: data["gender_self_describe"],
       },
@@ -497,11 +488,10 @@ export default function PlatformQuestionsPage() {
                         Accounting Classes (#)
                       </span>
                       <input
-                        type="number"
+                        type="text"
                         placeholder="Number here..."
                         {...register("num_accy_courses", {
-                          min: 0,
-                          valueAsNumber: true,
+                          pattern: /^\s*\d+\s*$/,
                         })}
                       />
                     </label>
@@ -522,11 +512,10 @@ export default function PlatformQuestionsPage() {
                         Finance Classes (#)
                       </span>
                       <input
-                        type="number"
+                        type="text"
                         placeholder="Number here..."
                         {...register("num_fin_courses", {
-                          min: 0,
-                          valueAsNumber: true,
+                          pattern: /^\s*\d+\s*$/,
                         })}
                       />
                     </label>
@@ -546,10 +535,10 @@ export default function PlatformQuestionsPage() {
                 </div>
 
                 {errors.num_accy_courses && (
-                  <ErrorMessageBox message="Number of Accounting classes cannot be negative." />
+                  <ErrorMessageBox message="Number of Accounting classes must be a valid integer (e.g., 1, 2, 3)." />
                 )}
                 {errors.num_fin_courses && (
-                  <ErrorMessageBox message="Number of Finance classes cannot be negative." />
+                  <ErrorMessageBox message="Number of Finance classes must be a valid integer (e.g., 1, 2, 3)." />
                 )}
                 {errors.no_accy_fin_course && (
                   <ErrorMessageBox message="Please enter the number of courses." />
@@ -623,20 +612,19 @@ export default function PlatformQuestionsPage() {
                     <label className={styles.innerLabel}>
                       <span className={styles.labelText}>Years: </span>
                       <input
-                        type="number"
+                        type="text"
                         placeholder="Type here..."
                         {...register("age", {
-                          min: 0,
                           required: true,
-                          valueAsNumber: true,
+                          pattern: /^\s*\d+\s*$/,
                         })}
                       />
                     </label>
                   </div>
                 </div>
                 {errors.age?.type === "required" && <ErrorMessageBox />}
-                {errors.age?.type === "min" && (
-                  <ErrorMessageBox message="Age cannot be a negative number." />
+                {errors.age?.type === "pattern" && (
+                  <ErrorMessageBox message="Age must be a valid positive integer (e.g., 20, 32, 44)." />
                 )}
               </div>
 
