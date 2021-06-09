@@ -13,6 +13,7 @@ import ErrorMessageBox from "components/questions/ErrorMessageBox";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAnimationDuration, getFadeInOutVariants } from "utils/animation";
 import clsx from "clsx";
+import { inputStrToNum } from "utils/forms";
 
 interface IExitSurveyFormData {
   used_robinhood: boolean;
@@ -153,8 +154,8 @@ export default function PlatformQuestionsPage() {
 
   const validateAccyFinCourses = (v: any) => {
     if (watchData.no_accy_fin_course === false) {
-      const num_accy = Number(watchData.num_accy_courses.trim()) || 0;
-      const num_fin = Number(watchData.num_fin_courses.trim()) || 0;
+      const num_accy = inputStrToNum(watchData.num_accy_courses) || 0;
+      const num_fin = inputStrToNum(watchData.num_fin_courses) || 0;
 
       return num_accy + num_fin > 0;
     }
@@ -199,8 +200,8 @@ export default function PlatformQuestionsPage() {
     let num_fin_courses = 0;
 
     if (!data["no_accy_fin_course"]) {
-      num_accy_courses = Number(data["num_accy_courses"].trim()) || 0;
-      num_fin_courses = Number(data["num_fin_courses"].trim()) || 0;
+      num_accy_courses = inputStrToNum(data["num_accy_courses"]) || 0;
+      num_fin_courses = inputStrToNum(data["num_fin_courses"]) || 0;
     }
 
     await recordSecondExitSurveyQuestionsToDb({
@@ -223,7 +224,7 @@ export default function PlatformQuestionsPage() {
         no_accy_fin_course: Number(data["no_accy_fin_course"]),
         english_first_language: Number(data["english_first_language"]),
         other_first_language: data["other_first_language"],
-        age: Number(data["age"].trim()),
+        age: inputStrToNum(data["age"]),
         gender: data["gender"],
         gender_self_describe: data["gender_self_describe"],
       },
@@ -479,7 +480,7 @@ export default function PlatformQuestionsPage() {
                   >
                     <input
                       type="checkbox"
-                      checked={watchData.num_accy_courses > 0}
+                      checked={inputStrToNum(watchData.num_accy_courses) > 0}
                       disabled
                     />
 
@@ -503,7 +504,7 @@ export default function PlatformQuestionsPage() {
                   >
                     <input
                       type="checkbox"
-                      checked={watchData.num_fin_courses > 0}
+                      checked={inputStrToNum(watchData.num_fin_courses) > 0}
                       disabled
                     />
 
