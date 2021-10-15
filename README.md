@@ -8,10 +8,10 @@ https://cgmv-survey.netlify.app/
 
 This is useful when you're testing the app with predefined treatments. Using these links will bypass the default treatment assignment logic.
 
-- 🔗 [Gamification, Financial Information A](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&stakes=LOW_STAKES)
-- 🔗 [Gamification, Financial Information B](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&stakes=HIGH_STAKES)
-- 🔗 [No gamification, Financial Information A](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&stakes=LOW_STAKES)
-- 🔗 [No gamification, Financial Information B](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&stakes=HIGH_STAKES)
+- 🔗 [Gamification, Low Stakes](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&stakes=LOW_STAKES)
+- 🔗 [Gamification, High Stakes](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&stakes=HIGH_STAKES)
+- 🔗 [No gamification, Low Stakes](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&stakes=LOW_STAKES)
+- 🔗 [No gamification, High Stakes](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&stakes=HIGH_STAKES)
 
 ## Hasura console
 
