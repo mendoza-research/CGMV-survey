@@ -11,7 +11,7 @@ import {
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { getTreatmentGroups } from "utils/investment";
-import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
+import { GamificationEnum, StakesEnum } from "typings/survey";
 import {
   LATEST_TREATMENT_QUERY,
   CREATE_CGMV_SESSION_QUERY,
@@ -22,9 +22,7 @@ export default function Home() {
   const sessionId = useSurveyStore((state) => state.sessionId);
   const setSessionId = useSurveyStore((state) => state.setSessionId);
   const setGamification = useSurveyStore((state) => state.setGamification);
-  const setFinancialInformation = useSurveyStore(
-    (state) => state.setFinancialInformation
-  );
+  const setStakes = useSurveyStore((state) => state.setStakes);
   const router = useRouter();
 
   const nextPathname = "/background";
@@ -41,41 +39,37 @@ export default function Home() {
 
     // If no other sessions have been recorded in the database, use the "first" treatment group combination
     let newGamification: GamificationEnum = GamificationEnum.GAMIFICATION;
-    let newFinancialInformation: FinancialInformationEnum =
-      FinancialInformationEnum.A;
+    let newStakesInformation: StakesEnum = StakesEnum.LOW_STAKES;
 
-    // If the URL query contains Gamification and FinancialInformation values, manually assign them
+    // If the URL query contains Gamification and Stakes values, manually assign them
     if (
       router.query.hasOwnProperty("gamification") &&
-      router.query.hasOwnProperty("financialInformation")
+      router.query.hasOwnProperty("stakes")
     ) {
       newGamification =
         GamificationEnum[
           router.query.gamification as keyof typeof GamificationEnum
         ];
 
-      newFinancialInformation =
-        FinancialInformationEnum[
-          router.query
-            .financialInformation as keyof typeof FinancialInformationEnum
-        ];
+      newStakesInformation =
+        StakesEnum[router.query.stakes as keyof typeof StakesEnum];
     } else if (latestTreatmentData["cgmv_sessions"].length > 0) {
       const latestTreatmentGroups = latestTreatmentData["cgmv_sessions"][0];
       const newTreatmentGroups = getTreatmentGroups({
         gamification: latestTreatmentGroups["gamification"],
-        financialInformation: latestTreatmentGroups["financial_information"],
+        stakes: latestTreatmentGroups["stakes"],
       });
 
       newGamification = newTreatmentGroups.gamification;
-      newFinancialInformation = newTreatmentGroups.financialInformation;
+      newStakesInformation = newTreatmentGroups.stakes;
     }
 
     console.log(
-      `gamification=${newGamification}, financialInformation=${newFinancialInformation}`
+      `gamification=${newGamification}, stakes=${newStakesInformation}`
     );
 
     setGamification(newGamification);
-    setFinancialInformation(newFinancialInformation);
+    setStakes(newStakesInformation);
 
     const result = await createSessionInDb({
       variables: {
@@ -85,7 +79,7 @@ export default function Home() {
         os: osName,
         ip_addr: ipAddress,
         gamification: newGamification,
-        financial_information: newFinancialInformation,
+        stakes: newStakesInformation,
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
       },
     });

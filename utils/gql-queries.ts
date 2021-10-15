@@ -3,8 +3,8 @@ import { gql } from "@apollo/client";
 export const LATEST_TREATMENT_QUERY = gql`
   query LatestTreatmentsQuery {
     cgmv_sessions(limit: 1, order_by: { start_time: desc }) {
-      financial_information
       gamification
+      stakes
     }
   }
 `;
@@ -17,7 +17,7 @@ export const CREATE_CGMV_SESSION_QUERY = gql`
     $browser_version: String!
     $ip_addr: inet!
     $gamification: String!
-    $financial_information: String!
+    $stakes: String!
     $screen_resolution: String!
   ) {
     insert_cgmv_sessions(
@@ -28,7 +28,7 @@ export const CREATE_CGMV_SESSION_QUERY = gql`
         os: $os
         ip_addr: $ip_addr
         gamification: $gamification
-        financial_information: $financial_information
+        stakes: $stakes
         screen_resolution: $screen_resolution
       }
     ) {

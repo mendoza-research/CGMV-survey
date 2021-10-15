@@ -1,10 +1,6 @@
 import create from "zustand";
 import { devtools } from "zustand/middleware";
-import {
-  GamificationEnum,
-  FinancialInformationEnum,
-  ISurveyState,
-} from "typings/survey";
+import { GamificationEnum, StakesEnum, ISurveyState } from "typings/survey";
 import { SnakeGameController } from "lib/snake-game";
 
 const useSurveyStore = create<ISurveyState>(
@@ -20,10 +16,10 @@ const useSurveyStore = create<ISurveyState>(
       set(() => ({
         gamification: mode,
       })),
-    financialInformation: null,
-    setFinancialInformation: (mode: FinancialInformationEnum) =>
+    stakes: null,
+    setStakes: (mode: StakesEnum) =>
       set(() => ({
-        financialInformation: mode,
+        stakes: mode,
       })),
 
     // States used to prevent back navigation

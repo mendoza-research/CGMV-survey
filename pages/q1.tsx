@@ -8,18 +8,13 @@ const question: ISingleQuestion = {
     <>
       <p>
         <strong>
-          Of the options below, which best describes your primary financial
-          goal?
+          Select the option that best completes the following sentence.
         </strong>
       </p>
-      <p>When considering investments, I am _______</p>
+      <p>I would describe my knowledge of investing as:</p>
     </>
   ),
-  options: [
-    "Most concerned about my investment losing value.",
-    "Equally concerned about my investment losing or gaining value.",
-    "Most concerned about my investment gaining value.",
-  ],
+  options: ["Non-existent", "Limited", "Good", "Extensive"],
 };
 
 export default function Q1Page() {

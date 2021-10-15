@@ -1,9 +1,9 @@
-import { FinancialInformationEnum, GamificationEnum } from "typings/survey";
+import { StakesEnum, GamificationEnum } from "typings/survey";
 import _ from "lodash";
 
 interface ITreatmentGroups {
   gamification: GamificationEnum;
-  financialInformation: FinancialInformationEnum;
+  stakes: StakesEnum;
 }
 
 // Participants are assigned to different treatment groups sequentially
@@ -11,19 +11,19 @@ export function getTreatmentGroups(prevTreatmentGroups: ITreatmentGroups) {
   const assignSequence: ITreatmentGroups[] = [
     {
       gamification: GamificationEnum.GAMIFICATION,
-      financialInformation: FinancialInformationEnum.A,
+      stakes: StakesEnum.LOW_STAKES,
     },
     {
       gamification: GamificationEnum.GAMIFICATION,
-      financialInformation: FinancialInformationEnum.B,
+      stakes: StakesEnum.HIGH_STAKES,
     },
     {
       gamification: GamificationEnum.NO_GAMIFICATION,
-      financialInformation: FinancialInformationEnum.A,
+      stakes: StakesEnum.LOW_STAKES,
     },
     {
       gamification: GamificationEnum.NO_GAMIFICATION,
-      financialInformation: FinancialInformationEnum.B,
+      stakes: StakesEnum.HIGH_STAKES,
     },
   ];
 
@@ -34,7 +34,7 @@ export function getTreatmentGroups(prevTreatmentGroups: ITreatmentGroups) {
 
   // Return the next treatment combination
   const newIndex = (prevIndex + 1) % assignSequence.length;
-  return assignSequence[newIndex];
+  return assignSequence[newIndex] as ITreatmentGroups;
 }
 
 export const roundToTwoDecimals = (v: number) => {

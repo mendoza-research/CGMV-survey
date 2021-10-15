@@ -3,7 +3,7 @@ import Image from "next/image";
 import usePageNavigation from "hooks/usePageNavigation";
 import { AnimationEnum } from "typings/animation";
 import useSurveyStore from "stores/useSurveyStore";
-import { GamificationEnum, FinancialInformationEnum } from "typings/survey";
+import { GamificationEnum, StakesEnum } from "typings/survey";
 import { formatAsCurrency } from "utils/investment";
 import { useEffect, useState } from "react";
 import AnimationBox from "components/animations/AnimationBox";
@@ -25,9 +25,7 @@ export default function InvestBox() {
   });
   const sessionId = useSurveyStore((state) => state.sessionId);
   const gamification = useSurveyStore((state) => state.gamification);
-  const financialInformation = useSurveyStore(
-    (state) => state.financialInformation
-  );
+  const stakes = useSurveyStore((state) => state.stakes);
   const shouldAnimate = gamification === GamificationEnum.GAMIFICATION;
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPageExiting, setIsPageExiting] = useState(false);
@@ -104,7 +102,7 @@ export default function InvestBox() {
         <div className={styles.financialInformationBox}>
           <Image
             src={
-              financialInformation === FinancialInformationEnum.A
+              stakes === StakesEnum.LOW_STAKES
                 ? "/images/invest_low_risk.jpg"
                 : "/images/invest_high_risk.jpg"
             }

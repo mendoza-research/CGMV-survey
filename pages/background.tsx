@@ -10,33 +10,54 @@ export default function BackgroundPage() {
     <Layout>
       <main>
         <div>
-          <h2
-            style={{
-              textDecoration: "underline",
-            }}
-          >
-            Background
-          </h2>
           <p>
-            For this study, assume you have just received a $10,000 cash
-            inheritance from a distant relative, and you have decided to use
-            this inheritance to invest in the electronics industry. You turn to
-            a new investment platform to research opportunities in the industry
-            and to make investments. In the next ten minutes, you will:
+            <strong style={{ textDecoration: "underline" }}>
+              For this study:
+            </strong>{" "}
+            Assume you have decided to sign up for a new investment platform
+            that offers a free stock to all new users. As part of the sign-up
+            process, you will first complete an investor profile and then
+            respond to a series of "this or that" questions. Each "this or that"
+            question will ask you to designate a preference between one of two
+            possible stocks. Your answers to the "this or that" questions will
+            then play a role in determining the free stock you ultimately
+            receive from the platform.
+          </p>
+
+          <p>
+            <strong style={{ textDecoration: "underline" }}>
+              What this means for your compensation:
+            </strong>{" "}
+            Compensation for your participation includes both a $0.50 fixed
+            payment as well as a bonus payment of up to <strong>$</strong>4.05.
+            Your answers to the "this or that" questions will influence the
+            stock given to you by the platform, which will ultimately influence
+            your bonus payment (further details will be provided later). You
+            will receive both your fixed payment and bonus payment within 24
+            hours of completing the study.
+          </p>
+
+          <p>
+            <strong style={{ textDecoration: "underline" }}>
+              To summarize:
+            </strong>{" "}
+            In the next ten minutes, you will:
           </p>
 
           <ol>
-            <li>Complete an investor profile for the platform.</li>
             <li>
-              Review financial information about Sound Waves Inc. and Virtuoso
-              Corp., the two companies in the electronics industry you have
-              decided you are most interested in investing in.
+              Complete an investor profile within the investment platform.
             </li>
             <li>
-              Allocate your $10,000 inheritance between the two companies’
-              stocks.
+              Answer a series of "this or that" questions that influence the
+              free stock given to you by the platform. The free stock you
+              receive will affect your bonus payment.
             </li>
-            <li>Answer a number of follow-up questions.</li>
+            <li>Answer several follow-up questions outside of the platform.</li>
+            <li>
+              Complete the study and receive information about the bonus you
+              earned.
+            </li>
           </ol>
 
           <p>

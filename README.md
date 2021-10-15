@@ -4,14 +4,14 @@
 
 https://cgmv-survey.netlify.app/
 
-### Link with predefined `gamification` and `financialInformation` values
+### Link with predefined `gamification` and `stakes` values
 
 This is useful when you're testing the app with predefined treatments. Using these links will bypass the default treatment assignment logic.
 
-- 🔗 [Gamification, Financial Information A](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&financialInformation=A)
-- 🔗 [Gamification, Financial Information B](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&financialInformation=B)
-- 🔗 [No gamification, Financial Information A](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&financialInformation=A)
-- 🔗 [No gamification, Financial Information B](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&financialInformation=B)
+- 🔗 [Gamification, Financial Information A](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&stakes=LOW_STAKES)
+- 🔗 [Gamification, Financial Information B](https://cgmv-survey.netlify.app/?gamification=GAMIFICATION&stakes=HIGH_STAKES)
+- 🔗 [No gamification, Financial Information A](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&stakes=LOW_STAKES)
+- 🔗 [No gamification, Financial Information B](https://cgmv-survey.netlify.app/?gamification=NO_GAMIFICATION&stakes=HIGH_STAKES)
 
 ## Hasura console
 
@@ -142,7 +142,7 @@ CREATE OR REPLACE FUNCTION update_total_duration()
     END;
     $BODY$ LANGUAGE plpgsql;
 
-CREATE TRIGGER on_end_time_update 
+CREATE TRIGGER on_end_time_update
 BEFORE UPDATE OF end_time ON cgmv_sessions
 FOR EACH ROW EXECUTE PROCEDURE update_total_duration();
 ```

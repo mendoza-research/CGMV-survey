@@ -6,9 +6,9 @@ export enum GamificationEnum {
   NO_GAMIFICATION = "NO_GAMIFICATION",
 }
 
-export enum FinancialInformationEnum {
-  A = "A",
-  B = "B",
+export enum StakesEnum {
+  LOW_STAKES = "LOW_STAKES",
+  HIGH_STAKES = "HIGH_STAKES",
 }
 
 export interface ISurveyState extends State {
@@ -16,8 +16,8 @@ export interface ISurveyState extends State {
   setSessionId: (sessionId: string) => void;
   gamification: GamificationEnum;
   setGamification: (mode: GamificationEnum) => void;
-  financialInformation: FinancialInformationEnum;
-  setFinancialInformation: (mode: FinancialInformationEnum) => void;
+  stakes: StakesEnum;
+  setStakes: (mode: StakesEnum) => void;
   currentPathname: string;
   setCurrentPathname: (newPathname: string) => void;
   visitedPathnames: string[];

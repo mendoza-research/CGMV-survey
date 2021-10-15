@@ -13,9 +13,7 @@ export default function Layout({ children }: ILayoutProps) {
   const router = useRouter();
 
   const gamification = useSurveyStore((state) => state.gamification);
-  const financialInformation = useSurveyStore(
-    (state) => state.financialInformation
-  );
+  const stakes = useSurveyStore((state) => state.stakes);
 
   useEffect(() => {
     // Check if the user is using a mobile device (only desktops and tablets are supported)
@@ -33,7 +31,7 @@ export default function Layout({ children }: ILayoutProps) {
 
       {process.env.NODE_ENV === "development" && (
         <div className={styles.devBox}>
-          {gamification} / {financialInformation}
+          {gamification} / {stakes}
         </div>
       )}
 

@@ -10,10 +10,8 @@ export default function WelcomePage() {
   return (
     <TextBox toNext={toNext}>
       <p>
-        Welcome – thank you for funding your account and for your interest in
-        Sound Waves Inc. and Virtuoso Corp.! Before you can access more
-        information about these companies and make investment decisions, please
-        complete your investor profile.
+        Welcome to the investment platform! Please complete your investor
+        profile.
       </p>
     </TextBox>
   );

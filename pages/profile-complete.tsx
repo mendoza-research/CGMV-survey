@@ -11,9 +11,9 @@ export default function ProfileCompletePage() {
   return (
     <TextBox toNext={toNext} animation={AnimationEnum.CONFETTI}>
       <p>
-        Profile complete! Now that you have completed your profile, you are
-        ready to make an investment decision. Click "Next" to review the
-        information you requested about Sound Waves Inc. and Virtuoso Corp.
+        Profile complete! On the next page, you will respond to a series of
+        questions that will influence which free stock you will be given. Click
+        "Next" to proceed.
       </p>
     </TextBox>
   );
