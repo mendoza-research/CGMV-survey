@@ -16,9 +16,6 @@ import {
 import { StakesEnum } from "typings/survey";
 import random from "lodash/random";
 import StockQuestionBox from "components/stock-selections/StockQuestionItem";
-import Chance from "chance";
-
-const chance = new Chance();
 
 export default function InvestBox() {
   const nextPathname = "/free-stock";
@@ -89,7 +86,7 @@ export default function InvestBox() {
       saveVariables[`stock_q${index + 1}`] = val;
     });
 
-    console.log(JSON.stringify(saveVariables, null, 2));
+    // console.log(JSON.stringify(saveVariables, null, 2));
 
     await recordStockSelectionsToDb({
       variables: saveVariables,
