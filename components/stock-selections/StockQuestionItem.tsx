@@ -11,7 +11,7 @@ interface IProceedsProps {
   proceeds: IStockProceeds;
 }
 
-const Proceeds = ({ proceeds }: IProceedsProps) => (
+export const Proceeds = ({ proceeds }: IProceedsProps) => (
   <div className={styles.proceeds}>
     <strong>{floatToPercentage(proceeds.probability)}</strong> chance of{" "}
     <strong>{formatAsUSD(proceeds.proceeds)}</strong> cash proceeds

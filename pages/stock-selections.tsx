@@ -1,34 +1,48 @@
 import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
-import { AnimationEnum } from "typings/animation";
 import useSurveyStore from "stores/useSurveyStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import styles from "components/stock-selections/stock-selections.module.scss";
 import { RECORD_STOCK_SELECTIONS } from "utils/gql-queries";
 import { useMutation } from "@apollo/client";
-import { getStockQuestions } from "utils/stock-questions";
+import {
+  floatToPercentage,
+  formatAsUSD,
+  getAdditionalBonus,
+  getRandomProceedsIndex,
+  getStockQuestions,
+} from "utils/stock-questions";
 import { StakesEnum } from "typings/survey";
 import random from "lodash/random";
-import StockQuestionBox from "components/stock-selections/StockQuestionBox";
+import StockQuestionBox from "components/stock-selections/StockQuestionItem";
+import Chance from "chance";
 
-const totalAvailable = 10000;
-const animation = AnimationEnum.FALLING_STARS;
+const chance = new Chance();
 
 export default function InvestBox() {
-  const nextPathname = "/order-confirmed";
+  const nextPathname = "/free-stock";
   const { toNext } = usePageNavigation({
     nextPathname,
   });
   const sessionId = useSurveyStore((state) => state.sessionId);
   const stakes = useSurveyStore((state) => state.stakes);
-  const [errorMessage, setErrorMessage] = useState("");
+  const setFreeStock = useSurveyStore((state) => state.setFreeStock);
+  const setStockProceeds = useSurveyStore((state) => state.setStockProceeds);
+  const setLotteryProceeds = useSurveyStore(
+    (state) => state.setLotteryProceeds
+  );
+
   const [recordStockSelectionsToDb] = useMutation(RECORD_STOCK_SELECTIONS);
+
   // 0 for "This" stock, 1 for "That" stock
   const [stockSelections, setStockSelections] = useState<Array<number>>(
     new Array(10).fill(-1)
   );
+
+  // Get stock questions based on the participant's stakes condition (low vs high)
   const stockQuestions = getStockQuestions(stakes);
+
   const isIncomplete = stockSelections.some((o) => o < 0);
 
   const handleSubmitButtonClick = async (e) => {
@@ -38,18 +52,8 @@ export default function InvestBox() {
       return;
     }
 
-    const saveVariables = {
-      session_id: sessionId,
-    };
-
-    stockSelections.forEach((val, index) => {
-      saveVariables[`stock_q${index + 1}`] = stockSelections[index];
-    });
-
-    console.log(`saveVariables`);
-    console.log(saveVariables);
-
     // Pick a random stock index between 0 to 9
+    // 0 and 9 are inclusive with Lodash's _.random()
     const freeStockIndex = random(0, 9);
     const userSelectionIndex = stockSelections[freeStockIndex];
     const freeStock =
@@ -57,15 +61,41 @@ export default function InvestBox() {
         userSelectionIndex === 0 ? "thisStock" : "thatStock"
       ];
 
-    const freeStockKey = `q${freeStockIndex + 1}_${
+    // Randomly pick cash proceeds index based on weighted probabilities of each proceed
+    const cashProceedsIndex: number = getRandomProceedsIndex(freeStock);
+    const proceeds = freeStock[cashProceedsIndex];
+    const lotteryProceeds = getAdditionalBonus(stakes);
+
+    // A human-readable string of free stock and proceeds information
+    // Example: q8_that (20% chance of $0.01 cash proceeds)
+    const freeStockStr = `q${freeStockIndex + 1}_${
       userSelectionIndex === 0 ? "this" : "that"
-    }`;
+    } (${floatToPercentage(proceeds.probability)} chance of ${formatAsUSD(
+      proceeds.proceeds
+    )} cash proceeds)`;
+
+    const saveVariables = {
+      session_id: sessionId,
+      free_stock: freeStockStr,
+      stock_proceeds: proceeds.proceeds,
+      lottery_proceeds: lotteryProceeds,
+    };
+
+    setFreeStock(freeStock);
+    setStockProceeds(proceeds.proceeds);
+    setLotteryProceeds(lotteryProceeds);
+
+    stockSelections.forEach((val, index) => {
+      saveVariables[`stock_q${index + 1}`] = val;
+    });
+
+    console.log(JSON.stringify(saveVariables, null, 2));
 
     await recordStockSelectionsToDb({
       variables: saveVariables,
     });
 
-    // toNext();
+    toNext();
   };
 
   return (

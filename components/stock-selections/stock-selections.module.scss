@@ -53,7 +53,7 @@ main.stockSelectionsBox {
 
   &.isSelected,
   &:hover.isSelected {
-    border-color: #4472c4;
+    border-color: #111;
   }
 
   &:not(&.isSelected):hover {

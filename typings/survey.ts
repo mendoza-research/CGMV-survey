@@ -1,5 +1,5 @@
-import { SnakeGameController } from "lib/snake-game";
 import { State } from "zustand";
+import { IStock } from "./stock-questions";
 
 export enum GamificationEnum {
   GAMIFICATION = "GAMIFICATION",
@@ -21,8 +21,12 @@ export interface ISurveyState extends State {
   currentPathname: string;
   setCurrentPathname: (newPathname: string) => void;
   visitedPathnames: string[];
-  snakeGameController: SnakeGameController;
-  setSnakeGameController: (controller: SnakeGameController) => void;
+  freeStock: IStock;
+  setFreeStock: (stock: IStock) => void;
+  stockProceeds: number;
+  setStockProceeds: (v: number) => void;
+  lotteryProceeds: number;
+  setLotteryProceeds: (v: number) => void;
   getPaymentCode: () => string;
 }
 

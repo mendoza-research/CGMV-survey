@@ -1,7 +1,7 @@
 import create from "zustand";
 import { devtools } from "zustand/middleware";
 import { GamificationEnum, StakesEnum, ISurveyState } from "typings/survey";
-import { SnakeGameController } from "lib/snake-game";
+import { IStock } from "typings/stock-questions";
 
 const useSurveyStore = create<ISurveyState>(
   devtools((set, get) => ({
@@ -30,10 +30,20 @@ const useSurveyStore = create<ISurveyState>(
         currentPathname: newPathname,
       })),
     visitedPathnames: [],
-    snakeGameController: null,
-    setSnakeGameController: (controller: SnakeGameController) =>
+    freeStock: null,
+    setFreeStock: (freeStock: IStock) =>
       set(() => ({
-        snakeGameController: controller,
+        freeStock,
+      })),
+    stockProceeds: 0,
+    setStockProceeds: (stockProceeds: number) =>
+      set(() => ({
+        stockProceeds,
+      })),
+    lotteryProceeds: 0,
+    setLotteryProceeds: (lotteryProceeds: number) =>
+      set(() => ({
+        lotteryProceeds,
       })),
     getPaymentCode: () => {
       const sessionId = get().sessionId;
