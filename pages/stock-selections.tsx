@@ -1,0 +1,157 @@
+import Layout from "components/Layout";
+import usePageNavigation from "hooks/usePageNavigation";
+import { AnimationEnum } from "typings/animation";
+import useSurveyStore from "stores/useSurveyStore";
+import { useEffect, useState } from "react";
+import clsx from "clsx";
+import styles from "components/stock-selections/stock-selections.module.scss";
+import { RECORD_STOCK_SELECTIONS } from "utils/gql-queries";
+import { useMutation } from "@apollo/client";
+import { getStockQuestions } from "utils/stock-questions";
+import { StakesEnum } from "typings/survey";
+import random from "lodash/random";
+import StockQuestionBox from "components/stock-selections/StockQuestionBox";
+
+const totalAvailable = 10000;
+const animation = AnimationEnum.FALLING_STARS;
+
+export default function InvestBox() {
+  const nextPathname = "/order-confirmed";
+  const { toNext } = usePageNavigation({
+    nextPathname,
+  });
+  const sessionId = useSurveyStore((state) => state.sessionId);
+  const stakes = useSurveyStore((state) => state.stakes);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [recordStockSelectionsToDb] = useMutation(RECORD_STOCK_SELECTIONS);
+  // 0 for "This" stock, 1 for "That" stock
+  const [stockSelections, setStockSelections] = useState<Array<number>>(
+    new Array(10).fill(-1)
+  );
+  const stockQuestions = getStockQuestions(stakes);
+  const isIncomplete = stockSelections.some((o) => o < 0);
+
+  const handleSubmitButtonClick = async (e) => {
+    e.preventDefault();
+
+    if (isIncomplete) {
+      return;
+    }
+
+    const saveVariables = {
+      session_id: sessionId,
+    };
+
+    stockSelections.forEach((val, index) => {
+      saveVariables[`stock_q${index + 1}`] = stockSelections[index];
+    });
+
+    console.log(`saveVariables`);
+    console.log(saveVariables);
+
+    // Pick a random stock index between 0 to 9
+    const freeStockIndex = random(0, 9);
+    const userSelectionIndex = stockSelections[freeStockIndex];
+    const freeStock =
+      stockQuestions[freeStockIndex][
+        userSelectionIndex === 0 ? "thisStock" : "thatStock"
+      ];
+
+    const freeStockKey = `q${freeStockIndex + 1}_${
+      userSelectionIndex === 0 ? "this" : "that"
+    }`;
+
+    await recordStockSelectionsToDb({
+      variables: saveVariables,
+    });
+
+    // toNext();
+  };
+
+  return (
+    <Layout>
+      <main key="main" className={styles.stockSelectionsBox}>
+        <div className={styles.instructionText}>
+          {stakes === StakesEnum.LOW_STAKES ? (
+            <p>
+              For each question listed below, pick either "This Stock" or "That
+              Stock" to indicate which stock you are most interested in
+              receiving. The percentages indicate the probability the stock will
+              be worth the corresponding dollar amount at the time it is sold.
+              For example, in Q1, the stock labeled "
+              <span style={{ textDecoration: "underline" }}>This Stock</span>"
+              has a 10% chance of being worth $0.21 and a 90% chance of being
+              worth $0.17. After you submit your picks, one of the ten stocks
+              you pick will be chosen at random and then "sold." The cash
+              proceeds dictated by the sale of the chosen stock will be one
+              component of your total bonus payment.
+            </p>
+          ) : (
+            <p>
+              For each question listed below, pick either "This Stock" or "That
+              Stock" to indicate which stock you are most interested in
+              receiving. The percentages indicate the probability the stock will
+              be worth the corresponding dollar amount at the time it is sold.
+              For example, in Q1, the stock labeled "
+              <span style={{ textDecoration: "underline" }}>This Stock</span>"
+              has a 10% chance of being worth $2.00 and a 90% chance of being
+              worth $1.60. After you submit your picks, one of the ten stocks
+              you pick will be chosen at random and then "sold." The cash
+              proceeds dictated by the sale of the chosen stock will be one
+              component of your total bonus payment.
+            </p>
+          )}
+        </div>
+
+        <div className={styles.stockQuestionsWrapper}>
+          {stockQuestions.map((stockQuestion, qIndex) => (
+            <StockQuestionBox
+              key={qIndex}
+              title={`Q${qIndex + 1}`}
+              stockQuestion={stockQuestion}
+              selectedIndex={stockSelections[qIndex]}
+              setSelectedIndex={(selectedIndex) => {
+                setStockSelections((prevSelections) => {
+                  const newSelections = [...prevSelections];
+                  newSelections[qIndex] = selectedIndex;
+                  return newSelections;
+                });
+              }}
+            />
+          ))}
+        </div>
+
+        <div
+          style={{
+            marginTop: "40px",
+            borderTop: "4px solid #111",
+            width: "100%",
+          }}
+        >
+          <p>
+            {isIncomplete
+              ? "Please complete all questions to submit."
+              : 'To confirm your picks, please click "Submit".'}
+          </p>
+        </div>
+
+        <div
+          style={{
+            marginTop: "40px",
+            textAlign: "right",
+            width: "100%",
+          }}
+        >
+          <a
+            className={clsx("button", {
+              disabled: isIncomplete,
+            })}
+            onClick={handleSubmitButtonClick}
+          >
+            Submit
+          </a>
+        </div>
+      </main>
+    </Layout>
+  );
+}

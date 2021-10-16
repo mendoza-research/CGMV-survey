@@ -1,16 +1,5 @@
 import { StakesEnum } from "typings/survey";
-
-export interface IStockProceeds {
-  probability: number;
-  proceeds: number;
-}
-
-export type IStock = Array<IStockProceeds>;
-
-export interface IStockQuestion {
-  thisStock: IStock;
-  thatStock: IStock;
-}
+import { IStockQuestion } from "typings/stock-questions";
 
 let lowStakesStockQuestions: Array<IStockQuestion> = [];
 let highStakesStockQuestions: Array<IStockQuestion> = [];
@@ -69,4 +58,22 @@ export function getStockQuestions(stakes: StakesEnum): Array<IStockQuestion> {
   return stakes === StakesEnum.LOW_STAKES
     ? lowStakesStockQuestions
     : highStakesStockQuestions;
+}
+
+export function floatToPercentage(v: number, numDecimals: number = 0) {
+  return v.toLocaleString(undefined, {
+    style: "percent",
+    maximumFractionDigits: numDecimals,
+  });
+}
+
+export function formatAsUSD(v: number, numDecimals: number = 2) {
+  let formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formatter.format(v);
 }

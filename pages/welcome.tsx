@@ -2,7 +2,7 @@ import usePageNavigation from "hooks/usePageNavigation";
 import TextBox from "components/investment/TextBox";
 
 export default function WelcomePage() {
-  const nextPathname = "/q1";
+  const nextPathname = "/profile-q1";
   const { toNext } = usePageNavigation({
     nextPathname,
   });

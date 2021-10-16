@@ -6,25 +6,28 @@ import SingleQuestionBox from "components/investment/SingleQuestionBox";
 const question: ISingleQuestion = {
   text: (
     <p>
-      What is the time frame in which you hope to achieve your primary financial
-      goal?
+      Of the options below, which best describes your primary financial goal?
     </p>
   ),
-  options: ["0 - 4 Years", "5 - 9 Years", "10 Years or Longer"],
+  options: [
+    "Wealth Preservation",
+    "Retirement Planning",
+    "Wealth Accumulation",
+  ],
 };
 
-export default function Q3Page() {
-  const nextPathname = "/q4";
+export default function ProfileQ2Page() {
+  const nextPathname = "/profile-q3";
   const { toNext } = usePageNavigation({
     nextPathname,
   });
 
   return (
     <SingleQuestionBox
-      fieldName="q3"
+      fieldName="profile_q2"
       question={question}
       toNext={toNext}
-      animation={AnimationEnum.RISING_BALLOONS}
+      animation={AnimationEnum.FALLING_STARS}
     />
   );
 }

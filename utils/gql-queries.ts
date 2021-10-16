@@ -79,6 +79,40 @@ export function getSingleQuestionUpdateQuery(fieldName: string) {
 `;
 }
 
+export const RECORD_STOCK_SELECTIONS = gql`
+  mutation RecordInvestAmounts(
+    $session_id: uuid!
+    $stock_q1: Int!
+    $stock_q2: Int!
+    $stock_q3: Int!
+    $stock_q4: Int!
+    $stock_q5: Int!
+    $stock_q6: Int!
+    $stock_q7: Int!
+    $stock_q8: Int!
+    $stock_q9: Int!
+    $stock_q10: Int!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        stock_q1: $stock_q1
+        stock_q2: $stock_q2
+        stock_q3: $stock_q3
+        stock_q4: $stock_q4
+        stock_q5: $stock_q5
+        stock_q6: $stock_q6
+        stock_q7: $stock_q7
+        stock_q8: $stock_q8
+        stock_q9: $stock_q9
+        stock_q10: $stock_q10
+      }
+    ) {
+      session_id
+    }
+  }
+`;
+
 export const UPDATE_INVEST_AMOUNTS_QUERY = gql`
   mutation RecordInvestAmounts(
     $session_id: uuid!

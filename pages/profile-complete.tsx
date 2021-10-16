@@ -3,7 +3,7 @@ import TextBox from "components/investment/TextBox";
 import { AnimationEnum } from "typings/animation";
 
 export default function ProfileCompletePage() {
-  const nextPathname = "/stock-questions";
+  const nextPathname = "/stock-selections";
   const { toNext } = usePageNavigation({
     nextPathname,
   });

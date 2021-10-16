@@ -5,30 +5,26 @@ import SingleQuestionBox from "components/investment/SingleQuestionBox";
 
 const question: ISingleQuestion = {
   text: (
-    <>
-      <p>
-        <strong>
-          Select the option that best completes the following sentence.
-        </strong>
-      </p>
-      <p>I would describe my knowledge of investing as:</p>
-    </>
+    <p>
+      What is the time frame in which you hope to achieve your primary financial
+      goal?
+    </p>
   ),
-  options: ["Non-existent", "Limited", "Good", "Extensive"],
+  options: ["0 - 4 Years", "5 - 9 Years", "10 Years or Longer"],
 };
 
-export default function Q1Page() {
-  const nextPathname = "/q2";
+export default function ProfileQ3Page() {
+  const nextPathname = "/profile-q4";
   const { toNext } = usePageNavigation({
     nextPathname,
   });
 
   return (
     <SingleQuestionBox
-      fieldName="q1"
+      fieldName="profile_q3"
       question={question}
       toNext={toNext}
-      animation={AnimationEnum.CONFETTI}
+      animation={AnimationEnum.RISING_BALLOONS}
     />
   );
 }

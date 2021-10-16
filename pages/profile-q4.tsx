@@ -16,7 +16,7 @@ const question: ISingleQuestion = {
   ],
 };
 
-export default function Q4Page() {
+export default function ProfileQ4Page() {
   const nextPathname = "/profile-complete";
   const { toNext } = usePageNavigation({
     nextPathname,
@@ -24,7 +24,7 @@ export default function Q4Page() {
 
   return (
     <SingleQuestionBox
-      fieldName="q4"
+      fieldName="profile_q4"
       question={question}
       toNext={toNext}
       animation={AnimationEnum.FIREWORKS}
