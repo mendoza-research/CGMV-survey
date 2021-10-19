@@ -34,7 +34,7 @@ interface IExitSurveyFormData {
   gender_self_describe: string;
 }
 
-export default function PlatformQuestionsPage() {
+export default function ExitSurveyPage() {
   const sessionId = useSurveyStore((state) => state.sessionId);
   const { toNext } = usePageNavigation({
     nextPathname: "/total-payment",
