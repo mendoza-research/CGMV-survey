@@ -410,7 +410,7 @@ export default function ExitSurveyPage() {
           </div>
 
           <div className={styles.questionWrapper}>
-            <p>Select 'Yes' if you are paying attention.</p>
+            <p>What is the highest degree or level of education you have completed?</p>
             <div className={styles.optionsWrapper}>
               <label>
                 <input
