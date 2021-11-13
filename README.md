@@ -107,6 +107,12 @@ All commits pushed to the `main` branch are automatically deployed to Netlify. I
 - Use `netlify-plugin-nextjs` plugin to deploy Next.js serverless functions.
 - The tutorial for one-click install can be found [here](https://www.netlify.com/blog/2020/12/07/announcing-one-click-install-next.js-build-plugin-on-netlify/).
 - Add a `netlify.toml` file to support `netlify-plugin-nextjs`.
+- This app uses reCAPTCHA v2 checkbox. Create a reCAPTCHA site on [Google reCAPTCHA](https://www.google.com/recaptcha/). Once you have reCAPTCHA keys, create the following two environment variables on Netlify.
+  - `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`: reCAPTCHA site key
+  - `RECAPTCHA_SECRET_KEY`: reCAPTCHA secret key
+
+![image](https://user-images.githubusercontent.com/1064036/141604315-c536adde-b6cd-41ff-9dca-98e9cc982968.png)
+
 
 ### PostgreSQL + Hasura Requirements 🗄
 
