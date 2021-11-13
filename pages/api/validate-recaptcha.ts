@@ -48,7 +48,7 @@ export default async function handler(
         mutation: RECORD_RECAPTCHA_RESULTS,
         variables: {
           session_id: sessionId,
-          recaptcha_result: captchaValidation.success,
+          recaptcha_success: captchaValidation.success,
           recaptcha_timestamp: captchaValidation.challenge_ts,
         },
       });

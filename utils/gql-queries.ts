@@ -66,13 +66,13 @@ export function getRecordPageDuration(pathName: string) {
 export const RECORD_RECAPTCHA_RESULTS = gql`
   mutation RecordRecaptchaResults(
     $session_id: uuid!
-    $recaptcha_result: Boolean!
+    $recaptcha_success: Boolean!
     $recaptcha_timestamp: timestamptz!
   ) {
     update_cgmv_sessions_by_pk(
       pk_columns: { session_id: $session_id }
       _set: {
-        recaptcha_result: $recaptcha_result
+        recaptcha_success: $recaptcha_success
         recaptcha_timestamp: $recaptcha_timestamp
       }
     ) {

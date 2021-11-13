@@ -13,7 +13,6 @@ export default function BotCheckPage() {
   const [isValidated, setIsValidated] = useState(false);
 
   const onCaptchaValueChange = async (captchaCode) => {
-    console.log("Captcha value: ", captchaCode);
     if (!captchaCode) {
       setIsValidated(false);
       return;
