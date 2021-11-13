@@ -25,7 +25,7 @@ export default function Home() {
   const setStakes = useSurveyStore((state) => state.setStakes);
   const router = useRouter();
 
-  const nextPathname = "/background";
+  const nextPathname = "/recaptcha";
   const { isFirstVisit, toNext } = usePageNavigation({
     nextPathname,
   });

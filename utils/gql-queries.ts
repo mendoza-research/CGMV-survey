@@ -63,6 +63,24 @@ export function getRecordPageDuration(pathName: string) {
 `;
 }
 
+export const RECORD_RECAPTCHA_RESULTS = gql`
+  mutation RecordRecaptchaResults(
+    $session_id: uuid!
+    $recaptcha_result: Boolean!
+    $recaptcha_timestamp: timestamptz!
+  ) {
+    update_cgmv_sessions_by_pk(
+      pk_columns: { session_id: $session_id }
+      _set: {
+        recaptcha_result: $recaptcha_result
+        recaptcha_timestamp: $recaptcha_timestamp
+      }
+    ) {
+      session_id
+    }
+  }
+`;
+
 export function getSingleQuestionUpdateQuery(fieldName: string) {
   return gql`
   mutation RecordSingleResponse($session_id: uuid!, $response_num: Int!, $response_text: String) {
