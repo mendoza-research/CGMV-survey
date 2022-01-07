@@ -2,6 +2,7 @@ import Layout from "components/Layout";
 import usePageNavigation from "hooks/usePageNavigation";
 import useSurveyStore from "stores/useSurveyStore";
 import { useState } from "react";
+import Image from "next/image";
 import clsx from "clsx";
 import styles from "components/stock-selections/stock-selections.module.scss";
 import { RECORD_STOCK_SELECTIONS } from "utils/gql-queries";
@@ -98,9 +99,41 @@ export default function InvestBox() {
   return (
     <Layout>
       <main key="main" className={styles.stockSelectionsBox}>
+        <div
+          style={{
+            width: "300px",
+          }}
+        >
+          {stakes === StakesEnum.HIGH_STAKES ? (
+            <Image
+              src="/images/high_stakes_bonus.png"
+              width={705}
+              height={669}
+              layout="responsive"
+              alt=""
+            />
+          ) : (
+            <Image
+              src="/images/low_stakes_bonus.png"
+              width={706}
+              height={669}
+              layout="responsive"
+              alt=""
+            />
+          )}
+        </div>
+
         <div className={styles.instructionText}>
+          <h2
+            style={{
+              textAlign: "center",
+              marginTop: "1.5rem",
+            }}
+          >
+            Free Stock
+          </h2>
           {stakes === StakesEnum.LOW_STAKES ? (
-            <p>
+            <p style={{ marginTop: "0.5rem" }}>
               For each question listed below, pick either "This Stock" or "That
               Stock" to indicate which stock you are most interested in
               receiving. The percentages indicate the probability the stock will
@@ -124,8 +157,8 @@ export default function InvestBox() {
               has a 10% chance of being worth $2.00 and a 90% chance of being
               worth $1.60. After you submit your picks, one of the ten stocks
               you pick will be chosen at random and then "sold." The cash
-              proceeds dictated by the sale of the chosen stock will be one
-              component of your total bonus payment.
+              proceeds dictated by the sale of the chosen stock is one component
+              of your total bonus payment.
             </p>
           )}
         </div>
