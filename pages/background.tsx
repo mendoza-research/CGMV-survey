@@ -26,18 +26,6 @@ export default function BackgroundPage() {
             your sign-up bonus.
           </p>
 
-          <p>
-            <strong style={{ textDecoration: "underline" }}>
-              What this means for your compensation:
-            </strong>{" "}
-            The amount of your total compensation will be presented once you
-            finish the lottery and answer some demographic questions. Your
-            compensation includes a $0.50 fixed payment and a bonus payment
-            equal to the sum of the value of your free stock and lottery payout.
-            You will receive your fixed payment and bonus payment within 24
-            hours of completing the study.
-          </p>
-
           <div
             style={{
               display: "flex",
@@ -96,6 +84,18 @@ export default function BackgroundPage() {
               )}
             </div>
           </div>
+          <p>
+            <strong style={{ textDecoration: "underline" }}>
+              What this means for your compensation:
+            </strong>{" "}
+            The amount of your total compensation will be presented once you
+            finish the lottery and answer some demographic questions. Your
+            compensation includes a $0.50 fixed payment and a bonus payment
+            equal to the sum of the value of your free stock and lottery payout.
+            You will receive your fixed payment and bonus payment within 24
+            hours of completing the study.
+          </p>
+
 
           <p>
             <strong style={{ textDecoration: "underline" }}>
