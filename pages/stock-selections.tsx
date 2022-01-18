@@ -147,7 +147,7 @@ export default function InvestBox() {
         >
           {stakes === StakesEnum.HIGH_STAKES ? (
             <Image
-              src="/images/high_stakes_bonus.png"
+              src="/images/high_stakes_bonus_Free_Stock_pg.png"
               width={705}
               height={669}
               layout="responsive"
@@ -155,7 +155,7 @@ export default function InvestBox() {
             />
           ) : (
             <Image
-              src="/images/low_stakes_bonus.png"
+              src="/images/low_stakes_bonus_Free_Stock_pg.png"
               width={706}
               height={669}
               layout="responsive"
