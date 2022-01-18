@@ -99,29 +99,6 @@ export default function InvestBox() {
   return (
     <Layout>
       <main key="main" className={styles.stockSelectionsBox}>
-        <div
-          style={{
-            width: "300px",
-          }}
-        >
-          {stakes === StakesEnum.HIGH_STAKES ? (
-            <Image
-              src="/images/high_stakes_bonus.png"
-              width={705}
-              height={669}
-              layout="responsive"
-              alt=""
-            />
-          ) : (
-            <Image
-              src="/images/low_stakes_bonus.png"
-              width={706}
-              height={669}
-              layout="responsive"
-              alt=""
-            />
-          )}
-        </div>
 
         <div className={styles.instructionText}>
           <h2
@@ -160,6 +137,30 @@ export default function InvestBox() {
               proceeds dictated by the sale of the chosen stock is the <strong>
               larger</strong> component of your total bonus payment.
             </p>
+          )}
+        </div>
+        
+        <div
+          style={{
+            width: "300px",
+          }}
+        >
+          {stakes === StakesEnum.HIGH_STAKES ? (
+            <Image
+              src="/images/high_stakes_bonus.png"
+              width={705}
+              height={669}
+              layout="responsive"
+              alt=""
+            />
+          ) : (
+            <Image
+              src="/images/low_stakes_bonus.png"
+              width={706}
+              height={669}
+              layout="responsive"
+              alt=""
+            />
           )}
         </div>
 
