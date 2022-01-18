@@ -143,8 +143,8 @@ export default function InvestBox() {
               has a 10% chance of being worth $0.21 and a 90% chance of being
               worth $0.17. After you submit your picks, one of the ten stocks
               you pick will be chosen at random and then "sold." The cash
-              proceeds dictated by the sale of the chosen stock will be one
-              component of your total bonus payment.
+              proceeds dictated by the sale of the chosen stock is the 
+              <strong>smaller</strong> component of your total bonus payment.
             </p>
           ) : (
             <p>
@@ -157,8 +157,8 @@ export default function InvestBox() {
               has a 10% chance of being worth $2.00 and a 90% chance of being
               worth $1.60. After you submit your picks, one of the ten stocks
               you pick will be chosen at random and then "sold." The cash
-              proceeds dictated by the sale of the chosen stock is one component
-              of your total bonus payment.
+              proceeds dictated by the sale of the chosen stock is the <strong>
+              larger</strong> component of your total bonus payment.
             </p>
           )}
         </div>
