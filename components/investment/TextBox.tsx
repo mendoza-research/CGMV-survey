@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface ITextBoxProps {
   children: React.ReactNode;
-  toNext: () => void;
+  toNext?: () => void;
   animation?: AnimationEnum;
   nextButtonText?: string;
 }
@@ -47,7 +47,9 @@ export default function TextBox({
       );
     }
 
-    toNext();
+    if (toNext) {
+      toNext();
+    }
   };
 
   return (
@@ -73,15 +75,17 @@ export default function TextBox({
         <div>
           {children}
 
-          <div
-            style={{
-              marginTop: "2rem",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <button onClick={handleNextButtonClick}>{nextButtonText}</button>
-          </div>
+          {toNext && (
+            <div
+              style={{
+                marginTop: "2rem",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button onClick={handleNextButtonClick}>{nextButtonText}</button>
+            </div>
+          )}
         </div>
       </main>
     </Layout>
