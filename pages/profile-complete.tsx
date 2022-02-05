@@ -9,7 +9,7 @@ import { AnimationEnum } from "typings/animation";
   //});
 
   return (
-    <TextBox toNext={toNext} animation={AnimationEnum.CONFETTI}>
+    <TextBox>
       <p>
         Profile complete! On the next page, you will respond to a series of
         questions that will influence which free stock you will be given. Click
