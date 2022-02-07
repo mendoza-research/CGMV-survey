@@ -11,9 +11,7 @@ export default function ProfileCompletePage() {
   return (
     <TextBox>
       <p>
-        Profile complete! On the next page, you will respond to a series of
-        questions that will influence which free stock you will be given. Click
-        "Next" to proceed.
+        Profile complete! Please close this tab and return to the original survey window to proceed with the study.
       </p>
     </TextBox>
   );
