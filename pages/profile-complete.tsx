@@ -11,7 +11,7 @@ export default function ProfileCompletePage() {
   return (
     <TextBox>
       <p>
-        Profile complete! Please close this tab and return to the original survey window to proceed with the study.
+        Profile complete! Please close this tab, return to the original survey window and enter “orange” to proceed with the study.
       </p>
     </TextBox>
   );
